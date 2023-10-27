@@ -12,7 +12,7 @@ public class MyGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		img = new Texture("pictures/in_game_pictures/player1/player1_spaceship_base.png");
 	}
 
 	@Override
