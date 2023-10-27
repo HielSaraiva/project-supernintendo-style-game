@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		config.useVsync(true);
 		config.setForegroundFPS(60);
 		config.setTitle("Space Invaders - by AHP");
-		config.setWindowIcon("");
+		config.setWindowIcon("pictures/outGame/gameIcon.jpg");
 		new Lwjgl3Application(new MyGame(), config);
 	}
 }

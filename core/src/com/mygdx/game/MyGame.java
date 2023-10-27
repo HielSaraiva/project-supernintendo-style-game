@@ -20,10 +20,10 @@ public class MyGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		// Load the image for the spaceship of player 1
-		textureSpaceship1 = new Texture(Gdx.files.internal(""));
+		textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/base.png"));
 
 		// Load the background sound of the game
-		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/trail/trail1"));
+		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/trail/trail2.mp3"));
 
 		// Start the playback of the background music immediately
 		backgroundMusic.setLooping(true);
@@ -67,11 +67,14 @@ public class MyGame extends ApplicationAdapter {
 		// Making the spaceship 1 moves
 		if(Gdx.input.isKeyPressed(Input.Keys.A)) {
 			rectangleSpaceship1.x -= 200 * Gdx.graphics.getDeltaTime();
-		} else if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.D)) {
 			rectangleSpaceship1.x += 200 * Gdx.graphics.getDeltaTime();
-		} else if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.S)) {
 			rectangleSpaceship1.y -= 200 * Gdx.graphics.getDeltaTime();
-		} else if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.W)) {
 			rectangleSpaceship1.y += 200 * Gdx.graphics.getDeltaTime();
 		}
 
@@ -81,6 +84,12 @@ public class MyGame extends ApplicationAdapter {
 		}
 		if(rectangleSpaceship1.x > 1280 - 64) {
 			rectangleSpaceship1.x = 1280 - 64;
+		}
+		if(rectangleSpaceship1.y < 0) {
+			rectangleSpaceship1.y = 0;
+		}
+		if(rectangleSpaceship1.y > 720 - 60) {
+			rectangleSpaceship1.y = 720 - 60;
 		}
 	}
 	
