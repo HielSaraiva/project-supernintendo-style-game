@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-public class MyGame extends ApplicationAdapter {
+public class SpaceInvaders extends ApplicationAdapter {
 	public Texture textureSpaceship1;
 	public Music backgroundMusic;
 	public OrthographicCamera camera;
