@@ -27,18 +27,17 @@ public class GameScreen  implements Screen {
     public SpriteBatch batch;
     public Rectangle rectangleSpaceship1;
 
-    public GameScreen(final SpaceInvaders gam) {
-        this.game = gam;
+    public GameScreen(final SpaceInvaders game) {
+        this.game = game;
 
         // Load the image for the spaceship of player 1
         textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/base.png"));
 
         // Load the background sound of the game
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/trail/trail2.mp3"));
-
         // Start the playback of the background music immediately
-        backgroundMusic.setLooping(true);
         backgroundMusic.play();
+        backgroundMusic.setLooping(true);
 
         // Creating camera
         camera = new OrthographicCamera();
@@ -76,17 +75,40 @@ public class GameScreen  implements Screen {
 
         // Process user input
         // Making the spaceship 1 moves
-        if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-            rectangleSpaceship1.x -= 200 * Gdx.graphics.getDeltaTime();
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-            rectangleSpaceship1.x += 200 * Gdx.graphics.getDeltaTime();
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.S)) {
-            rectangleSpaceship1.y -= 200 * Gdx.graphics.getDeltaTime();
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-            rectangleSpaceship1.y += 200 * Gdx.graphics.getDeltaTime();
+        if(Gdx.input.isKeyPressed(Keys.ANY_KEY)){
+            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                rectangleSpaceship1.x -= 200 * Gdx.graphics.getDeltaTime();
+                textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/base.png"));
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyPressed(Keys.SPACE)) {
+                textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/baseShooting.png"));
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                rectangleSpaceship1.x += 200 * Gdx.graphics.getDeltaTime();
+                textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/accelerating.png"));
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.D) && Gdx.input.isKeyPressed(Keys.SPACE)) {
+                textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/acceleratingShooting.png"));
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                rectangleSpaceship1.y -= 200 * Gdx.graphics.getDeltaTime();
+                textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/accelerating.png"));
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Keys.SPACE)) {
+                textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/acceleratingShooting.png"));
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                rectangleSpaceship1.y += 200 * Gdx.graphics.getDeltaTime();
+                textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/accelerating.png"));
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Keys.SPACE)) {
+                textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/acceleratingShooting.png"));
+            }
+            if(!Gdx.input.isKeyPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.S) && !Gdx.input.isKeyPressed(Input.Keys.D) && Gdx.input.isKeyPressed(Keys.SPACE)) {
+                textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/baseShooting.png"));
+            }
+        } else {
+            textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/base.png"));
         }
 
         // Make sure our spaceship 1 stays within the screen limits

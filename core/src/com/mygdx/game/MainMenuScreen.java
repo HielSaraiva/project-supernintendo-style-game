@@ -2,18 +2,24 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MainMenuScreen implements Screen {
     final SpaceInvaders game;
     OrthographicCamera camera;
+    public Music menuMusic;
 
-    public MainMenuScreen(final SpaceInvaders gam) {
-        game = gam;
+    public MainMenuScreen(final SpaceInvaders game) {
+        this.game = game;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 720);
+
+        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/menu/menu1.mp3"));
+        menuMusic.setLooping(true);
+        menuMusic.play();
     }
 
     @Override
@@ -30,6 +36,7 @@ public class MainMenuScreen implements Screen {
 
         if(Gdx.input.isTouched()) {
             game.setScreen(new GameScreen(game));
+            menuMusic.stop();
             dispose();
         }
     }
