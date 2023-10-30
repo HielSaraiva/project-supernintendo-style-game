@@ -40,8 +40,7 @@ public class InvadersScreen implements Screen {
     private boolean attackShip1;
     private boolean gameoverShip1;
     private final float VELOCITY = 300 * Gdx.graphics.getDeltaTime();
-    private int scorePlayer1, lifePlayer1, numEnemies1;
-
+    private int scorePlayer1,scoreFinalPlayer1, lifePlayer1, numEnemies1;
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
     private BitmapFont bitmap;
@@ -49,32 +48,36 @@ public class InvadersScreen implements Screen {
 
     public InvadersScreen(final SpaceInvaders game) {
         this.game = game;
-        // Load the image for the spaceship of player 1
+
+        // Load the image for the spaceship of player 1 and set his initial position
         textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/base.png"));
         spaceship1 = new Sprite(textureSpaceship1);
         posXShip1 = 20;
         posYShip1 = (Gdx.graphics.getHeight() - spaceship1.getHeight())/2;
-        // Load the image for the bullet of spaceship 1
+
+        // Load the image for the bullet of spaceship 1, set his initial position and his attack boolean
         textureBulletSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/bullet/bullet1.png"));
         bullet1 = new Sprite(textureBulletSpaceship1);
         posXBullet1 = posXShip1;
         posYBullet1 = posYShip1;
         attackShip1 = false;
+
         // Load the image for the enemies type 1
         textureEnemy1 = new Texture(Gdx.files.internal("pictures/inGame/enemies/aliens/alien1.png"));
         enemies1 = new Array<Rectangle>();
         lastEnemy1Time = 0;
 
+        // Set the pre-configs of Player1
         scorePlayer1 = 0;
         lifePlayer1 = 3;
         gameoverShip1 = false;
+
+        // Set the time appear for enemies1
         numEnemies1 = 799999999;
 
-
-        //
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/Minecraft.ttf"));
+        // Load the font of the game text screen
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font3.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-
         parameter.size = 30;
         parameter.borderWidth = 1;
         parameter.borderColor = Color.BLACK;
@@ -84,17 +87,17 @@ public class InvadersScreen implements Screen {
         // Load the background picture
         wallpaperScreen = new Texture(Gdx.files.internal("pictures/outGame/background.jpg"));
 
-        // Load the background sound of the game
+        // Load the background sound of the game and the shot of the spaceship 1
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/trail/trail2.mp3"));
         soundShot1 = Gdx.audio.newSound(Gdx.files.internal("audio/bullets/bullet1.mp3"));
 
-        // Start the playback of the background music immediately
+        // Start the playback of the background music immediately and put him at loop
         backgroundMusic.play();
         backgroundMusic.setLooping(true);
 
         // Creating camera
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1280, 720);
+        camera.setToOrtho(false, 1920, 1080);
 
         // Creating the batch
         batch = new SpriteBatch();
@@ -112,10 +115,11 @@ public class InvadersScreen implements Screen {
         // coordinate system specified by the camera
         batch.setProjectionMatrix(camera.combined);
 
-        // Begin a new batch and draw the spaceship 1
+        // Begin a new batch and draw the background wallpaper
         batch.begin();
         batch.draw(wallpaperScreen,0, 0);
 
+        // Draw the bullet system, the spaceship1 and the text on game screen
         if(!gameoverShip1) {
             if(attackShip1) {
                 batch.draw(bullet1, posXBullet1, posYBullet1);
@@ -125,32 +129,32 @@ public class InvadersScreen implements Screen {
             for(Rectangle enemy : enemies1) {
                 batch.draw(textureEnemy1, enemy.x, enemy.y);
             }
-            bitmap.draw(batch, "Score: " + scorePlayer1, 20, Gdx.graphics.getHeight() - 20);
-            bitmap.draw(batch, "Life: " + lifePlayer1, 20, Gdx.graphics.getHeight() - 62);
+            bitmap.draw(batch, "Player 1\nScore: " + scorePlayer1 + "\nLife: " + lifePlayer1, 20, Gdx.graphics.getHeight() - 20);
         } else {
-            bitmap.draw(batch, "Score: " + scorePlayer1, 20, Gdx.graphics.getHeight() - 20);
-            bitmap.draw(batch, "GAMEOVER", 20, Gdx.graphics.getHeight() - 62);
+            bitmap.draw(batch, "Player 1\nFinal Score: " + scoreFinalPlayer1 + "\nGAMEOVER PLAYER1", 20, Gdx.graphics.getHeight() - 20);
+            soundShot1.pause();
+            backgroundMusic.stop();
 
+            // Reinitiate the game when ENTER is pressed
             if(Gdx.input.isKeyPressed(Keys.ENTER)) {
+                scoreFinalPlayer1 = 0;
                 gameoverShip1 = false;
                 scorePlayer1 = 0;
                 lifePlayer1 = 3;
                 enemies1.clear();
                 posXShip1 = 20;
                 posYShip1 = (Gdx.graphics.getHeight() - spaceship1.getHeight())/2;
-
+                backgroundMusic.play();
+                backgroundMusic.setLooping(true);
             }
         }
 
-
-
-
-        // Process user input
         // Making the spaceship 1 moves and add sound shot
         Sound soundShot1 = Gdx.audio.newSound(Gdx.files.internal("audio/bullets/bullet1.mp3"));
-        this.moveSpaceship1();
         this.moveBullet1();
         this.moveEnemies1();
+
+        this.moveSpaceship1();
 
         batch.end();
     }
@@ -159,31 +163,27 @@ public class InvadersScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             if(posXShip1 > 0){
                 posXShip1 -= VELOCITY;
-                textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/base.png"));
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             if(posXShip1 < Gdx.graphics.getWidth() - spaceship1.getWidth()){
                 posXShip1 += VELOCITY;
-            textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/accelerating.png"));
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             if(posYShip1 > 0){
                 posYShip1 -= VELOCITY;
-            textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/accelerating.png"));
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             if(posYShip1 < Gdx.graphics.getHeight() - spaceship1.getHeight()){
                 posYShip1 += VELOCITY;
-            textureSpaceship1 = new Texture(Gdx.files.internal("pictures/inGame/player1/accelerating.png"));
             }
         }
     }
 
     public void moveBullet1() {
-        if(Gdx.input.isKeyPressed(Keys.SPACE) && !attackShip1) {
+        if(Gdx.input.isKeyJustPressed(Keys.SPACE) && !attackShip1) {
             attackShip1 = true;
             posYBullet1 = posYShip1 + spaceship1.getHeight()/2 - 5;
             soundShot1.play();
@@ -218,18 +218,19 @@ public class InvadersScreen implements Screen {
             Rectangle enemy = iter.next();
             enemy.x -= 200 * Gdx.graphics.getDeltaTime();
 
-            // Colisao com o missel
+            // Colisão do inimigo com o missel
             if(collide(enemy.x, enemy.y, enemy.width, enemy.height, posXBullet1, posYBullet1, bullet1.getWidth(), bullet1.getHeight()) && attackShip1) {
                 ++scorePlayer1;
                 if(scorePlayer1 % 10 == 0) {
-                    numEnemies1 -= 100;
+                    numEnemies1 -= 10000;
                 }
                 attackShip1 = false;
                 iter.remove();
-            // Colisao com o inimigo
+            // Colisao do inimigo com a spaceship 1
             } else if( collide(enemy.x, enemy.y, enemy.width, enemy.height, posXShip1, posYShip1, spaceship1.getWidth(), spaceship1.getHeight()) && !gameoverShip1) {
                 --lifePlayer1;
                 if(lifePlayer1 <= 0 ) {
+                    scoreFinalPlayer1 = scorePlayer1;
                     gameoverShip1 = true;
                 }
                 iter.remove();
