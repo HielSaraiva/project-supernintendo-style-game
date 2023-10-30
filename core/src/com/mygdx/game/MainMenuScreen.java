@@ -18,8 +18,10 @@ public class MainMenuScreen implements Screen {
         camera.setToOrtho(false, 1280, 720);
 
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/menu/menu1.mp3"));
-        menuMusic.setLooping(true);
+
         menuMusic.play();
+        menuMusic.setVolume(0.5f);
+        menuMusic.setLooping(true);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class MainMenuScreen implements Screen {
         game.batch.end();
 
         if(Gdx.input.isTouched()) {
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new InvadersScreen(game));
             menuMusic.stop();
             dispose();
         }

@@ -9,7 +9,6 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setWindowedMode(1280, 720);
 		config.useVsync(true);
-		config.setForegroundFPS(60);
 		config.setTitle("Space Invaders - by AHP");
 		config.setWindowIcon("pictures/outGame/gameIcon.jpg");
 		new Lwjgl3Application(new SpaceInvaders(), config);
