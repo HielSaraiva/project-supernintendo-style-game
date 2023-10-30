@@ -153,9 +153,7 @@ public class InvadersScreen implements Screen {
         Sound soundShot1 = Gdx.audio.newSound(Gdx.files.internal("audio/bullets/bullet1.mp3"));
         this.moveBullet1();
         this.moveEnemies1();
-
         this.moveSpaceship1();
-
         batch.end();
     }
 

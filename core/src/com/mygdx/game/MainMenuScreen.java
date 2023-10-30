@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,6 +19,7 @@ public class MainMenuScreen implements Screen {
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
     private BitmapFont bitmap;
     private Music menuMusic;
+    private Sound menuSound;
     private Texture wallpaperMainMenu;
 
     public MainMenuScreen(final SpaceInvaders game) {
@@ -27,6 +29,7 @@ public class MainMenuScreen implements Screen {
         camera.setToOrtho(false, 1920, 1080);
 
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/menu/menu1.mp3"));
+        menuSound = Gdx.audio.newSound(Gdx.files.internal("audio/button_menu/button2.wav"));
 
         menuMusic.play();
         menuMusic.setVolume(0.5f);
@@ -52,15 +55,17 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         game.batch.draw(wallpaperMainMenu,0, 0);
 
-        bitmap.draw(game.batch, "Welcome to Space Invaders!\n[1] - Singleplayer\n[2] - Doubles Multiplayer\n[3] - Credits\n[4] - Quit", 20, 200);
+        bitmap.draw(game.batch, "Welcome to Space Invaders by AHP!\n[1] - Singleplayer\n[2] - Doubles Multiplayer\n[3] - Credits\n[4] - Quit", 20, 200);
         game.batch.end();
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
             game.setScreen(new InvadersScreen(game));
             menuMusic.stop();
+            menuSound.play();
             dispose();
         } else if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_4) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_4)) {
             System.exit(1);
+            menuSound.play();
         }
     }
 
