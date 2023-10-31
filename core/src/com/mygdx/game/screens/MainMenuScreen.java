@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,39 +11,39 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.SpaceInvaders;
 
 public class MainMenuScreen implements Screen {
     final SpaceInvaders game;
     private OrthographicCamera camera;
-    private FreeTypeFontGenerator generator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-    private BitmapFont bitmap;
-    private Music menuMusic;
-    private Sound menuSound;
-    private Texture wallpaperMainMenu;
+    private FreeTypeFontGenerator fontGenerator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
+    private BitmapFont fontBitmap;
+    private Music musicMenu;
+    private Sound soundMenu;
+    private Texture textureMenu;
 
     public MainMenuScreen(final SpaceInvaders game) {
         this.game = game;
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/menu/menu1.mp3"));
-        menuSound = Gdx.audio.newSound(Gdx.files.internal("audio/button_menu/button2.wav"));
+        musicMenu = Gdx.audio.newMusic(Gdx.files.internal("audio/menu/menu1.mp3"));
+        soundMenu = Gdx.audio.newSound(Gdx.files.internal("audio/button_menu/button2.wav"));
+        musicMenu.play();
+        musicMenu.setVolume(0.5f);
+        musicMenu.setLooping(true);
 
-        menuMusic.play();
-        menuMusic.setVolume(0.5f);
-        menuMusic.setLooping(true);
-        wallpaperMainMenu = new Texture(Gdx.files.internal("pictures/outGame/menu.png"));
+        textureMenu = new Texture(Gdx.files.internal("pictures/outGame/menu.png"));
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font3.ttf"));
-        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 40;
-        parameter.borderWidth = 1;
-        parameter.borderColor = Color.BLACK;
-        parameter.color = Color.WHITE;
-        bitmap = generator.generateFont(parameter);
-
+        fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("font/font3.ttf"));
+        fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameter.size = 40;
+        fontParameter.borderWidth = 2.0f;
+        fontParameter.borderColor = Color.BLACK;
+        fontParameter.color = Color.WHITE;
+        fontBitmap = fontGenerator.generateFont(fontParameter);
     }
 
     @Override
@@ -53,19 +53,19 @@ public class MainMenuScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        game.batch.draw(wallpaperMainMenu,0, 0);
+        game.batch.draw(textureMenu,0, 0);
 
-        bitmap.draw(game.batch, "Welcome to Space Invaders by AHP!\n[1] - Singleplayer\n[2] - Doubles Multiplayer\n[3] - Credits\n[4] - Quit", 20, 200);
+        fontBitmap.draw(game.batch, "Welcome to Space Invaders AHP!\n[1] - Singleplayer\n[2] - Doubles Multiplayer\n[3] - Credits\n[4] - Quit", 20, 200);
         game.batch.end();
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
             game.setScreen(new InvadersScreen(game));
-            menuMusic.stop();
-            menuSound.play();
+            musicMenu.stop();
+            soundMenu.play();
             dispose();
         } else if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_4) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_4)) {
             System.exit(1);
-            menuSound.play();
+            soundMenu.play();
         }
     }
 
