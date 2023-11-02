@@ -11,17 +11,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.SpaceInvaders;
 
 public class MainMenuScreen implements Screen {
-    private static final int SINGLE_BUTTON_WIDTH = 200;
-    private static final int SINGLE_BUTTON_HEIGHT = 40;
-    private static final int MULTI_BUTTON_WIDTH = 200;
-    private static final int MULTI_BUTTON_HEIGHT = 40;
-    private static final int CREDITS_BUTTON_WIDTH = 200;
-    private static final int CREDITS_BUTTON_HEIGHT = 40;
-    private static final int QUIT_BUTTON_WIDTH = 200;
-    private static final int QUIT_BUTTON_HEIGHT = 40;
-
     private final SpaceInvaders game;
-    private OrthographicCamera camera;
+    private OrthographicCamera camera;s
     private Music musicMenu;
     private Sound soundMenu;
     private Texture textureMenu;
