@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -43,7 +44,7 @@ public class InvadersScreen implements Screen {
         this.game = game;
 
         // Creating spaceship 1
-        ship1 = new Spaceship("pictures/inGame/player1/base.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));
+        ship1 = new Spaceship("pictures/inGame/player2/ship.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));
 
         blueAlien = new BlueAlien("pictures/inGame/enemies/aliens/alien1.png", ship1);
 
@@ -95,7 +96,7 @@ public class InvadersScreen implements Screen {
             if(ship1.isAttack()) {
                 batch.draw(ship1.getBullet().getSprite(), ship1.getBullet().getX(), ship1.getBullet().getY());
             }
-            batch.draw(ship1.getSprite(), ship1.getX(), ship1.getY());
+            batch.draw((TextureRegion) ship1.rolls[ship1.roll].getKeyFrame(ship1.getStateTime(), true), ship1.getX(), ship1.getY(), Spaceship.SHIP_WIDTH, Spaceship.SHIP_HEIGTH);
 
             for(Rectangle enemy : blueAlien.getRectangles()) {
                 batch.draw(blueAlien.getTexture(), enemy.x, enemy.y);
@@ -114,7 +115,7 @@ public class InvadersScreen implements Screen {
                 ship1.setLife(3);
                 blueAlien.getRectangles().clear();
                 ship1.setX(20);
-                ship1.setY((Gdx.graphics.getHeight() - ship1.getSprite().getHeight())/2);
+                ship1.setY((float)(Gdx.graphics.getHeight() - Spaceship.SHIP_HEIGTH_PIXEL)/2); //
                 backgroundMusic.play();
                 backgroundMusic.setLooping(true);
             }
@@ -125,6 +126,7 @@ public class InvadersScreen implements Screen {
         this.ship1.moveBullet();
         this.blueAlien.move();
         this.ship1.moveSpaceship();
+        this.ship1.setStateTime(ship1.getStateTime() + delta);
         batch.end();
     }
 

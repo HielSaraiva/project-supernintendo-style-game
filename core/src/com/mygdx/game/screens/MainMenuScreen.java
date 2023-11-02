@@ -65,7 +65,8 @@ public class MainMenuScreen implements Screen {
         game.batch.draw(title1, (float)(Gdx.graphics.getWidth() - title1.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - title1.getHeight()) / 2 + 450);
         game.batch.draw(title2, (float)(Gdx.graphics.getWidth() - title2.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - title2.getHeight()) / 2 + 350);
 
-        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + singleButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - singleButtonInactive.getWidth()) / 2 && Gdx.graphics.getHeight() - Gdx.input.getY() < (float)(Gdx.graphics.getHeight() - singleButtonInactive.getHeight()) / 2 + singleButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() > (float)(Gdx.graphics.getHeight() - singleButtonInactive.getHeight()) / 2) {
+        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + singleButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - singleButtonInactive.getWidth()) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() < (float)(Gdx.graphics.getHeight() - singleButtonInactive.getHeight()) / 2 + singleButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() > (float)(Gdx.graphics.getHeight() - singleButtonInactive.getHeight()) / 2) {
             game.batch.draw(singleButtonActive, (float)(Gdx.graphics.getWidth() - singleButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - singleButtonActive.getHeight()) / 2);
             if(Gdx.input.isTouched()) {
                 game.setScreen(new InvadersScreen(game));
@@ -77,7 +78,8 @@ public class MainMenuScreen implements Screen {
             game.batch.draw(singleButtonInactive, (float)(Gdx.graphics.getWidth() - singleButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - singleButtonInactive.getHeight()) / 2);
         }
 
-        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + multiButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - multiButtonInactive.getWidth()) / 2 && Gdx.graphics.getHeight() - Gdx.input.getY() + 100 < (float)(Gdx.graphics.getHeight() - multiButtonInactive.getHeight()) / 2 + multiButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 100 > (float)(Gdx.graphics.getHeight() - multiButtonInactive.getHeight()) / 2) {
+        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + multiButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - multiButtonInactive.getWidth()) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() + 100 < (float)(Gdx.graphics.getHeight() - multiButtonInactive.getHeight()) / 2 + multiButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 100 > (float)(Gdx.graphics.getHeight() - multiButtonInactive.getHeight()) / 2) {
             game.batch.draw(multiButtonActive, (float)(Gdx.graphics.getWidth() - multiButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - multiButtonActive.getHeight()) / 2 - 100);
             if(Gdx.input.isTouched()) {
                 soundMenu.play();
@@ -86,7 +88,8 @@ public class MainMenuScreen implements Screen {
             game.batch.draw(multiButtonInactive, (float)(Gdx.graphics.getWidth() - multiButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - multiButtonInactive.getHeight()) / 2 - 100);
         }
 
-        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + creditsButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - creditsButtonInactive.getWidth()) / 2 && Gdx.graphics.getHeight() - Gdx.input.getY() + 200 < (float)(Gdx.graphics.getHeight() - creditsButtonInactive.getHeight()) / 2 + creditsButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 200 > (float)(Gdx.graphics.getHeight() - creditsButtonInactive.getHeight()) / 2) {
+        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + creditsButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - creditsButtonInactive.getWidth()) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() + 200 < (float)(Gdx.graphics.getHeight() - creditsButtonInactive.getHeight()) / 2 + creditsButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 200 > (float)(Gdx.graphics.getHeight() - creditsButtonInactive.getHeight()) / 2) {
             game.batch.draw(creditsButtonActive, (float)(Gdx.graphics.getWidth() - creditsButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - creditsButtonActive.getHeight()) / 2 - 200);
             if(Gdx.input.isTouched()) {
                 soundMenu.play();
@@ -95,7 +98,8 @@ public class MainMenuScreen implements Screen {
             game.batch.draw(creditsButtonInactive, (float)(Gdx.graphics.getWidth() - creditsButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - creditsButtonInactive.getHeight()) / 2 - 200);
         }
 
-        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + quitButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2 && Gdx.graphics.getHeight() - Gdx.input.getY() + 300 < (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 + quitButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 300 > (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2) {
+        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + quitButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() + 300 < (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 + quitButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 300 > (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2) {
             game.batch.draw(quitButtonActive, (float)(Gdx.graphics.getWidth() - quitButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonActive.getHeight()) / 2 - 300);
             if(Gdx.input.isTouched()) {
                 Gdx.app.exit();

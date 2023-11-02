@@ -47,7 +47,7 @@ public class BlueAlien {
                 ship.setAttack(false);
                 iter.remove();
                 // Colisao do inimigo com a spaceship 1
-            } else if( collide(enemy.x, enemy.y, enemy.width, enemy.height, ship.getX(), ship.getY(), ship.getSprite().getWidth(), ship.getSprite().getHeight()) && !ship.isGameover()) {
+            } else if( collide(enemy.x, enemy.y, enemy.width, enemy.height, ship.getX(), ship.getY(), (float)Spaceship.SHIP_WIDTH, (float)Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
                 ship.setLife(ship.getLife() - 1);
                 if(ship.getLife() <= 0 ) {
                     ship.setFinalScore(ship.getScore());
