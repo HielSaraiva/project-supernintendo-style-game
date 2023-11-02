@@ -38,15 +38,16 @@ public class BlueAlien {
             Rectangle enemy = iter.next();
             enemy.x -= 200 * Gdx.graphics.getDeltaTime();
 
-            // Colisão do inimigo com o missel
+            // Collision Enemy x Bullet
             if(collide(enemy.x, enemy.y, enemy.width, enemy.height, ship.getBullet().getX(), ship.getBullet().getY(), ship.getBullet().getSprite().getWidth(), ship.getBullet().getSprite().getHeight()) && ship.isAttack()) {
                 ship.setScore(ship.getScore() + 1);
                 if(ship.getScore() % 10 == 0) {
-                    time += 100000;
+                    time -= 100000;
                 }
                 ship.setAttack(false);
                 iter.remove();
-                // Colisao do inimigo com a spaceship 1
+
+            // Collision Enemy x Spaceship
             } else if( collide(enemy.x, enemy.y, enemy.width, enemy.height, ship.getX(), ship.getY(), (float)Spaceship.SHIP_WIDTH, (float)Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
                 ship.setLife(ship.getLife() - 1);
                 if(ship.getLife() <= 0 ) {

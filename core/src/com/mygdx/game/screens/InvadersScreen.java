@@ -31,21 +31,19 @@ public class InvadersScreen implements Screen {
     private final SpaceInvaders game;
     private Spaceship ship1;
     private BlueAlien blueAlien;
-    private SpriteBatch batch;
     private Texture wallpaperScreen;
-    private Music backgroundMusic;
     private OrthographicCamera camera;
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
     private BitmapFont bitmap;
+    private Music backgroundMusic;
 
 
-    public InvadersScreen(final SpaceInvaders game) {
+    public InvadersScreen(SpaceInvaders game) {
         this.game = game;
 
-        // Creating spaceship 1
-        ship1 = new Spaceship("pictures/inGame/player2/ship.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));
-
+        // Creating Spaceship and BlueAlien
+        ship1 = new Spaceship("pictures/inGame/player1/ship.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));
         blueAlien = new BlueAlien("pictures/inGame/enemies/aliens/alien1.png", ship1);
 
         // Load the font of the game text screen
@@ -57,10 +55,8 @@ public class InvadersScreen implements Screen {
         parameter.color = Color.WHITE;
         bitmap = generator.generateFont(parameter);
 
-        // Load the background picture
+        // Load the background picture and background music
         wallpaperScreen = new Texture(Gdx.files.internal("pictures/outGame/background.jpg"));
-
-        // Load the background sound of the game and the shot of the spaceship 1
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/trail/trail2.mp3"));
 
         // Start the playback of the background music immediately and put him at loop
@@ -69,10 +65,7 @@ public class InvadersScreen implements Screen {
 
         // Creating camera
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);
-
-        // Creating the batch
-        batch = new SpriteBatch();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
@@ -85,25 +78,25 @@ public class InvadersScreen implements Screen {
 
         // Tell the SpriteBatch to render in the
         // coordinate system specified by the camera
-        batch.setProjectionMatrix(camera.combined);
+        game.batch.setProjectionMatrix(camera.combined);
 
-        // Begin a new batch and draw the background wallpaper
-        batch.begin();
-        batch.draw(wallpaperScreen,0, 0);
+        // Begin a batch and draw the background wallpaper
+        game.batch.begin();
+        game.batch.draw(wallpaperScreen,0, 0);
 
-        // Draw the bullet system, the spaceship1 and the text on game screen
+        // Draw the bullet system, the spaceship and the text on game screen
         if(!ship1.isGameover()) {
             if(ship1.isAttack()) {
-                batch.draw(ship1.getBullet().getSprite(), ship1.getBullet().getX(), ship1.getBullet().getY());
+                game.batch.draw(ship1.getBullet().getSprite(), ship1.getBullet().getX(), ship1.getBullet().getY());
             }
-            batch.draw((TextureRegion) ship1.rolls[ship1.roll].getKeyFrame(ship1.getStateTime(), true), ship1.getX(), ship1.getY(), Spaceship.SHIP_WIDTH, Spaceship.SHIP_HEIGTH);
+            game.batch.draw((TextureRegion) ship1.rolls[ship1.roll].getKeyFrame(ship1.getStateTime(), true), ship1.getX(), ship1.getY(), Spaceship.SHIP_WIDTH, Spaceship.SHIP_HEIGTH);
 
             for(Rectangle enemy : blueAlien.getRectangles()) {
-                batch.draw(blueAlien.getTexture(), enemy.x, enemy.y);
+                game.batch.draw(blueAlien.getTexture(), enemy.x, enemy.y);
             }
-            bitmap.draw(batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: " + ship1.getLife(), 20, Gdx.graphics.getHeight() - 20);
+            bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: " + ship1.getLife(), 20, Gdx.graphics.getHeight() - 20);
         } else {
-            bitmap.draw(batch, "Player 1\nFinal Score: " + ship1.getFinalScore() + "\nGAMEOVER PLAYER1", 20, Gdx.graphics.getHeight() - 20);
+            bitmap.draw(game.batch, "Player 1\nFinal Score: " + ship1.getFinalScore() + "\nGAMEOVER PLAYER1", 20, Gdx.graphics.getHeight() - 20);
             ship1.getBullet().getSound().pause();
             backgroundMusic.stop();
 
@@ -121,13 +114,13 @@ public class InvadersScreen implements Screen {
             }
         }
 
-        // Making the spaceship 1 moves and add sound shot
+        // Make the spaceship moves, the bullet moves, the alien moves
         Sound soundShot1 = Gdx.audio.newSound(Gdx.files.internal("audio/bullets/bullet1.mp3"));
         this.ship1.moveBullet();
         this.blueAlien.move();
         this.ship1.moveSpaceship();
-        this.ship1.setStateTime(ship1.getStateTime() + delta);
-        batch.end();
+        this.ship1.setStateTime(ship1.getStateTime() + delta); //
+        game.batch.end();
     }
 
     @Override
@@ -160,6 +153,6 @@ public class InvadersScreen implements Screen {
         // Cleaning Up (textures, sounds, musics, batch)
         backgroundMusic.dispose();
         ship1.getBullet().getSound().dispose();
-        batch.dispose();
+        game.batch.dispose();
     }
 }

@@ -13,7 +13,7 @@ public class SpaceInvaders extends Game {
     }
 
     public void render() {
-        super.render();// importante
+        super.render();
     }
 
     public void dispose() {

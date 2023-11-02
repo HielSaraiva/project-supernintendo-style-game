@@ -7,14 +7,13 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Spaceship {
-    private static int totalSpaceships = 0;
     public static final float VELOCITY = 300 * Gdx.graphics.getDeltaTime();
     public static final float SHIP_ANIMATION_SPEED = 0.5f;
     public static final int SHIP_WIDTH_PIXEL= 32;
     public static final int SHIP_HEIGTH_PIXEL = 18;
     public static final int SHIP_WIDTH = SHIP_WIDTH_PIXEL * 3;
     public static final int SHIP_HEIGTH = SHIP_HEIGTH_PIXEL * 3;
-    public static final float ROLL_TIMER_SWITCH_TIME = 0.15f;
+    public static final float ROLL_TIMER_SWITCH_TIME = 0.10f;
     private Bullet bullet;
     private float x, y;
     private boolean attack;
@@ -29,31 +28,35 @@ public class Spaceship {
 
     public Spaceship(String texturePathSpaceShip, Bullet bullet) {
         this.bullet = bullet;
-        if(totalSpaceships == 0){
-            x = 20;
-            y = (float)(Gdx.graphics.getHeight() - SHIP_HEIGTH_PIXEL) / 2;
 
-            roll = 2;
-            rollTimer = 0.0f;
-            rolls = new Animation[5];
+        //Setting the initial coordinates of spaceship
+        x = 20;
+        y = (float)(Gdx.graphics.getHeight() - SHIP_HEIGTH_PIXEL) / 2;
 
-            rollSpriteSheet = TextureRegion.split(new Texture(Gdx.files.internal(texturePathSpaceShip)), SHIP_WIDTH_PIXEL, SHIP_HEIGTH_PIXEL);
+        //Setting the initial animation configs of spaceship
+        roll = 2;
+        rollTimer = 0.0f;
+        rolls = new Animation[5];
 
-            rolls[0] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[2]); // All up
-            rolls[1] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[1]);
-            rolls[2] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[0]); // No tilt
-            rolls[3] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[3]);
-            rolls[4] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[4]); // All down
+        //Catching all the textures of spaceship png
+        rollSpriteSheet = TextureRegion.split(new Texture(Gdx.files.internal(texturePathSpaceShip)), SHIP_WIDTH_PIXEL, SHIP_HEIGTH_PIXEL);
 
-            attack = false;
-            score = 0;
-            life = 3;
-            gameover = false;
-            ++totalSpaceships;
+        //Setting all the possibilities animations configs
+        rolls[0] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[2]); // All up
+        rolls[1] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[1]);
+        rolls[2] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[0]); // No tilt
+        rolls[3] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[3]);
+        rolls[4] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[4]); // All down
 
-            this.bullet.setX(x);
-            this.bullet.setY(y);
-        }
+        //Setting the initial conditions of spaceship
+        attack = false;
+        score = 0;
+        life = 3;
+        gameover = false;
+
+        //Setting the position of bullet
+        this.bullet.setX(x);
+        this.bullet.setY(y);
     }
 
     public void moveSpaceship() {
@@ -62,18 +65,20 @@ public class Spaceship {
                 x -= VELOCITY;
             }
         }
+
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             if(x < Gdx.graphics.getWidth() - (float)SHIP_WIDTH){
                 x += VELOCITY;
             }
         }
+
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             if(y > 0){
                 y -= VELOCITY;
 
-                // Update roll if button just clicked
+                // Update roll if button is just clicked
                 if(Gdx.input.isKeyJustPressed(Input.Keys.S) && !Gdx.input.isKeyPressed(Input.Keys.W) && roll < 4) {
-                    rollTimer = 0;
+                    rollTimer = 0.0f;
                     roll++;
                 }
 
@@ -94,12 +99,14 @@ public class Spaceship {
                 }
             }
         }
+
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             if(y < Gdx.graphics.getHeight() - (float)SHIP_HEIGTH){
                 y += VELOCITY;
+
                 //Update roll if button just clicked
                 if(Gdx.input.isKeyJustPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.S) && roll > 0) {
-                    rollTimer = 0;
+                    rollTimer = 0.0f;
                     roll--;
                 }
 

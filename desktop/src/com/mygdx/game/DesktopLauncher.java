@@ -8,8 +8,9 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		config.setForegroundFPS(144);
 		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
-		config.useVsync(true);
+		config.setResizable(false);
 		config.setTitle("Space Invaders - by AHP");
 		config.setWindowIcon("pictures/outGame/gameIcon.jpg");
 		new Lwjgl3Application(new SpaceInvaders(), config);
