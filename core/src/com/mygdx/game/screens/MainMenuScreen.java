@@ -12,7 +12,7 @@ import com.mygdx.game.SpaceInvaders;
 
 public class MainMenuScreen implements Screen {
     private final SpaceInvaders game;
-    private OrthographicCamera camera;s
+    private OrthographicCamera camera;
     private Music musicMenu;
     private Sound soundMenu;
     private Texture textureMenu;
