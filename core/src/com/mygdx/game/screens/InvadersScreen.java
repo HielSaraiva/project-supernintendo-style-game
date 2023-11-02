@@ -27,7 +27,7 @@ import sun.jvm.hotspot.gc.shared.Space;
 import java.util.Iterator;
 
 public class InvadersScreen implements Screen {
-    final SpaceInvaders game;
+    private final SpaceInvaders game;
     private Spaceship ship1;
     private BlueAlien blueAlien;
     private SpriteBatch batch;
@@ -48,7 +48,7 @@ public class InvadersScreen implements Screen {
         blueAlien = new BlueAlien("pictures/inGame/enemies/aliens/alien1.png", ship1);
 
         // Load the font of the game text screen
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font3.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font4.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 30;
         parameter.borderWidth = 1;

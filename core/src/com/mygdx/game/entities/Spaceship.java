@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Spaceship {
     private static int totalSpaceships = 0;
-    private final float VELOCITY = 300 * Gdx.graphics.getDeltaTime();
+    private static final float VELOCITY = 300 * Gdx.graphics.getDeltaTime();
     private Texture texture;
     private Sprite sprite;
     private Bullet bullet;
