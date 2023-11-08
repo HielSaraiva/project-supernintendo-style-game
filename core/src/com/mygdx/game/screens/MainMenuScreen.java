@@ -92,6 +92,9 @@ public class MainMenuScreen implements Screen {
             game.batch.draw(creditsButtonActive, (float)(Gdx.graphics.getWidth() - creditsButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - creditsButtonActive.getHeight()) / 2 - 200);
             if(Gdx.input.isTouched()) {
                 soundMenu.play();
+                game.setScreen(new CreditsScreen(game));
+                musicMenu.stop();
+                dispose();
             }
         } else {
             game.batch.draw(creditsButtonInactive, (float)(Gdx.graphics.getWidth() - creditsButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - creditsButtonInactive.getHeight()) / 2 - 200);
