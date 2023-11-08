@@ -51,7 +51,7 @@ public class CreditsScreen implements Screen {
             game.batch.draw(pimenta, 100, Gdx.graphics.getHeight() - 3 * pimentanome.getHeight() - 65, pimenta.getWidth(), pimenta.getHeight());
             game.batch.draw(alanis, Gdx.graphics.getWidth() - alanis.getWidth() - 100, Gdx.graphics.getHeight() - 4 * alanisnome.getHeight() - 100, alanis.getWidth(), alanis.getHeight());
             game.batch.draw(hiel, Gdx.graphics.getWidth() - hiel.getWidth() - 100, Gdx.graphics.getHeight() - 2 * hielnome.getHeight() - 70, hiel.getWidth(), hiel.getHeight());
-            game.batch.draw(credits, (float) Gdx.graphics.getWidth() / 2 - (float) credits.getWidth() / 2, Gdx.graphics.getHeight() - credits.getHeight(), credits.getWidth(), credits.getHeight());
+            game.batch.draw(credits, (float) Gdx.graphics.getWidth() / 2 - (float) credits.getWidth() / 2, Gdx.graphics.getHeight() - credits.getHeight() - 50, credits.getWidth(), credits.getHeight());
             game.batch.draw(hielnome,(float) Gdx.graphics.getWidth() / 2 - (float) hielnome.getWidth() / 2, Gdx.graphics.getHeight() - 2 * hielnome.getHeight(), hielnome.getWidth(), hielnome.getHeight());
             game.batch.draw(pimentanome, (float) Gdx.graphics.getWidth() / 2- (float) pimentanome.getWidth() / 2, Gdx.graphics.getHeight() - 3 * pimentanome.getHeight(), pimentanome.getWidth(), pimentanome.getHeight());
             game.batch.draw(alanisnome, (float) Gdx.graphics.getWidth() / 2 - (float) alanisnome.getWidth() / 2, Gdx.graphics.getHeight() - 4 * alanisnome.getHeight(), alanisnome.getWidth(), alanisnome.getHeight());
