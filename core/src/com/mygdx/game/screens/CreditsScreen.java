@@ -19,7 +19,7 @@ public class CreditsScreen implements Screen {
             quitButtonInactive = new Texture(Gdx.files.internal("pictures/outGame/quit_blue.png"));
             menuButtonActive = new Texture(Gdx.files.internal("pictures/outGame/back_orange.png"));
             menuButtonInactive = new Texture(Gdx.files.internal("pictures/outGame/back_blue.png"));
-            background = new Texture(Gdx.files.internal("pictures/outGame/background.jpg"));
+            background = new Texture(Gdx.files.internal("pictures/outGame/background2.png"));
             pimenta = new Texture(Gdx.files.internal("pictures/outGame/pimentaHead.png"));
             alanis = new Texture(Gdx.files.internal("pictures/outGame/alanisHead.png"));
             hiel = new Texture(Gdx.files.internal("pictures/outGame/hielHead.png"));
