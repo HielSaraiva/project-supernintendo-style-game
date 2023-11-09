@@ -1,12 +1,14 @@
 package com.mygdx.game.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class BlueAlien {
@@ -14,6 +16,8 @@ public class BlueAlien {
     private Texture texture;
     private Array<Rectangle> rectangles;
     private long lastTime, time;
+    private ArrayList<Explosion> explosions1, explosions2;
+    private Sound sound1, sound2;
 
     public BlueAlien(String texturePathAlien, Spaceship ship) {
         this.ship = ship;
@@ -21,6 +25,10 @@ public class BlueAlien {
         rectangles = new Array<Rectangle>();
         lastTime = 0;
         time = 799999999;
+        explosions1 = new ArrayList<>();
+        explosions2 = new ArrayList<>();
+        sound1 = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion1.wav"));
+        sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion2.mp3"));
     }
 
     public void spawn() {
@@ -44,6 +52,8 @@ public class BlueAlien {
                 if(ship.getScore() % 10 == 0) {
                     time -= 100000;
                 }
+                sound1.play();
+                explosions1.add(new Explosion(enemy.x, enemy.y, 64,"pictures/inGame/explosion/explosion2.png"));
                 ship.setAttack(false);
                 iter.remove();
 
@@ -54,12 +64,39 @@ public class BlueAlien {
                     ship.setFinalScore(ship.getScore());
                     ship.setGameover(true);
                 }
+                sound2.play();
+                explosions2.add(new Explosion(enemy.x, enemy.y, 32,"pictures/inGame/explosion/explosion1.png"));
                 iter.remove();
             }
             if(enemy.x + texture.getWidth() < 0) {
                 iter.remove();
             }
+            ArrayList<Explosion> explosionsToRemove1 = new ArrayList<>();
+            for(Explosion explosion : explosions1) {
+                explosion.update(Gdx.graphics.getDeltaTime());
+                if(explosion.isRemove()) {
+                    explosionsToRemove1.add(explosion);
+                }
+            }
+            explosions1.removeAll(explosionsToRemove1);
+
+            ArrayList<Explosion> explosionsToRemove2 = new ArrayList<>();
+            for(Explosion explosion : explosions2) {
+                explosion.update(Gdx.graphics.getDeltaTime());
+                if(explosion.isRemove()) {
+                    explosionsToRemove2.add(explosion);
+                }
+            }
+            explosions2.removeAll(explosionsToRemove2);
         }
+    }
+
+    public ArrayList<Explosion> getExplosions1() {
+        return explosions1;
+    }
+
+    public ArrayList<Explosion> getExplosions2() {
+        return explosions2;
     }
 
     public Spaceship getShip() {

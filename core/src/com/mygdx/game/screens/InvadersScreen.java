@@ -22,9 +22,11 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.SpaceInvaders;
 import com.mygdx.game.entities.BlueAlien;
 import com.mygdx.game.entities.Bullet;
+import com.mygdx.game.entities.Explosion;
 import com.mygdx.game.entities.Spaceship;
 import sun.jvm.hotspot.gc.shared.Space;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class InvadersScreen implements Screen {
@@ -38,11 +40,10 @@ public class InvadersScreen implements Screen {
     private BitmapFont bitmap;
     private Music backgroundMusic;
 
-
     public InvadersScreen(SpaceInvaders game) {
         this.game = game;
 
-        // Creating Spaceship and BlueAlien
+        // Creating Spaceship and BlueAlien and Explosions
         ship1 = new Spaceship("pictures/inGame/player1/ship.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));
         blueAlien = new BlueAlien("pictures/inGame/enemies/aliens/alien1.png", ship1);
 
@@ -116,6 +117,12 @@ public class InvadersScreen implements Screen {
 
         // Make the spaceship moves, the bullet moves, the alien moves
         Sound soundShot1 = Gdx.audio.newSound(Gdx.files.internal("audio/bullets/bullet1.mp3"));
+        for(Explosion explosion : blueAlien.getExplosions1()) {
+            explosion.render(game.batch);
+        }
+        for(Explosion explosion : blueAlien.getExplosions2()) {
+            explosion.render(game.batch);
+        }
         this.ship1.moveBullet();
         this.blueAlien.move();
         this.ship1.moveSpaceship();
