@@ -60,8 +60,8 @@ public class CreditsScreen implements Screen {
                     Gdx.graphics.getHeight() - Gdx.input.getY() + 450 < (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 + quitButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 450 > (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2) {
                 game.batch.draw(quitButtonActive, (float)(Gdx.graphics.getWidth() - quitButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonActive.getHeight()) / 2 - 450);
                 if(Gdx.input.isTouched()) {
-                    this.dispose();
                     Gdx.app.exit();
+                    this.dispose();
                 }
             } else {
                 game.batch.draw(quitButtonInactive, (float)(Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 - 450);
@@ -71,8 +71,8 @@ public class CreditsScreen implements Screen {
                     Gdx.graphics.getHeight() - Gdx.input.getY() + 350 < (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2 + menuButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 350 > (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2) {
                 game.batch.draw(menuButtonActive, (float)(Gdx.graphics.getWidth() - menuButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - menuButtonActive.getHeight()) / 2 - 350);
                 if(Gdx.input.isTouched()) {
-                    this.dispose();
                     game.setScreen(new MainMenuScreen(game));
+                    this.dispose();
                 }
             } else {
                 game.batch.draw(menuButtonInactive, (float)(Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2 - 350);
