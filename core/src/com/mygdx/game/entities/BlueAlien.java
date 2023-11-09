@@ -39,7 +39,7 @@ public class BlueAlien {
             enemy.x -= 200 * Gdx.graphics.getDeltaTime();
 
             // Collision Enemy x Bullet
-            if(collide(enemy.x, enemy.y, enemy.width, enemy.height, ship.getBullet().getX(), ship.getBullet().getY(), ship.getBullet().getSprite().getWidth(), ship.getBullet().getSprite().getHeight()) && ship.isAttack()) {
+            if(Collision.collide(enemy.x, enemy.y, enemy.width, enemy.height, ship.getBullet().getX(), ship.getBullet().getY(), ship.getBullet().getSprite().getWidth(), ship.getBullet().getSprite().getHeight()) && ship.isAttack()) {
                 ship.setScore(ship.getScore() + 1);
                 if(ship.getScore() % 10 == 0) {
                     time -= 100000;
@@ -48,7 +48,7 @@ public class BlueAlien {
                 iter.remove();
 
             // Collision Enemy x Spaceship
-            } else if( collide(enemy.x, enemy.y, enemy.width, enemy.height, ship.getX(), ship.getY(), (float)Spaceship.SHIP_WIDTH, (float)Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
+            } else if(Collision.collide(enemy.x, enemy.y, enemy.width, enemy.height, ship.getX(), ship.getY(), (float)Spaceship.SHIP_WIDTH, (float)Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
                 ship.setLife(ship.getLife() - 1);
                 if(ship.getLife() <= 0 ) {
                     ship.setFinalScore(ship.getScore());
@@ -60,10 +60,6 @@ public class BlueAlien {
                 iter.remove();
             }
         }
-    }
-
-    public boolean collide(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2) {
-        return (x1 + w1 > x2 && x1 < x2 + w2 && y1 + h1 > y2 && y1 < y2 + h2);
     }
 
     public Spaceship getShip() {
