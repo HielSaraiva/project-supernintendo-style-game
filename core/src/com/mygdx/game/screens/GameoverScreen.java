@@ -27,7 +27,7 @@ public class GameoverScreen implements Screen {
         this.game = game;
         this.score = score;
 
-        background = new Texture(Gdx.files.internal("pictures/outGame/gameover.png"));
+        background = new Texture(Gdx.files.internal("pictures/outGame/gameover2.jpg"));
         tryButtonActive = new Texture(Gdx.files.internal("pictures/outGame/tryagain_orange.png"));
         tryButtonInactive = new Texture(Gdx.files.internal("pictures/outGame/tryagain_blue.png"));
         menuButtonActive = new Texture(Gdx.files.internal("pictures/outGame/back_orange.png"));
@@ -54,7 +54,7 @@ public class GameoverScreen implements Screen {
 
         game.batch.begin();
         game.batch.draw(background, 0 ,0);
-        bitmap.draw(game.batch, "Total score: " + this.score, ((float)Gdx.graphics.getWidth() - 700) / 2, (float)Gdx.graphics.getHeight() / 2 + 200);
+        bitmap.draw(game.batch, "Total score: " + this.score, ((float)Gdx.graphics.getWidth() - 800) / 2, (float)Gdx.graphics.getHeight() / 2 + 200);
 
         if(Gdx.input.getX() < (Gdx.graphics.getWidth() + tryButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - tryButtonInactive.getWidth()) / 2 &&
                 Gdx.graphics.getHeight() - Gdx.input.getY() < (float)(Gdx.graphics.getHeight() - tryButtonInactive.getHeight()) / 2 + tryButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY()  > (float)(Gdx.graphics.getHeight() - tryButtonInactive.getHeight()) / 2) {
