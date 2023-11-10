@@ -50,8 +50,8 @@ public class InvadersScreen implements Screen {
         // Load the font of the game text screen
         generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font4.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 30;
-        parameter.borderWidth = 1;
+        parameter.size = 50;
+        parameter.borderWidth = 2f;
         parameter.borderColor = Color.BLACK;
         parameter.color = Color.WHITE;
         bitmap = generator.generateFont(parameter);
@@ -97,22 +97,8 @@ public class InvadersScreen implements Screen {
             }
             bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: " + ship1.getLife(), 20, Gdx.graphics.getHeight() - 20);
         } else {
-            bitmap.draw(game.batch, "Player 1\nFinal Score: " + ship1.getFinalScore() + "\nGAMEOVER PLAYER1", 20, Gdx.graphics.getHeight() - 20);
-            ship1.getBullet().getSound().pause();
             backgroundMusic.stop();
-
-            // Reinitiate the game when ENTER is pressed
-            if(Gdx.input.isKeyPressed(Keys.ENTER)) {
-                ship1.setFinalScore(0);
-                ship1.setGameover(false);
-                ship1.setScore(0);
-                ship1.setLife(3);
-                blueAlien.getRectangles().clear();
-                ship1.setX(20);
-                ship1.setY((float)(Gdx.graphics.getHeight() - Spaceship.SHIP_HEIGTH_PIXEL)/2); //
-                backgroundMusic.play();
-                backgroundMusic.setLooping(true);
-            }
+            game.setScreen(new GameoverScreen(game, ship1.getFinalScore()));
         }
 
         // Make the spaceship moves, the bullet moves, the alien moves

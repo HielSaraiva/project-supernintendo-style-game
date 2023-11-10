@@ -104,7 +104,6 @@ public class CreditsScreen implements Screen {
         @Override
         public void dispose() {
             backgroundMusic.dispose();
-
         }
     }
 

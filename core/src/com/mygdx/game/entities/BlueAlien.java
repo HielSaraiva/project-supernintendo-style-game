@@ -48,7 +48,7 @@ public class BlueAlien {
 
             // Collision Enemy x Bullet
             if(Collision.collide(enemy.x, enemy.y, enemy.width, enemy.height, ship.getBullet().getX(), ship.getBullet().getY(), ship.getBullet().getSprite().getWidth(), ship.getBullet().getSprite().getHeight()) && ship.isAttack()) {
-                ship.setScore(ship.getScore() + 1);
+                ship.setScore(ship.getScore() + 100);
                 if(ship.getScore() % 10 == 0) {
                     time -= 100000;
                 }
