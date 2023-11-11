@@ -61,7 +61,7 @@ public class CreditsScreen implements Screen {
                 game.batch.draw(quitButtonActive, (float)(Gdx.graphics.getWidth() - quitButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonActive.getHeight()) / 2 - 450);
                 if(Gdx.input.isTouched()) {
                     Gdx.app.exit();
-                    this.dispose();
+                    //this.dispose();
                 }
             } else {
                 game.batch.draw(quitButtonInactive, (float)(Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 - 450);

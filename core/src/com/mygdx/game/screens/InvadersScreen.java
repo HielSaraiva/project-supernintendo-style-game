@@ -39,6 +39,9 @@ public class InvadersScreen implements Screen {
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
     private BitmapFont bitmap;
     private Music backgroundMusic;
+    private boolean paused = false;
+    private Texture resumeButtonActive, resumeButtonInactive,quitButtonActive, quitButtonInactive, menuButtonActive, menuButtonInactive;
+    private Music backgroundPauseMusic;
 
     public InvadersScreen(SpaceInvaders game) {
         this.game = game;
@@ -60,6 +63,18 @@ public class InvadersScreen implements Screen {
         wallpaperScreen = new Texture(Gdx.files.internal("pictures/outGame/background.jpg"));
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/trail/trail2.mp3"));
 
+        // Textures when paused:
+        resumeButtonActive = new Texture(Gdx.files.internal("pictures/outGame/resume_blue.png"));
+        resumeButtonInactive = new Texture(Gdx.files.internal("pictures/outGame/resume_orange.png"));
+        quitButtonActive = new Texture(Gdx.files.internal("pictures/outGame/quit_blue.png"));
+        quitButtonInactive = new Texture(Gdx.files.internal("pictures/outGame/quit_orange.png"));
+        menuButtonActive = new Texture(Gdx.files.internal("pictures/outGame/back_blue.png"));
+        menuButtonInactive = new Texture(Gdx.files.internal("pictures/outGame/back_orange.png"));
+
+        // Music when paused :
+        backgroundPauseMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/trail/trail3.mp3"));
+        backgroundPauseMusic.setVolume(0.4f);
+
         // Start the playback of the background music immediately and put him at loop
         backgroundMusic.play();
         backgroundMusic.setLooping(true);
@@ -71,6 +86,19 @@ public class InvadersScreen implements Screen {
 
     @Override
     public void render (float delta) {
+        if (paused) {
+            backgroundMusic.pause();
+            if (Gdx.input.isKeyJustPressed((Input.Keys.ESCAPE))) {
+                paused = false;
+                game.batch.setColor(1f,1f,1f,1f);
+            }
+        } else {
+            backgroundPauseMusic.pause();
+            generalUpdate(delta);
+            if(!backgroundMusic.isPlaying()){
+                backgroundMusic.play();
+            }
+        }
         // Clearing the screen with a dark blue color (RGB alpha)
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
@@ -84,6 +112,16 @@ public class InvadersScreen implements Screen {
         // Begin a batch and draw the background wallpaper
         game.batch.begin();
         game.batch.draw(wallpaperScreen,0, 0);
+
+        if(paused) {
+            game.batch.setColor(0.7f, 0.7f, 0.7f, 0.7f);
+            backgroundMusic.pause();
+            backgroundPauseMusic.play();
+            backgroundPauseMusic.setLooping(true);
+
+            // Drawing the options/buttons in the Menu when paused :
+            optionsMenuPaused();
+        }
 
         // Draw the bullet system, the spaceship and the text on game screen
         if(!ship1.isGameover()) {
@@ -109,11 +147,53 @@ public class InvadersScreen implements Screen {
         for(Explosion explosion : blueAlien.getExplosions2()) {
             explosion.render(game.batch);
         }
-        this.ship1.moveBullet();
-        this.blueAlien.move();
-        this.ship1.moveSpaceship();
-        this.ship1.setStateTime(ship1.getStateTime() + delta); //
         game.batch.end();
+    }
+
+    public void generalUpdate (float delta){
+        if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
+            paused = true;
+        } else {
+            this.ship1.moveBullet();
+            this.blueAlien.move();
+            this.ship1.moveSpaceship();
+            this.ship1.setStateTime(ship1.getStateTime() + delta);
+        }
+    }
+
+    public void optionsMenuPaused (){
+        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + quitButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() + 200 < (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 + quitButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 200 > (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2) {
+            game.batch.draw(quitButtonActive, (float)(Gdx.graphics.getWidth() - quitButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonActive.getHeight()) / 2 - 200);
+            if(Gdx.input.isTouched()) {
+                Gdx.app.exit();
+                //this.dispose();
+            }
+        } else {
+            game.batch.draw(quitButtonInactive, (float)(Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 - 200);
+        }
+        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + resumeButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - resumeButtonInactive.getWidth()) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY()  < (float)(Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2 + resumeButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY()  > (float)(Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2) {
+            game.batch.draw(resumeButtonActive, (float)(Gdx.graphics.getWidth() - resumeButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - resumeButtonActive.getHeight()) / 2 );
+            if(Gdx.input.isTouched()) {
+                paused = false;
+                game.batch.setColor(1f,1f,1f,1f);
+            }
+        } else {
+            game.batch.draw(resumeButtonInactive, (float)(Gdx.graphics.getWidth() - resumeButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2);
+        }
+
+        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + menuButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() + 100 < (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2 + menuButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 100 > (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2) {
+            game.batch.draw(menuButtonActive, (float)(Gdx.graphics.getWidth() - menuButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - menuButtonActive.getHeight()) / 2 - 100);
+            if(Gdx.input.isTouched()) {
+                game.batch.setColor(1f,1f,1f,1f);
+                backgroundPauseMusic.stop();
+                game.setScreen(new MainMenuScreen(game));
+            }
+        } else {
+            game.batch.draw(menuButtonInactive, (float)(Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2 - 100);
+        }
     }
 
     @Override
@@ -147,5 +227,6 @@ public class InvadersScreen implements Screen {
         backgroundMusic.dispose();
         ship1.getBullet().getSound().dispose();
         game.batch.dispose();
+        backgroundPauseMusic.dispose();
     }
 }
