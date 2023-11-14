@@ -7,14 +7,15 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Spaceship {
-    public static final float VELOCITY = 300 * Gdx.graphics.getDeltaTime();
+    public static final float VELOCITY = 400 * Gdx.graphics.getDeltaTime();
     public static final float SHIP_ANIMATION_SPEED = 0.5f;
     public static final int SHIP_WIDTH_PIXEL= 32;
     public static final int SHIP_HEIGTH_PIXEL = 18;
     public static final int SHIP_WIDTH = SHIP_WIDTH_PIXEL * 3;
     public static final int SHIP_HEIGTH = SHIP_HEIGTH_PIXEL * 3;
     public static final float ROLL_TIMER_SWITCH_TIME = 0.10f;
-    private Bullet bullet;
+    public static int numSpaceships = 0;
+    private Bullet bullet1;
     private float x, y;
     private boolean attack;
     private boolean gameover;
@@ -26,8 +27,9 @@ public class Spaceship {
     private float stateTime;
     private float rollTimer;
 
-    public Spaceship(String texturePathSpaceShip, Bullet bullet) {
-        this.bullet = bullet;
+    public Spaceship(String texturePathSpaceShip, Bullet bullet1) {
+        this.bullet1 = bullet1;
+        numSpaceships += 1;
 
         //Setting the initial coordinates of spaceship
         x = 20;
@@ -51,12 +53,12 @@ public class Spaceship {
         //Setting the initial conditions of spaceship
         attack = false;
         score = 0;
-        life = 3;
+        life = 5;
         gameover = false;
 
         //Setting the position of bullet
-        this.bullet.setX(x);
-        this.bullet.setY(y);
+        this.bullet1.setX(x);
+        this.bullet1.setY(y);
     }
 
     public void moveSpaceship() {
@@ -132,30 +134,30 @@ public class Spaceship {
     public void moveBullet() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isAttack()) {
             setAttack(true);
-            bullet.setY((getY() + (float) SHIP_HEIGTH / 2 - 5));
-            bullet.getSound().play();
+            bullet1.setY((getY() + (float) SHIP_HEIGTH / 2 - 5));
+            bullet1.getSound().play();
         }
 
         if(isAttack()) {
-            if(bullet.getX() < Gdx.graphics.getWidth()){
-                bullet.setX(bullet.getX() + 8.0f * VELOCITY);
+            if(bullet1.getX() < Gdx.graphics.getWidth()){
+                bullet1.setX(bullet1.getX() + 8.0f * VELOCITY);
             } else {
-                bullet.setX(getX() + (float)SHIP_WIDTH / 2);
-                bullet.setY(getY());
+                bullet1.setX(getX() + (float)SHIP_WIDTH / 2);
+                bullet1.setY(getY());
                 setAttack(false);
             }
         } else {
-            bullet.setX(getX() + (float)SHIP_WIDTH / 2);
-            bullet.setY(getY() + (float) SHIP_HEIGTH / 2 - 5);
+            bullet1.setX(getX() + (float)SHIP_WIDTH / 2);
+            bullet1.setY(getY() + (float) SHIP_HEIGTH / 2 - 5);
         }
     }
 
-    public Bullet getBullet() {
-        return bullet;
+    public Bullet getBullet1() {
+        return bullet1;
     }
 
-    public void setBullet(Bullet bullet) {
-        this.bullet = bullet;
+    public void setBullet1(Bullet bullet1) {
+        this.bullet1 = bullet1;
     }
 
     public float getX() {

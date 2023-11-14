@@ -3,6 +3,7 @@ package com.mygdx.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,6 +23,7 @@ public class GameoverScreen implements Screen {
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
     private BitmapFont bitmap;
+    private Sound soundScreen;
 
     public GameoverScreen(SpaceInvaders game, int score) {
         this.game = game;
@@ -34,6 +36,7 @@ public class GameoverScreen implements Screen {
         menuButtonInactive = new Texture(Gdx.files.internal("pictures/outGame/back_blue.png"));
 
         music = Gdx.audio.newMusic(Gdx.files.internal("audio/gameover/gameover1.mp3"));
+        soundScreen = Gdx.audio.newSound(Gdx.files.internal("audio/button_menu/button2.wav"));
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font4.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -61,6 +64,7 @@ public class GameoverScreen implements Screen {
             game.batch.draw(tryButtonActive, (float)(Gdx.graphics.getWidth() - tryButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - tryButtonActive.getHeight()) / 2);
             if(Gdx.input.isTouched()) {
                 game.setScreen(new InvadersScreen(game));
+                soundScreen.play();
                 this.dispose();
             }
         } else {
@@ -72,6 +76,7 @@ public class GameoverScreen implements Screen {
             game.batch.draw(menuButtonActive, (float)(Gdx.graphics.getWidth() - menuButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - menuButtonActive.getHeight()) / 2 - 100);
             if(Gdx.input.isTouched()) {
                 game.setScreen(new MainMenuScreen(game));
+                soundScreen.play();
                 this.dispose();
             }
         } else {

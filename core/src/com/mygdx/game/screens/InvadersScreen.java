@@ -20,10 +20,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.SpaceInvaders;
-import com.mygdx.game.entities.BlueAlien;
-import com.mygdx.game.entities.Bullet;
-import com.mygdx.game.entities.Explosion;
-import com.mygdx.game.entities.Spaceship;
+import com.mygdx.game.entities.*;
 import sun.jvm.hotspot.gc.shared.Space;
 
 import java.util.ArrayList;
@@ -33,6 +30,7 @@ public class InvadersScreen implements Screen {
     private final SpaceInvaders game;
     private Spaceship ship1;
     private BlueAlien blueAlien;
+    private RedAlien redAlien;
     private Texture wallpaperScreen;
     private OrthographicCamera camera;
     private FreeTypeFontGenerator generator;
@@ -42,6 +40,7 @@ public class InvadersScreen implements Screen {
     private boolean paused = false;
     private Texture resumeButtonActive, resumeButtonInactive,quitButtonActive, quitButtonInactive, menuButtonActive, menuButtonInactive;
     private Music backgroundPauseMusic;
+    private Sound soundScreen;
 
     public InvadersScreen(SpaceInvaders game) {
         this.game = game;
@@ -49,6 +48,7 @@ public class InvadersScreen implements Screen {
         // Creating Spaceship and BlueAlien and Explosions
         ship1 = new Spaceship("pictures/inGame/player1/ship.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));
         blueAlien = new BlueAlien("pictures/inGame/enemies/aliens/alien1.png", ship1);
+        redAlien = new RedAlien("pictures/inGame/enemies/aliens/alien2.png", ship1);
 
         // Load the font of the game text screen
         generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font4.ttf"));
@@ -62,6 +62,7 @@ public class InvadersScreen implements Screen {
         // Load the background picture and background music
         wallpaperScreen = new Texture(Gdx.files.internal("pictures/outGame/background.jpg"));
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/trail/trail2.mp3"));
+        soundScreen = Gdx.audio.newSound(Gdx.files.internal("audio/button_menu/button2.wav"));
 
         // Textures when paused:
         resumeButtonActive = new Texture(Gdx.files.internal("pictures/outGame/resume_blue.png"));
@@ -91,12 +92,14 @@ public class InvadersScreen implements Screen {
             if (Gdx.input.isKeyJustPressed((Input.Keys.ESCAPE))) {
                 paused = false;
                 game.batch.setColor(1f,1f,1f,1f);
+                bitmap.setColor(1f, 1f, 1f, 1f);
             }
         } else {
             backgroundPauseMusic.pause();
             generalUpdate(delta);
             if(!backgroundMusic.isPlaying()){
                 backgroundMusic.play();
+                soundScreen.play();
             }
         }
         // Clearing the screen with a dark blue color (RGB alpha)
@@ -112,31 +115,38 @@ public class InvadersScreen implements Screen {
         // Begin a batch and draw the background wallpaper
         game.batch.begin();
         game.batch.draw(wallpaperScreen,0, 0);
-
-        if(paused) {
-            game.batch.setColor(0.7f, 0.7f, 0.7f, 0.7f);
-            backgroundMusic.pause();
-            backgroundPauseMusic.play();
-            backgroundPauseMusic.setLooping(true);
-
-            // Drawing the options/buttons in the Menu when paused :
-            optionsMenuPaused();
-        }
-
         // Draw the bullet system, the spaceship and the text on game screen
+
         if(!ship1.isGameover()) {
             if(ship1.isAttack()) {
-                game.batch.draw(ship1.getBullet().getSprite(), ship1.getBullet().getX(), ship1.getBullet().getY());
+                game.batch.draw(ship1.getBullet1().getSprite(), ship1.getBullet1().getX(), ship1.getBullet1().getY());
             }
             game.batch.draw((TextureRegion) ship1.rolls[ship1.roll].getKeyFrame(ship1.getStateTime(), true), ship1.getX(), ship1.getY(), Spaceship.SHIP_WIDTH, Spaceship.SHIP_HEIGTH);
 
             for(Rectangle enemy : blueAlien.getRectangles()) {
                 game.batch.draw(blueAlien.getTexture(), enemy.x, enemy.y);
             }
+
+            for(Rectangle enemy : redAlien.getRectangles()) {
+                game.batch.draw(redAlien.getTexture(), enemy.x, enemy.y);
+            }
+
             bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: " + ship1.getLife(), 20, Gdx.graphics.getHeight() - 20);
         } else {
             backgroundMusic.stop();
             game.setScreen(new GameoverScreen(game, ship1.getFinalScore()));
+        }
+
+        if(paused) {
+            game.batch.setColor(0.7f, 0.7f, 0.7f, 0.7f);
+            bitmap.setColor(0.7f, 0.7f, 0.7f, 0.7f);
+            bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: " + ship1.getLife(), 20, Gdx.graphics.getHeight() - 20);
+            backgroundMusic.pause();
+            backgroundPauseMusic.play();
+            backgroundPauseMusic.setLooping(true);
+
+            // Drawing the options/buttons in the Menu when paused :
+            optionsMenuPaused();
         }
 
         // Make the spaceship moves, the bullet moves, the alien moves
@@ -147,15 +157,24 @@ public class InvadersScreen implements Screen {
         for(Explosion explosion : blueAlien.getExplosions2()) {
             explosion.render(game.batch);
         }
+        for(Explosion explosion : redAlien.getExplosions1()) {
+            explosion.render(game.batch);
+        }
+        for(Explosion explosion : redAlien.getExplosions2()) {
+            explosion.render(game.batch);
+        }
+
         game.batch.end();
     }
 
     public void generalUpdate (float delta){
         if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
+            soundScreen.play();
             paused = true;
         } else {
             this.ship1.moveBullet();
             this.blueAlien.move();
+            this.redAlien.move();
             this.ship1.moveSpaceship();
             this.ship1.setStateTime(ship1.getStateTime() + delta);
         }
@@ -176,6 +195,7 @@ public class InvadersScreen implements Screen {
                 Gdx.graphics.getHeight() - Gdx.input.getY()  < (float)(Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2 + resumeButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY()  > (float)(Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2) {
             game.batch.draw(resumeButtonActive, (float)(Gdx.graphics.getWidth() - resumeButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - resumeButtonActive.getHeight()) / 2 );
             if(Gdx.input.isTouched()) {
+                bitmap.setColor(1f, 1f, 1f, 1f);
                 paused = false;
                 game.batch.setColor(1f,1f,1f,1f);
             }
@@ -188,6 +208,7 @@ public class InvadersScreen implements Screen {
             game.batch.draw(menuButtonActive, (float)(Gdx.graphics.getWidth() - menuButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - menuButtonActive.getHeight()) / 2 - 100);
             if(Gdx.input.isTouched()) {
                 game.batch.setColor(1f,1f,1f,1f);
+                bitmap.setColor(1f, 1f, 1f, 1f);
                 backgroundPauseMusic.stop();
                 game.setScreen(new MainMenuScreen(game));
             }
@@ -225,7 +246,7 @@ public class InvadersScreen implements Screen {
     public void dispose () {
         // Cleaning Up (textures, sounds, musics, batch)
         backgroundMusic.dispose();
-        ship1.getBullet().getSound().dispose();
+        ship1.getBullet1().getSound().dispose();
         game.batch.dispose();
         backgroundPauseMusic.dispose();
     }
