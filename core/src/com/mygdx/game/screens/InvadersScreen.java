@@ -10,27 +10,18 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.SpaceInvaders;
 import com.mygdx.game.entities.*;
-import sun.jvm.hotspot.gc.shared.Space;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class InvadersScreen implements Screen {
     private final SpaceInvaders game;
     private Spaceship ship1;
     private BlueAlien blueAlien;
-    private RedAlien redAlien;
+    private Meteor meteor;
     private Texture wallpaperScreen;
     private OrthographicCamera camera;
     private FreeTypeFontGenerator generator;
@@ -47,8 +38,8 @@ public class InvadersScreen implements Screen {
 
         // Creating Spaceship and BlueAlien and Explosions
         ship1 = new Spaceship("pictures/inGame/player1/ship.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));
-        blueAlien = new BlueAlien("pictures/inGame/enemies/aliens/alien1.png", ship1);
-        redAlien = new RedAlien("pictures/inGame/enemies/aliens/alien2.png", ship1);
+        blueAlien = new BlueAlien("pictures/inGame/enemies/alien1.png", ship1);
+        meteor = new Meteor("pictures/inGame/enemies/meteor.png", ship1);
 
         // Load the font of the game text screen
         generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font4.ttf"));
@@ -127,8 +118,8 @@ public class InvadersScreen implements Screen {
                 game.batch.draw(blueAlien.getTexture(), enemy.x, enemy.y);
             }
 
-            for(Rectangle enemy : redAlien.getRectangles()) {
-                game.batch.draw(redAlien.getTexture(), enemy.x, enemy.y);
+            for(Rectangle enemy : meteor.getRectangles()) {
+                game.batch.draw(meteor.getTexture(), enemy.x, enemy.y);
             }
 
             bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: " + ship1.getLife(), 20, Gdx.graphics.getHeight() - 20);
@@ -157,10 +148,10 @@ public class InvadersScreen implements Screen {
         for(Explosion explosion : blueAlien.getExplosions2()) {
             explosion.render(game.batch);
         }
-        for(Explosion explosion : redAlien.getExplosions1()) {
+        for(Explosion explosion : meteor.getExplosions1()) {
             explosion.render(game.batch);
         }
-        for(Explosion explosion : redAlien.getExplosions2()) {
+        for(Explosion explosion : meteor.getExplosions2()) {
             explosion.render(game.batch);
         }
 
@@ -174,7 +165,7 @@ public class InvadersScreen implements Screen {
         } else {
             this.ship1.moveBullet();
             this.blueAlien.move();
-            this.redAlien.move();
+            this.meteor.move();
             this.ship1.moveSpaceship();
             this.ship1.setStateTime(ship1.getStateTime() + delta);
         }

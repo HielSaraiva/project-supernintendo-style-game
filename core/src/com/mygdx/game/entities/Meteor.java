@@ -1,7 +1,6 @@
 package com.mygdx.game.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
@@ -12,17 +11,16 @@ import com.badlogic.gdx.utils.TimeUtils;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class RedAlien {
+public class Meteor {
     private Spaceship ship1;
     private boolean attack;
-    private static final float bulletSpeed = Gdx.graphics.getDeltaTime();
     private Texture texture;
     private Array<Rectangle> rectangles;
     private long lastTime, time;
     private ArrayList<Explosion> explosions1, explosions2, explosions3;
     private Sound sound1, sound2;
 
-    public RedAlien(String texturePathAlien, Spaceship ship1) {
+    public Meteor(String texturePathAlien, Spaceship ship1) {
         this.ship1 = ship1;
 
         attack = false;
@@ -30,7 +28,7 @@ public class RedAlien {
         texture = new Texture(Gdx.files.internal(texturePathAlien));
         rectangles = new Array<Rectangle>();
         lastTime = 0;
-        time = 599999999;
+        time = 799999999;
         explosions1 = new ArrayList<>();
         explosions2 = new ArrayList<>();
         sound1 = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion1.wav"));
@@ -59,16 +57,16 @@ public class RedAlien {
 
             // Collision Enemy x Bullet
             if (Collision.collide(enemy.x, enemy.y, enemy.width, enemy.height, ship1.getBullet1().getX(), ship1.getBullet1().getY(), ship1.getBullet1().getSprite().getWidth(), ship1.getBullet1().getSprite().getHeight()) && ship1.isAttack()) {
-                ship1.setScore(ship1.getScore() + 100);
+                ship1.setScore(ship1.getScore() + 300);
 
                 sound1.play();
                 explosions1.add(new Explosion(enemy.x, enemy.y, 64, "pictures/inGame/explosion/explosion2.png"));
                 ship1.setAttack(false);
                 iter.remove();
 
-                // Collision Enemy x Spaceship
+                // Collision Meteor x Spaceship
             } else if (Collision.collide(enemy.x, enemy.y, enemy.width, enemy.height, ship1.getX(), ship1.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH) && !ship1.isGameover()) {
-                ship1.setLife(ship1.getLife() - 1);
+                ship1.setLife(ship1.getLife() - 2);
                 if (ship1.getLife() <= 0) {
                     ship1.setFinalScore(ship1.getScore());
                     ship1.setGameover(true);

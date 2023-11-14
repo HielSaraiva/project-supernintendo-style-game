@@ -65,7 +65,7 @@ public class BlueAlien {
                     ship.setGameover(true);
                 }
                 sound2.play();
-                explosions2.add(new Explosion(enemy.x, enemy.y, 32,"pictures/inGame/explosion/explosion1.png"));
+                explosions2.add(new Explosion(enemy.x, enemy.y, 64,"pictures/inGame/explosion/explosion1.png"));
                 iter.remove();
             }
             if(enemy.x + texture.getWidth() < 0) {
