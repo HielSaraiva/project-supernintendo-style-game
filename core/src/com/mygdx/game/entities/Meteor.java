@@ -13,7 +13,6 @@ import java.util.Iterator;
 
 public class Meteor {
     private Spaceship ship1;
-    private boolean attack;
     private Texture texture;
     private Array<Rectangle> rectangles;
     private long lastTime, time;
@@ -22,8 +21,6 @@ public class Meteor {
 
     public Meteor(String texturePathAlien, Spaceship ship1) {
         this.ship1 = ship1;
-
-        attack = false;
 
         texture = new Texture(Gdx.files.internal(texturePathAlien));
         rectangles = new Array<Rectangle>();
@@ -66,6 +63,7 @@ public class Meteor {
 
                 // Collision Meteor x Spaceship
             } else if (Collision.collide(enemy.x, enemy.y, enemy.width, enemy.height, ship1.getX(), ship1.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH) && !ship1.isGameover()) {
+                ship1.setScore(ship1.getScore() + 300);
                 ship1.setLife(ship1.getLife() - 2);
                 if (ship1.getLife() <= 0) {
                     ship1.setFinalScore(ship1.getScore());
@@ -148,13 +146,6 @@ public class Meteor {
         this.time = time;
     }
 
-    public boolean isAttack() {
-        return attack;
-    }
-
-    public void setAttack(boolean attack) {
-        this.attack = attack;
-    }
 
     public ArrayList<Explosion> getExplosions3() {
         return explosions3;
