@@ -173,7 +173,7 @@ public class InvadersScreen implements Screen {
             record = true;
         }
 
-        bitmap.draw(game.batch, "Best Score: " + InvadersScreen.getHighscore(), 20, 40);
+        bitmap.draw(game.batch, "Best Score: " + InvadersScreen.getHighscore(), (Gdx.graphics.getWidth() - 400) / 2, Gdx.graphics.getHeight() - 20);
 
 
         if(paused) {
