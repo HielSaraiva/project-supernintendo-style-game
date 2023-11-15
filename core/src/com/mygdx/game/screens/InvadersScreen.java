@@ -3,6 +3,7 @@ package com.mygdx.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -34,7 +35,8 @@ public class InvadersScreen implements Screen {
     private Music backgroundPauseMusic;
     private Sound soundScreen;
     private float allTime;
-
+    public static int highscore;
+    public static boolean record = false;
     public InvadersScreen(SpaceInvaders game) {
         this.game = game;
 
@@ -161,6 +163,18 @@ public class InvadersScreen implements Screen {
             eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         }
 
+        Preferences prefs = Gdx.app.getPreferences("SpaceInvaders");
+        this.highscore = prefs.getInteger("highscore", 0);
+
+        if(ship1.getScore() > highscore){
+            prefs.putInteger("highscore", ship1.getScore());
+            prefs.flush();
+            record = true;
+        }
+
+        bitmap.draw(game.batch, "Best Score: " + InvadersScreen.getHighscore(), 20, 40);
+
+
         if(paused) {
             game.batch.setColor(0.7f, 0.7f, 0.7f, 0.7f);
             bitmap.setColor(0.7f, 0.7f, 0.7f, 0.7f);
@@ -283,6 +297,13 @@ public class InvadersScreen implements Screen {
     @Override
     public void resume() {
     }
+    public static int getHighscore() {
+        return highscore;
+    }
+    public static boolean getRecord() {
+        return record;
+    }
+
 
     @Override
     public void dispose () {
