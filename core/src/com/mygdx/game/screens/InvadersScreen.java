@@ -36,9 +36,10 @@ public class InvadersScreen implements Screen {
     private Sound soundScreen;
     private float allTime;
     public static int highscore;
-    public static boolean record = false;
+    public static boolean record;
     public InvadersScreen(SpaceInvaders game) {
         this.game = game;
+        record = false;
 
         // Creating Spaceship and BlueAlien and Explosions
         ship1 = new Spaceship("pictures/inGame/player1/ship.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));

@@ -64,6 +64,7 @@ public class GameoverScreen implements Screen {
         if(InvadersScreen.getRecord()){
             greenFont.draw(game.batch, "!!!NEW RECORD!!!", ((float)Gdx.graphics.getWidth() - 700) / 2, (float)Gdx.graphics.getHeight() / 2 - 100);
         }
+
         if(Gdx.input.getX() < (Gdx.graphics.getWidth() + tryButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - tryButtonInactive.getWidth()) / 2 &&
                 Gdx.graphics.getHeight() - Gdx.input.getY() + 450 < (float) (Gdx.graphics.getHeight() - tryButtonInactive.getHeight()) / 2 + tryButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 450 > (float) (Gdx.graphics.getHeight() - tryButtonInactive.getHeight()) / 2) {
             game.batch.draw(tryButtonActive, (float) (Gdx.graphics.getWidth() - tryButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - tryButtonActive.getHeight()) / 2 - 450);
