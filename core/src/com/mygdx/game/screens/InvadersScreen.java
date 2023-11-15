@@ -200,21 +200,21 @@ public class InvadersScreen implements Screen {
             this.ship1.moveSpaceship();
             this.blueAlien.move();
 
-            if(allTime > 60.0f){
+            if(allTime > 30.0f){
                 this.meteor.move();
             }
 
-            if(allTime > 120.0f){
+            if(allTime > 60.0f){
                 this.eye1.move();
                 this.eye1.moveBullet();
             }
 
-            if(allTime > 122.5f){
+            if(allTime > 62.5f){
                 this.eye2.move();
                 this.eye2.moveBullet();
             }
 
-            if(allTime > 124.5f){
+            if(allTime > 64.5f){
                 this.eye3.move();
                 this.eye3.moveBullet();
             }
