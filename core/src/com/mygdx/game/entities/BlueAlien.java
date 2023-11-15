@@ -59,7 +59,6 @@ public class BlueAlien {
 
             // Collision Enemy x Spaceship
             } else if(Collision.collide(enemy.x, enemy.y, enemy.width, enemy.height, ship.getX(), ship.getY(), (float)Spaceship.SHIP_WIDTH, (float)Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
-                ship.setScore(ship.getScore() + 100);
                 ship.setLife(ship.getLife() - 1);
                 if(ship.getLife() <= 0 ) {
                     ship.setFinalScore(ship.getScore());
