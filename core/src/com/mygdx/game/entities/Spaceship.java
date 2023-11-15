@@ -26,6 +26,8 @@ public class Spaceship {
     public int roll;
     private float stateTime;
     private float rollTimer;
+    private float time;
+    private final static float TIME_OUT = 1.5f;
 
     public Spaceship(String texturePathSpaceShip, Bullet bullet1) {
         this.bullet1 = bullet1;
@@ -55,6 +57,7 @@ public class Spaceship {
         score = 0;
         life = 5;
         gameover = false;
+        time = 1.5f;
 
         //Setting the position of bullet
         this.bullet1.setX(x);
@@ -62,6 +65,7 @@ public class Spaceship {
     }
 
     public void moveSpaceship() {
+        time += Gdx.graphics.getDeltaTime();
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             if(x > 0){
                 x -= VELOCITY;
@@ -132,7 +136,8 @@ public class Spaceship {
     }
 
     public void moveBullet() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isAttack()) {
+        if(time > TIME_OUT && Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isAttack()) {
+            time = 0;
             setAttack(true);
             bullet1.setY((getY() + (float) SHIP_HEIGTH / 2 - 5));
             bullet1.getSound().play();
