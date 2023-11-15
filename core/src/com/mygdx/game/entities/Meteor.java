@@ -25,7 +25,7 @@ public class Meteor {
         texture = new Texture(Gdx.files.internal(texturePathAlien));
         rectangles = new Array<Rectangle>();
         lastTime = 0;
-        time = 799999999;
+        time = 2000000000;
         explosions1 = new ArrayList<>();
         explosions2 = new ArrayList<>();
         sound1 = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion1.wav"));
@@ -53,18 +53,8 @@ public class Meteor {
             }
 
             // Collision Enemy x Bullet
-            if (Collision.collide(enemy.x, enemy.y, enemy.width, enemy.height, ship1.getBullet1().getX(), ship1.getBullet1().getY(), ship1.getBullet1().getSprite().getWidth(), ship1.getBullet1().getSprite().getHeight()) && ship1.isAttack()) {
-                ship1.setScore(ship1.getScore() + 300);
-
-                sound1.play();
-                explosions1.add(new Explosion(enemy.x, enemy.y, 64, "pictures/inGame/explosion/explosion2.png"));
-                ship1.setAttack(false);
-                iter.remove();
-
-                // Collision Meteor x Spaceship
-            } else if (Collision.collide(enemy.x, enemy.y, enemy.width, enemy.height, ship1.getX(), ship1.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH) && !ship1.isGameover()) {
-                ship1.setScore(ship1.getScore() + 300);
-                ship1.setLife(ship1.getLife() - 2);
+            if (Collision.collide(enemy.x, enemy.y, enemy.width, enemy.height, ship1.getX(), ship1.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH) && !ship1.isGameover()) {
+                ship1.setLife(ship1.getLife() - 1);
                 if (ship1.getLife() <= 0) {
                     ship1.setFinalScore(ship1.getScore());
                     ship1.setGameover(true);

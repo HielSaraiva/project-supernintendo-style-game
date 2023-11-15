@@ -22,6 +22,7 @@ public class InvadersScreen implements Screen {
     private Spaceship ship1;
     private BlueAlien blueAlien;
     private Meteor meteor;
+    private Eye eye1, eye2, eye3;
     private Texture wallpaperScreen;
     private OrthographicCamera camera;
     private FreeTypeFontGenerator generator;
@@ -32,6 +33,7 @@ public class InvadersScreen implements Screen {
     private Texture resumeButtonActive, resumeButtonInactive,quitButtonActive, quitButtonInactive, menuButtonActive, menuButtonInactive;
     private Music backgroundPauseMusic;
     private Sound soundScreen;
+    private float allTime;
 
     public InvadersScreen(SpaceInvaders game) {
         this.game = game;
@@ -40,6 +42,9 @@ public class InvadersScreen implements Screen {
         ship1 = new Spaceship("pictures/inGame/player1/ship.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));
         blueAlien = new BlueAlien("pictures/inGame/enemies/alien1.png", ship1);
         meteor = new Meteor("pictures/inGame/enemies/meteor.png", ship1);
+        eye1 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+        eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+        eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
 
         // Load the font of the game text screen
         generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font4.ttf"));
@@ -78,6 +83,7 @@ public class InvadersScreen implements Screen {
 
     @Override
     public void render (float delta) {
+        allTime += Gdx.graphics.getDeltaTime();
         if (paused) {
             backgroundMusic.pause();
             if (Gdx.input.isKeyJustPressed((Input.Keys.ESCAPE))) {
@@ -122,10 +128,37 @@ public class InvadersScreen implements Screen {
                 game.batch.draw(meteor.getTexture(), enemy.x, enemy.y);
             }
 
+            if(eye1.isAttack()) {
+                game.batch.draw(eye1.getBullet().getSprite(), eye1.getBullet().getX(), eye1.getBullet().getY());
+            }
+            game.batch.draw(eye1.getSprite(), eye1.getSprite().getX(), eye1.getSprite().getY());
+
+            if(eye2.isAttack()) {
+                game.batch.draw(eye2.getBullet().getSprite(), eye2.getBullet().getX(), eye2.getBullet().getY());
+            }
+            game.batch.draw(eye2.getSprite(), eye2.getSprite().getX(), eye2.getSprite().getY());
+
+            if(eye3.isAttack()) {
+                game.batch.draw(eye3.getBullet().getSprite(), eye3.getBullet().getX(), eye3.getBullet().getY());
+            }
+            game.batch.draw(eye3.getSprite(), eye3.getSprite().getX(), eye3.getSprite().getY());
+
             bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: " + ship1.getLife(), 20, Gdx.graphics.getHeight() - 20);
         } else {
             backgroundMusic.stop();
             game.setScreen(new GameoverScreen(game, ship1.getFinalScore()));
+        }
+
+        if(eye1.getSprite().getX() + eye1.getSprite().getWidth()< 0) {
+            eye1 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+        }
+
+        if(eye2.getSprite().getX() + eye2.getSprite().getWidth()< 0) {
+            eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+        }
+
+        if(eye3.getSprite().getX() + eye3.getSprite().getWidth()< 0) {
+            eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         }
 
         if(paused) {
@@ -164,9 +197,28 @@ public class InvadersScreen implements Screen {
             paused = true;
         } else {
             this.ship1.moveBullet();
-            this.blueAlien.move();
-            this.meteor.move();
             this.ship1.moveSpaceship();
+            this.blueAlien.move();
+
+            if(allTime > 60.0f){
+                this.meteor.move();
+            }
+
+            if(allTime > 120.0f){
+                this.eye1.move();
+                this.eye1.moveBullet();
+            }
+
+            if(allTime > 122.5f){
+                this.eye2.move();
+                this.eye2.moveBullet();
+            }
+
+            if(allTime > 124.5f){
+                this.eye3.move();
+                this.eye3.moveBullet();
+            }
+
             this.ship1.setStateTime(ship1.getStateTime() + delta);
         }
     }
@@ -175,9 +227,8 @@ public class InvadersScreen implements Screen {
         if(Gdx.input.getX() < (Gdx.graphics.getWidth() + quitButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2 &&
                 Gdx.graphics.getHeight() - Gdx.input.getY() + 200 < (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 + quitButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 200 > (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2) {
             game.batch.draw(quitButtonActive, (float)(Gdx.graphics.getWidth() - quitButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonActive.getHeight()) / 2 - 200);
-            if(Gdx.input.isTouched()) {
+            if(Gdx.input.justTouched()) {
                 Gdx.app.exit();
-                //this.dispose();
             }
         } else {
             game.batch.draw(quitButtonInactive, (float)(Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 - 200);
@@ -185,7 +236,7 @@ public class InvadersScreen implements Screen {
         if(Gdx.input.getX() < (Gdx.graphics.getWidth() + resumeButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - resumeButtonInactive.getWidth()) / 2 &&
                 Gdx.graphics.getHeight() - Gdx.input.getY()  < (float)(Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2 + resumeButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY()  > (float)(Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2) {
             game.batch.draw(resumeButtonActive, (float)(Gdx.graphics.getWidth() - resumeButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - resumeButtonActive.getHeight()) / 2 );
-            if(Gdx.input.isTouched()) {
+            if(Gdx.input.justTouched()) {
                 bitmap.setColor(1f, 1f, 1f, 1f);
                 paused = false;
                 game.batch.setColor(1f,1f,1f,1f);
@@ -197,7 +248,7 @@ public class InvadersScreen implements Screen {
         if(Gdx.input.getX() < (Gdx.graphics.getWidth() + menuButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2 &&
                 Gdx.graphics.getHeight() - Gdx.input.getY() + 100 < (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2 + menuButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 100 > (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2) {
             game.batch.draw(menuButtonActive, (float)(Gdx.graphics.getWidth() - menuButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - menuButtonActive.getHeight()) / 2 - 100);
-            if(Gdx.input.isTouched()) {
+            if(Gdx.input.justTouched()) {
                 game.batch.setColor(1f,1f,1f,1f);
                 bitmap.setColor(1f, 1f, 1f, 1f);
                 backgroundPauseMusic.stop();

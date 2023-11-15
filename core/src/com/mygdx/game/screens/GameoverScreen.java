@@ -62,7 +62,7 @@ public class GameoverScreen implements Screen {
         if(Gdx.input.getX() < (Gdx.graphics.getWidth() + tryButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - tryButtonInactive.getWidth()) / 2 &&
                 Gdx.graphics.getHeight() - Gdx.input.getY() < (float)(Gdx.graphics.getHeight() - tryButtonInactive.getHeight()) / 2 + tryButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY()  > (float)(Gdx.graphics.getHeight() - tryButtonInactive.getHeight()) / 2) {
             game.batch.draw(tryButtonActive, (float)(Gdx.graphics.getWidth() - tryButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - tryButtonActive.getHeight()) / 2);
-            if(Gdx.input.isTouched()) {
+            if(Gdx.input.justTouched()) {
                 game.setScreen(new InvadersScreen(game));
                 soundScreen.play();
                 this.dispose();
@@ -74,7 +74,7 @@ public class GameoverScreen implements Screen {
         if(Gdx.input.getX() < (Gdx.graphics.getWidth() + menuButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2 &&
                 Gdx.graphics.getHeight() - Gdx.input.getY() + 100 < (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2 + menuButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 100 > (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2) {
             game.batch.draw(menuButtonActive, (float)(Gdx.graphics.getWidth() - menuButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - menuButtonActive.getHeight()) / 2 - 100);
-            if(Gdx.input.isTouched()) {
+            if(Gdx.input.justTouched()) {
                 game.setScreen(new MainMenuScreen(game));
                 soundScreen.play();
                 this.dispose();
