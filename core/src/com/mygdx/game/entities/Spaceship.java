@@ -27,7 +27,7 @@ public class Spaceship {
     private float stateTime;
     private float rollTimer;
     private float time;
-    private final static float TIME_OUT = 1.5f;
+    private final static float TIME_OUT = 1.25f;
 
     public Spaceship(String texturePathSpaceShip, Bullet bullet1) {
         this.bullet1 = bullet1;
