@@ -136,7 +136,7 @@ public class Spaceship {
     }
 
     public void moveBullet() {
-        if(time > TIME_OUT && Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isAttack()) {
+        if(time > TIME_OUT && Gdx.input.isKeyPressed(Input.Keys.SPACE) && !isAttack()) {
             time = 0;
             setAttack(true);
             bullet1.setY((getY() + (float) SHIP_HEIGTH / 2 - 5));
