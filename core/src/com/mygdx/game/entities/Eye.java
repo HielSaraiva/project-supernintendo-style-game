@@ -2,6 +2,7 @@ package com.mygdx.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
@@ -10,13 +11,15 @@ import com.badlogic.gdx.utils.TimeUtils;
 import java.util.ArrayList;
 
 public class Eye {
+    private final static float TIME_OUT = 2.5f;
     private Spaceship ship;
     private Texture texture;
     private Sprite sprite;
     private Bullet bullet;
     private boolean attack;
     private float time;
-    private final static float TIME_OUT = 2.5f;
+    private ArrayList<Explosion> explosions1, explosions2;
+    private Sound sound1, sound2;
 
     public Eye(String texturePathEye, Spaceship ship) {
         this.ship = ship;
@@ -34,6 +37,11 @@ public class Eye {
 
         this.bullet.setX(sprite.getX() + 5);
         this.bullet.setY(sprite.getY() + 10);
+
+        explosions1 = new ArrayList<>();
+        explosions2 = new ArrayList<>();
+        sound1 = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion1.wav"));
+        sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion2.mp3"));
     }
 
     public void move() {
@@ -66,6 +74,46 @@ public class Eye {
             bullet.setX(sprite.getX() + sprite.getWidth() / 2 - 15);
             bullet.setY(sprite.getY() + sprite.getHeight() / 2 - 10);
         }
+    }
+
+    public boolean eyeBulletCollision() {
+        // Ship Bullet x Enemy
+        if(Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getBullet1().getX(), ship.getBullet1().getY(), ship.getBullet1().getSprite().getWidth(), ship.getBullet1().getSprite().getHeight()) && ship.isAttack()) {
+            ship.setScore(ship.getScore() + 300);
+            sound1.play();
+            explosions1.add(new Explosion(sprite.getX(), sprite.getY(), 64,"pictures/inGame/explosion/explosion2.png"));
+            ship.setAttack(false);
+
+            ArrayList<Explosion> explosionsToRemove1 = new ArrayList<>();
+            for(Explosion explosion : explosions1) {
+                explosion.update(Gdx.graphics.getDeltaTime());
+                if(explosion.isRemove()) {
+                    explosionsToRemove1.add(explosion);
+                }
+            }
+            explosions1.removeAll(explosionsToRemove1);
+            return true;
+            // Ship x Enemy
+        } else if(Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getX(), ship.getY(), (float)Spaceship.SHIP_WIDTH, (float)Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
+            ship.setLife(ship.getLife() - 1);
+            if(ship.getLife() <= 0 ) {
+                ship.setFinalScore(ship.getScore());
+                ship.setGameover(true);
+            }
+            sound2.play();
+            explosions2.add(new Explosion(sprite.getX(), sprite.getY(), 64,"pictures/inGame/explosion/explosion2.png"));
+
+            ArrayList<Explosion> explosionsToRemove2 = new ArrayList<>();
+            for(Explosion explosion : explosions2) {
+                explosion.update(Gdx.graphics.getDeltaTime());
+                if(explosion.isRemove()) {
+                    explosionsToRemove2.add(explosion);
+                }
+            }
+            explosions2.removeAll(explosionsToRemove2);
+            return true;
+        }
+        return false;
     }
 
     public Spaceship getShip() {

@@ -29,6 +29,7 @@ public class BlueAlien {
         explosions2 = new ArrayList<>();
         sound1 = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion1.wav"));
         sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion2.mp3"));
+
     }
 
     public void spawn() {
