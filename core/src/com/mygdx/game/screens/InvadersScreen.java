@@ -155,12 +155,24 @@ public class InvadersScreen implements Screen {
         if(eye1.getSprite().getX() + eye1.getSprite().getWidth()< 0) {
             eye1 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         }
+        if(eye1.eyeBulletCollision()) {
+            eye1.eyeBulletCollision();
+            eye1 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+        }
 
         if(eye2.getSprite().getX() + eye2.getSprite().getWidth()< 0) {
             eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         }
+        if(eye2.eyeBulletCollision()) {
+            eye2.eyeBulletCollision();
+            eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+        }
 
         if(eye3.getSprite().getX() + eye3.getSprite().getWidth()< 0) {
+            eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+        }
+        if(eye3.eyeBulletCollision()) {
+            eye3.eyeBulletCollision();
             eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         }
 
@@ -200,6 +212,24 @@ public class InvadersScreen implements Screen {
             explosion.render(game.batch);
         }
         for(Explosion explosion : meteor.getExplosions2()) {
+            explosion.render(game.batch);
+        }
+        for(Explosion explosion : eye1.getExplosions1()) {
+            explosion.render(game.batch);
+        }
+        for(Explosion explosion : eye1.getExplosions2()) {
+            explosion.render(game.batch);
+        }
+        for(Explosion explosion : eye2.getExplosions1()) {
+            explosion.render(game.batch);
+        }
+        for(Explosion explosion : eye2.getExplosions2()) {
+            explosion.render(game.batch);
+        }
+        for(Explosion explosion : eye3.getExplosions1()) {
+            explosion.render(game.batch);
+        }
+        for(Explosion explosion : eye3.getExplosions2()) {
             explosion.render(game.batch);
         }
 

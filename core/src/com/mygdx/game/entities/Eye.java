@@ -116,6 +116,22 @@ public class Eye {
         return false;
     }
 
+    public ArrayList<Explosion> getExplosions1() {
+        return explosions1;
+    }
+
+    public void setExplosions1(ArrayList<Explosion> explosions1) {
+        this.explosions1 = explosions1;
+    }
+
+    public ArrayList<Explosion> getExplosions2() {
+        return explosions2;
+    }
+
+    public void setExplosions2(ArrayList<Explosion> explosions2) {
+        this.explosions2 = explosions2;
+    }
+
     public Spaceship getShip() {
         return ship;
     }
