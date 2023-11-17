@@ -28,7 +28,6 @@ public class Meteor {
         time = 2000000000;
         explosions1 = new ArrayList<>();
         explosions2 = new ArrayList<>();
-        sound1 = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion1.wav"));
         sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion2.mp3"));
     }
 
@@ -59,7 +58,7 @@ public class Meteor {
                     ship1.setFinalScore(ship1.getScore());
                     ship1.setGameover(true);
                 }
-                sound2.play();
+                sound2.play(2.0f);
                 explosions2.add(new Explosion(enemy.x, enemy.y, 32, "pictures/inGame/explosion/explosion1.png"));
                 iter.remove();
             }

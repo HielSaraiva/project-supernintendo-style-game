@@ -50,8 +50,8 @@ public class BlueAlien {
             // Collision Enemy x Bullet
             if(Collision.collide(enemy.x, enemy.y, enemy.width, enemy.height, ship.getBullet1().getX(), ship.getBullet1().getY(), ship.getBullet1().getSprite().getWidth(), ship.getBullet1().getSprite().getHeight()) && ship.isAttack()) {
                 ship.setScore(ship.getScore() + 100);
-                if(ship.getScore() % 10 == 0) {
-                    time += 1000000;
+                if(ship.getScore() % 100 == 0) {
+                    time -= 200000;
                 }
                 sound1.play();
                 explosions1.add(new Explosion(enemy.x, enemy.y, 64,"pictures/inGame/explosion/explosion2.png"));

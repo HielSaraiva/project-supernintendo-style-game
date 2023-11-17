@@ -66,7 +66,7 @@ public class CreditsScreen implements Screen {
             game.batch.draw(quitButtonActive, (float) (Gdx.graphics.getWidth() - quitButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - quitButtonActive.getHeight()) / 2 - 450);
             if (Gdx.input.justTouched()) {
                 Gdx.app.exit();
-                soundScreen.play();
+                soundScreen.play(2.0f);
                 //this.dispose();
             }
         } else {
@@ -78,7 +78,7 @@ public class CreditsScreen implements Screen {
             game.batch.draw(menuButtonActive, (float) (Gdx.graphics.getWidth() - menuButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - menuButtonActive.getHeight()) / 2 - 350);
             if (Gdx.input.justTouched()) {
                 game.setScreen(new MainMenuScreen(game));
-                soundScreen.play();
+                soundScreen.play(2.0f);
                 this.dispose();
             }
         } else {

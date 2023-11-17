@@ -18,8 +18,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.SpaceInvaders;
 import com.mygdx.game.entities.*;
 
-import java.util.ArrayList;
-
 public class InvadersScreen implements Screen {
     private final SpaceInvaders game;
     private Spaceship ship1;
@@ -39,12 +37,10 @@ public class InvadersScreen implements Screen {
     private float allTime;
     public static int highscore;
     public static boolean record;
-    private ArrayList<Explosion> explosions1;
 
     public InvadersScreen(SpaceInvaders game) {
         this.game = game;
         record = false;
-        explosions1 = new ArrayList<>();
 
         // Creating Spaceship and BlueAlien and Explosions
         ship1 = new Spaceship("pictures/inGame/player1/ship.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));
@@ -66,6 +62,7 @@ public class InvadersScreen implements Screen {
         // Load the background picture and background music
         wallpaperScreen = new Texture(Gdx.files.internal("pictures/outGame/background.jpg"));
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/trail/trail2.mp3"));
+
         soundScreen = Gdx.audio.newSound(Gdx.files.internal("audio/button_menu/button2.wav"));
 
         // Textures when paused:
@@ -78,7 +75,7 @@ public class InvadersScreen implements Screen {
 
         // Music when paused :
         backgroundPauseMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/trail/trail3.mp3"));
-        backgroundPauseMusic.setVolume(0.4f);
+        backgroundPauseMusic.setVolume(2f);
 
         // Start the playback of the background music immediately and put him at loop
         backgroundMusic.play();
@@ -157,19 +154,45 @@ public class InvadersScreen implements Screen {
             game.setScreen(new GameoverScreen(game, ship1.getFinalScore()));
         }
 
-        if (eye1.getSprite().getX() + eye1.getSprite().getWidth() < 0 ^ eye1.eyeBulletCollision()) {
-            game.batch.draw(eye1.getTexExplo(), eye1.getSprite().getX(), eye1.getShip().getY());
+        if (eye1.getSprite().getX() + eye1.getSprite().getWidth() < 0 ^ eye1.ShipBulletCollision()) {
+            game.batch.draw(eye1.getTexExplo1(), eye1.getSprite().getX(), eye1.getSprite().getY());
+            game.batch.draw(eye1.getTexExplo2(), eye1.getSprite().getX(), eye1.getSprite().getY());
+            game.batch.draw(eye1.getTexExplo3(), eye1.getSprite().getX(), eye1.getSprite().getY());
+
             eye1 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         }
-
-        if (eye2.getSprite().getX() + eye2.getSprite().getWidth() < 0 ^ eye2.eyeBulletCollision()) {
-            game.batch.draw(eye2.getTexExplo(), eye2.getSprite().getX(), eye2.getShip().getY());
-            eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+        if (eye1.BulletAlienCollision()) {
+            game.batch.draw(eye1.getTexExplo1(), eye1.getShip().getX(), eye1.getShip().getY());
+            game.batch.draw(eye1.getTexExplo2(), eye1.getShip().getX(), eye1.getShip().getY());
+            game.batch.draw(eye1.getTexExplo3(), eye1.getShip().getX(), eye1.getShip().getY());
         }
 
-        if (eye3.getSprite().getX() + eye3.getSprite().getWidth() < 0 ^ eye3.eyeBulletCollision()) {
-            game.batch.draw(eye3.getTexExplo(), eye3.getSprite().getX(), eye3.getShip().getY());
+
+        if (eye2.getSprite().getX() + eye2.getSprite().getWidth() < 0 ^ eye2.ShipBulletCollision()) {
+            game.batch.draw(eye2.getTexExplo1(), eye2.getSprite().getX(), eye2.getShip().getY());
+            game.batch.draw(eye2.getTexExplo2(), eye2.getSprite().getX(), eye2.getShip().getY());
+            game.batch.draw(eye2.getTexExplo3(), eye2.getSprite().getX(), eye2.getShip().getY());
+
+            eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+        }
+        if (eye2.BulletAlienCollision()) {
+            game.batch.draw(eye2.getTexExplo1(), eye2.getShip().getX(), eye2.getShip().getY());
+            game.batch.draw(eye2.getTexExplo2(), eye2.getShip().getX(), eye2.getShip().getY());
+            game.batch.draw(eye2.getTexExplo3(), eye2.getShip().getX(), eye2.getShip().getY());
+
+        }
+
+        if (eye3.getSprite().getX() + eye3.getSprite().getWidth() < 0 ^ eye3.ShipBulletCollision()) {
+            game.batch.draw(eye3.getTexExplo1(), eye3.getSprite().getX(), eye3.getShip().getY());
+            game.batch.draw(eye3.getTexExplo2(), eye3.getSprite().getX(), eye3.getShip().getY());
+            game.batch.draw(eye3.getTexExplo3(), eye3.getSprite().getX(), eye3.getShip().getY());
+
             eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+        }
+        if (eye3.BulletAlienCollision()) {
+            game.batch.draw(eye3.getTexExplo1(), eye3.getShip().getX(), eye3.getShip().getY());
+            game.batch.draw(eye3.getTexExplo2(), eye3.getShip().getX(), eye3.getShip().getY());
+            game.batch.draw(eye3.getTexExplo3(), eye3.getShip().getX(), eye3.getShip().getY());
         }
 
         Preferences prefs = Gdx.app.getPreferences("SpaceInvaders");
@@ -209,16 +232,13 @@ public class InvadersScreen implements Screen {
         for (Explosion explosion : meteor.getExplosions2()) {
             explosion.render(game.batch);
         }
-        for (Explosion explosion : explosions1) {
-            explosion.render(game.batch);
-        }
 
         game.batch.end();
     }
 
     public void generalUpdate(float delta) {
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            soundScreen.play();
+            soundScreen.play(2.0f);
             paused = true;
         } else {
             this.ship1.moveBullet();
@@ -229,17 +249,17 @@ public class InvadersScreen implements Screen {
                 this.meteor.move();
             }
 
-            if (allTime > 6.00f) {
+            if (allTime > 120.00f) {
                 this.eye1.move();
                 this.eye1.moveBullet();
             }
 
-            if (allTime > 6.25f) {
+            if (allTime > 150f) {
                 this.eye2.move();
                 this.eye2.moveBullet();
             }
 
-            if (allTime > 6.45f) {
+            if (allTime > 180f) {
                 this.eye3.move();
                 this.eye3.moveBullet();
             }

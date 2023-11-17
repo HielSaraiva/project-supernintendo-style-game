@@ -1,34 +1,34 @@
 package com.mygdx.game.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.TimeUtils;
-
-import java.util.ArrayList;
 
 public class Eye {
     private final static float TIME_OUT = 2.5f;
     private Spaceship ship;
-    private Texture texture, texExplo;
+    private Texture texture, texExplo1, texExplo2, texExplo3;
     private Sprite sprite;
     private Bullet bullet;
     private boolean attack;
-    private float time, timeCurrent;
+    private float time;
     private Sound sound1, sound2;
+    private float n;
 
     public Eye(String texturePathEye, Spaceship ship) {
         this.ship = ship;
 
         texture = new Texture(Gdx.files.internal(texturePathEye));
-        texExplo = new Texture(Gdx.files.internal("pictures/inGame/explosion/explod.png"));
+        texExplo1 = new Texture(Gdx.files.internal("pictures/inGame/explosion/explod1.png"));
+        texExplo2 = new Texture(Gdx.files.internal("pictures/inGame/explosion/explod2.png"));
+        texExplo3 = new Texture(Gdx.files.internal("pictures/inGame/explosion/explod3.png"));
         sprite = new Sprite(texture);
 
         attack = false;
         time = 0.0f;
+        n = 1.0f;
 
         bullet = new Bullet("pictures/inGame/bullet/bullet3.png", "audio/bullets/bullet8.wav");
 
@@ -61,8 +61,12 @@ public class Eye {
                 deltaX = ship.getX() - sprite.getX();
                 deltaY = ship.getY() - sprite.getY();
 
-                bullet.setX(bullet.getX() + deltaX * Gdx.graphics.getDeltaTime());
-                bullet.setY(bullet.getY() + deltaY * Gdx.graphics.getDeltaTime());
+                if(ship.getScore() % 600 == 0) {
+                    n += 0.0005f;
+                }
+
+                bullet.setX(bullet.getX() + n * deltaX * Gdx.graphics.getDeltaTime());
+                bullet.setY(bullet.getY() + n * deltaY * Gdx.graphics.getDeltaTime());
             } else {
                 bullet.setX(sprite.getX() + sprite.getWidth() / 2 - 15);
                 bullet.setY(sprite.getY());
@@ -74,12 +78,11 @@ public class Eye {
         }
     }
 
-    public boolean eyeBulletCollision() {
-        timeCurrent = Gdx.graphics.getDeltaTime();
+    public boolean ShipBulletCollision() {
         // Ship Bullet x Enemy
         if (Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getBullet1().getX(), ship.getBullet1().getY(), ship.getBullet1().getSprite().getWidth(), ship.getBullet1().getSprite().getHeight()) && ship.isAttack()) {
             ship.setScore(ship.getScore() + 300);
-            sound1.play();
+            sound1.play(2.0f);
             ship.setAttack(false);
 
             return true;
@@ -90,27 +93,51 @@ public class Eye {
                 ship.setFinalScore(ship.getScore());
                 ship.setGameover(true);
             }
-            sound2.play();
+            sound2.play(2.0f);
 
             return true;
         }
         return false;
     }
 
-    public float getTimeCurrent() {
-        return timeCurrent;
+    public boolean BulletAlienCollision() {
+        // Ship x Enemy Bullet
+        if (Collision.collide(bullet.getX(), bullet.getY(), bullet.getSprite().getWidth(), bullet.getSprite().getHeight(), ship.getX(), ship.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
+            bullet = new Bullet("pictures/inGame/bullet/bullet3.png", "audio/bullets/bullet8.wav");
+            ship.setLife(ship.getLife() - 1);
+            if (ship.getLife() <= 0) {
+                ship.setFinalScore(ship.getScore());
+                ship.setGameover(true);
+            }
+            sound2.play(2.0f);
+
+            return true;
+        }
+        return false;
     }
 
-    public void setTimeCurrent(float timeCurrent) {
-        this.timeCurrent = timeCurrent;
+    public Texture getTexExplo1() {
+        return texExplo1;
     }
 
-    public Texture getTexExplo() {
-        return texExplo;
+    public void setTexExplo1(Texture texExplo1) {
+        this.texExplo1 = texExplo1;
     }
 
-    public void setTexExplo(Texture texExplo) {
-        this.texExplo = texExplo;
+    public Texture getTexExplo2() {
+        return texExplo2;
+    }
+
+    public void setTexExplo2(Texture texExplo2) {
+        this.texExplo2 = texExplo2;
+    }
+
+    public Texture getTexExplo3() {
+        return texExplo3;
+    }
+
+    public void setTexExplo3(Texture texExplo3) {
+        this.texExplo3 = texExplo3;
     }
 
     public Sound getSound1() {

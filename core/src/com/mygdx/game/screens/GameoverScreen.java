@@ -70,7 +70,7 @@ public class GameoverScreen implements Screen {
             game.batch.draw(tryButtonActive, (float) (Gdx.graphics.getWidth() - tryButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - tryButtonActive.getHeight()) / 2 - 450);
             if(Gdx.input.justTouched()) {
                 game.setScreen(new InvadersScreen(game));
-                soundScreen.play();
+                soundScreen.play(2.0f);
                 this.dispose();
             }
         } else {
@@ -82,7 +82,7 @@ public class GameoverScreen implements Screen {
             game.batch.draw(menuButtonActive, (float) (Gdx.graphics.getWidth() - menuButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - menuButtonActive.getHeight()) / 2 - 350);
             if(Gdx.input.justTouched()) {
                 game.setScreen(new MainMenuScreen(game));
-                soundScreen.play();
+                soundScreen.play(2.0f);
                 this.dispose();
             }
         } else {
@@ -94,7 +94,7 @@ public class GameoverScreen implements Screen {
     @Override
     public void show() {
         music.play();
-        music.setVolume(0.5f);
+        music.setVolume(2.0f);
         music.setLooping(true);
     }
 

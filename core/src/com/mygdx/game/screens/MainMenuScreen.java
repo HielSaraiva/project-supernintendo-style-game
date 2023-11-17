@@ -70,7 +70,7 @@ public class MainMenuScreen implements Screen {
             if(Gdx.input.justTouched()) {
                 game.setScreen(new InvadersScreen(game));
                 musicMenu.stop();
-                soundMenu.play();
+                soundMenu.play(2.0f);
                 dispose();
             }
         } else {
@@ -81,7 +81,7 @@ public class MainMenuScreen implements Screen {
                 Gdx.graphics.getHeight() - Gdx.input.getY() + 100 < (float)(Gdx.graphics.getHeight() - multiButtonInactive.getHeight()) / 2 + multiButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 100 > (float)(Gdx.graphics.getHeight() - multiButtonInactive.getHeight()) / 2) {
             game.batch.draw(multiButtonActive, (float)(Gdx.graphics.getWidth() - multiButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - multiButtonActive.getHeight()) / 2 - 100);
             if(Gdx.input.justTouched()) {
-                soundMenu.play();
+                soundMenu.play(2.0f);
             }
         } else {
             game.batch.draw(multiButtonInactive, (float)(Gdx.graphics.getWidth() - multiButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - multiButtonInactive.getHeight()) / 2 - 100);
@@ -91,7 +91,7 @@ public class MainMenuScreen implements Screen {
                 Gdx.graphics.getHeight() - Gdx.input.getY() + 200 < (float)(Gdx.graphics.getHeight() - creditsButtonInactive.getHeight()) / 2 + creditsButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 200 > (float)(Gdx.graphics.getHeight() - creditsButtonInactive.getHeight()) / 2) {
             game.batch.draw(creditsButtonActive, (float)(Gdx.graphics.getWidth() - creditsButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - creditsButtonActive.getHeight()) / 2 - 200);
             if(Gdx.input.justTouched()) {
-                soundMenu.play();
+                soundMenu.play(2.0f);
                 game.setScreen(new CreditsScreen(game));
                 musicMenu.stop();
                 dispose();
@@ -105,7 +105,7 @@ public class MainMenuScreen implements Screen {
             game.batch.draw(quitButtonActive, (float)(Gdx.graphics.getWidth() - quitButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonActive.getHeight()) / 2 - 300);
             if(Gdx.input.justTouched()) {
                 Gdx.app.exit();
-                soundMenu.play();
+                soundMenu.play(2.0f);
             }
         } else {
             game.batch.draw(quitButtonInactive, (float)(Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 - 300);

@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Explosion {
-    private static final float FRAME_LENGTH = 0.2f;
+    private static final float FRAME_LENGTH = 0.15f;
     private static final int OFFSET = 8;
     private int SIZE;
     private static Animation<TextureRegion> anim = null;

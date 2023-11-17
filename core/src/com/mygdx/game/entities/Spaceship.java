@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Spaceship {
-    public static final float VELOCITY = 400 * Gdx.graphics.getDeltaTime();
+    public static final float VELOCITY = 500 * Gdx.graphics.getDeltaTime();
     public static final float SHIP_ANIMATION_SPEED = 0.5f;
     public static final int SHIP_WIDTH_PIXEL = 32;
     public static final int SHIP_HEIGTH_PIXEL = 18;
@@ -55,9 +55,9 @@ public class Spaceship {
         //Setting the initial conditions of spaceship
         attack = false;
         score = 0;
-        life = 5;
+        life = 1000;
         gameover = false;
-        time = 1.5f;
+        time = 1.25f;
 
         //Setting the position of bullet
         this.bullet1.setX(x);
@@ -140,7 +140,7 @@ public class Spaceship {
             time = 0;
             setAttack(true);
             bullet1.setY((getY() + (float) SHIP_HEIGTH / 2 - 5));
-            bullet1.getSound().play();
+            bullet1.getSound().play(2.0f);
         }
 
         if (isAttack()) {
