@@ -81,9 +81,11 @@ public class Eye {
     public boolean ShipBulletCollision() {
         // Ship Bullet x Enemy
         if (Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getBullet1().getX(), ship.getBullet1().getY(), ship.getBullet1().getSprite().getWidth(), ship.getBullet1().getSprite().getHeight()) && ship.isAttack()) {
-            ship.setScore(ship.getScore() + 300);
-            sound1.play(2.0f);
-            ship.setAttack(false);
+            if(sprite.getX() != Gdx.graphics.getWidth()){
+                ship.setScore(ship.getScore() + 300);
+                sound1.play(2.0f);
+                ship.setAttack(false);
+            }
 
             return true;
             // Ship x Enemy
