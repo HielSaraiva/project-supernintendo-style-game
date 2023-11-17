@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Spaceship {
     public static final float VELOCITY = 400 * Gdx.graphics.getDeltaTime();
     public static final float SHIP_ANIMATION_SPEED = 0.5f;
-    public static final int SHIP_WIDTH_PIXEL= 32;
+    public static final int SHIP_WIDTH_PIXEL = 32;
     public static final int SHIP_HEIGTH_PIXEL = 18;
     public static final int SHIP_WIDTH = SHIP_WIDTH_PIXEL * 3;
     public static final int SHIP_HEIGTH = SHIP_HEIGTH_PIXEL * 3;
@@ -35,7 +35,7 @@ public class Spaceship {
 
         //Setting the initial coordinates of spaceship
         x = 20;
-        y = (float)(Gdx.graphics.getHeight() - SHIP_HEIGTH_PIXEL) / 2;
+        y = (float) (Gdx.graphics.getHeight() - SHIP_HEIGTH_PIXEL) / 2;
 
         //Setting the initial animation configs of spaceship
         roll = 2;
@@ -67,39 +67,39 @@ public class Spaceship {
     public void moveSpaceship() {
         time += Gdx.graphics.getDeltaTime();
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            if(x > 0){
+            if (x > 0) {
                 x -= VELOCITY;
             }
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            if(x < Gdx.graphics.getWidth() - (float)SHIP_WIDTH){
+            if (x < Gdx.graphics.getWidth() - (float) SHIP_WIDTH) {
                 x += VELOCITY;
             }
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            if(y > 0){
+            if (y > 0) {
                 y -= VELOCITY;
 
                 // Update roll if button is just clicked
-                if(Gdx.input.isKeyJustPressed(Input.Keys.S) && !Gdx.input.isKeyPressed(Input.Keys.W) && roll < 4) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.S) && !Gdx.input.isKeyPressed(Input.Keys.W) && roll < 4) {
                     rollTimer = 0.0f;
                     roll++;
                 }
 
                 //Update roll
                 rollTimer += Gdx.graphics.getDeltaTime();
-                if(Math.abs(rollTimer) > ROLL_TIMER_SWITCH_TIME && roll < 4) {
+                if (Math.abs(rollTimer) > ROLL_TIMER_SWITCH_TIME && roll < 4) {
                     rollTimer = 0.0f;
                     roll++;
                 }
             }
         } else {
-            if(roll > 2) {
+            if (roll > 2) {
                 //Update roll to go back to center
                 rollTimer -= Gdx.graphics.getDeltaTime();
-                if(Math.abs(rollTimer) > ROLL_TIMER_SWITCH_TIME && roll > 0) {
+                if (Math.abs(rollTimer) > ROLL_TIMER_SWITCH_TIME && roll > 0) {
                     rollTimer = 0.0f;
                     roll--;
                 }
@@ -107,27 +107,27 @@ public class Spaceship {
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            if(y < Gdx.graphics.getHeight() - (float)SHIP_HEIGTH){
+            if (y < Gdx.graphics.getHeight() - (float) SHIP_HEIGTH) {
                 y += VELOCITY;
 
                 //Update roll if button just clicked
-                if(Gdx.input.isKeyJustPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.S) && roll > 0) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.S) && roll > 0) {
                     rollTimer = 0.0f;
                     roll--;
                 }
 
                 //Update roll
                 rollTimer -= Gdx.graphics.getDeltaTime();
-                if(Math.abs(rollTimer) > ROLL_TIMER_SWITCH_TIME && roll > 0) {
+                if (Math.abs(rollTimer) > ROLL_TIMER_SWITCH_TIME && roll > 0) {
                     rollTimer = 0.0f;
                     roll--;
                 }
             }
         } else {
-            if(roll < 2) {
+            if (roll < 2) {
                 //Update roll to go back to center
                 rollTimer += Gdx.graphics.getDeltaTime();
-                if(Math.abs(rollTimer) > ROLL_TIMER_SWITCH_TIME && roll < 4) {
+                if (Math.abs(rollTimer) > ROLL_TIMER_SWITCH_TIME && roll < 4) {
                     rollTimer = 0.0f;
                     roll++;
                 }
@@ -136,23 +136,23 @@ public class Spaceship {
     }
 
     public void moveBullet() {
-        if(time > TIME_OUT && Gdx.input.isKeyPressed(Input.Keys.SPACE) && !isAttack()) {
+        if (time > TIME_OUT && Gdx.input.isKeyPressed(Input.Keys.SPACE) && !isAttack()) {
             time = 0;
             setAttack(true);
             bullet1.setY((getY() + (float) SHIP_HEIGTH / 2 - 5));
             bullet1.getSound().play();
         }
 
-        if(isAttack()) {
-            if(bullet1.getX() < Gdx.graphics.getWidth()){
+        if (isAttack()) {
+            if (bullet1.getX() < Gdx.graphics.getWidth()) {
                 bullet1.setX(bullet1.getX() + 8.0f * VELOCITY);
             } else {
-                bullet1.setX(getX() + (float)SHIP_WIDTH / 2);
+                bullet1.setX(getX() + (float) SHIP_WIDTH / 2);
                 bullet1.setY(getY());
                 setAttack(false);
             }
         } else {
-            bullet1.setX(getX() + (float)SHIP_WIDTH / 2);
+            bullet1.setX(getX() + (float) SHIP_WIDTH / 2);
             bullet1.setY(getY() + (float) SHIP_HEIGTH / 2 - 5);
         }
     }

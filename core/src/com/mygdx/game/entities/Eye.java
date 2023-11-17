@@ -13,18 +13,18 @@ import java.util.ArrayList;
 public class Eye {
     private final static float TIME_OUT = 2.5f;
     private Spaceship ship;
-    private Texture texture;
+    private Texture texture, texExplo;
     private Sprite sprite;
     private Bullet bullet;
     private boolean attack;
-    private float time;
-    private ArrayList<Explosion> explosions1, explosions2;
+    private float time, timeCurrent;
     private Sound sound1, sound2;
 
     public Eye(String texturePathEye, Spaceship ship) {
         this.ship = ship;
 
         texture = new Texture(Gdx.files.internal(texturePathEye));
+        texExplo = new Texture(Gdx.files.internal("pictures/inGame/explosion/explod.png"));
         sprite = new Sprite(texture);
 
         attack = false;
@@ -38,8 +38,6 @@ public class Eye {
         this.bullet.setX(sprite.getX() + 5);
         this.bullet.setY(sprite.getY() + 10);
 
-        explosions1 = new ArrayList<>();
-        explosions2 = new ArrayList<>();
         sound1 = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion1.wav"));
         sound2 = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion2.mp3"));
     }
@@ -77,59 +75,58 @@ public class Eye {
     }
 
     public boolean eyeBulletCollision() {
+        timeCurrent = Gdx.graphics.getDeltaTime();
         // Ship Bullet x Enemy
-        if(Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getBullet1().getX(), ship.getBullet1().getY(), ship.getBullet1().getSprite().getWidth(), ship.getBullet1().getSprite().getHeight()) && ship.isAttack()) {
+        if (Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getBullet1().getX(), ship.getBullet1().getY(), ship.getBullet1().getSprite().getWidth(), ship.getBullet1().getSprite().getHeight()) && ship.isAttack()) {
             ship.setScore(ship.getScore() + 300);
             sound1.play();
-            explosions1.add(new Explosion(sprite.getX(), sprite.getY(), 64,"pictures/inGame/explosion/explosion2.png"));
             ship.setAttack(false);
 
-            ArrayList<Explosion> explosionsToRemove1 = new ArrayList<>();
-            for(Explosion explosion : explosions1) {
-                explosion.update(Gdx.graphics.getDeltaTime());
-                if(explosion.isRemove()) {
-                    explosionsToRemove1.add(explosion);
-                }
-            }
-            explosions1.removeAll(explosionsToRemove1);
             return true;
             // Ship x Enemy
-        } else if(Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getX(), ship.getY(), (float)Spaceship.SHIP_WIDTH, (float)Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
+        } else if (Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getX(), ship.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
             ship.setLife(ship.getLife() - 1);
-            if(ship.getLife() <= 0 ) {
+            if (ship.getLife() <= 0) {
                 ship.setFinalScore(ship.getScore());
                 ship.setGameover(true);
             }
             sound2.play();
-            explosions2.add(new Explosion(sprite.getX(), sprite.getY(), 64,"pictures/inGame/explosion/explosion2.png"));
 
-            ArrayList<Explosion> explosionsToRemove2 = new ArrayList<>();
-            for(Explosion explosion : explosions2) {
-                explosion.update(Gdx.graphics.getDeltaTime());
-                if(explosion.isRemove()) {
-                    explosionsToRemove2.add(explosion);
-                }
-            }
-            explosions2.removeAll(explosionsToRemove2);
             return true;
         }
         return false;
     }
 
-    public ArrayList<Explosion> getExplosions1() {
-        return explosions1;
+    public float getTimeCurrent() {
+        return timeCurrent;
     }
 
-    public void setExplosions1(ArrayList<Explosion> explosions1) {
-        this.explosions1 = explosions1;
+    public void setTimeCurrent(float timeCurrent) {
+        this.timeCurrent = timeCurrent;
     }
 
-    public ArrayList<Explosion> getExplosions2() {
-        return explosions2;
+    public Texture getTexExplo() {
+        return texExplo;
     }
 
-    public void setExplosions2(ArrayList<Explosion> explosions2) {
-        this.explosions2 = explosions2;
+    public void setTexExplo(Texture texExplo) {
+        this.texExplo = texExplo;
+    }
+
+    public Sound getSound1() {
+        return sound1;
+    }
+
+    public void setSound1(Sound sound1) {
+        this.sound1 = sound1;
+    }
+
+    public Sound getSound2() {
+        return sound2;
+    }
+
+    public void setSound2(Sound sound2) {
+        this.sound2 = sound2;
     }
 
     public Spaceship getShip() {

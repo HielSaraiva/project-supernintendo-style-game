@@ -18,6 +18,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.SpaceInvaders;
 import com.mygdx.game.entities.*;
 
+import java.util.ArrayList;
+
 public class InvadersScreen implements Screen {
     private final SpaceInvaders game;
     private Spaceship ship1;
@@ -31,15 +33,18 @@ public class InvadersScreen implements Screen {
     private BitmapFont bitmap;
     private Music backgroundMusic;
     private boolean paused = false;
-    private Texture resumeButtonActive, resumeButtonInactive,quitButtonActive, quitButtonInactive, menuButtonActive, menuButtonInactive;
+    private Texture resumeButtonActive, resumeButtonInactive, quitButtonActive, quitButtonInactive, menuButtonActive, menuButtonInactive;
     private Music backgroundPauseMusic;
     private Sound soundScreen;
     private float allTime;
     public static int highscore;
     public static boolean record;
+    private ArrayList<Explosion> explosions1;
+
     public InvadersScreen(SpaceInvaders game) {
         this.game = game;
         record = false;
+        explosions1 = new ArrayList<>();
 
         // Creating Spaceship and BlueAlien and Explosions
         ship1 = new Spaceship("pictures/inGame/player1/ship.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));
@@ -85,19 +90,19 @@ public class InvadersScreen implements Screen {
     }
 
     @Override
-    public void render (float delta) {
+    public void render(float delta) {
         allTime += Gdx.graphics.getDeltaTime();
         if (paused) {
             backgroundMusic.pause();
             if (Gdx.input.isKeyJustPressed((Input.Keys.ESCAPE))) {
                 paused = false;
-                game.batch.setColor(1f,1f,1f,1f);
+                game.batch.setColor(1f, 1f, 1f, 1f);
                 bitmap.setColor(1f, 1f, 1f, 1f);
             }
         } else {
             backgroundPauseMusic.pause();
             generalUpdate(delta);
-            if(!backgroundMusic.isPlaying()){
+            if (!backgroundMusic.isPlaying()) {
                 backgroundMusic.play();
                 soundScreen.play();
             }
@@ -114,34 +119,34 @@ public class InvadersScreen implements Screen {
 
         // Begin a batch and draw the background wallpaper
         game.batch.begin();
-        game.batch.draw(wallpaperScreen,0, 0);
+        game.batch.draw(wallpaperScreen, 0, 0);
         // Draw the bullet system, the spaceship and the text on game screen
 
-        if(!ship1.isGameover()) {
-            if(ship1.isAttack()) {
+        if (!ship1.isGameover()) {
+            if (ship1.isAttack()) {
                 game.batch.draw(ship1.getBullet1().getSprite(), ship1.getBullet1().getX(), ship1.getBullet1().getY());
             }
             game.batch.draw((TextureRegion) ship1.rolls[ship1.roll].getKeyFrame(ship1.getStateTime(), true), ship1.getX(), ship1.getY(), Spaceship.SHIP_WIDTH, Spaceship.SHIP_HEIGTH);
 
-            for(Rectangle enemy : blueAlien.getRectangles()) {
+            for (Rectangle enemy : blueAlien.getRectangles()) {
                 game.batch.draw(blueAlien.getTexture(), enemy.x, enemy.y);
             }
 
-            for(Rectangle enemy : meteor.getRectangles()) {
+            for (Rectangle enemy : meteor.getRectangles()) {
                 game.batch.draw(meteor.getTexture(), enemy.x, enemy.y);
             }
 
-            if(eye1.isAttack()) {
+            if (eye1.isAttack()) {
                 game.batch.draw(eye1.getBullet().getSprite(), eye1.getBullet().getX(), eye1.getBullet().getY());
             }
             game.batch.draw(eye1.getSprite(), eye1.getSprite().getX(), eye1.getSprite().getY());
 
-            if(eye2.isAttack()) {
+            if (eye2.isAttack()) {
                 game.batch.draw(eye2.getBullet().getSprite(), eye2.getBullet().getX(), eye2.getBullet().getY());
             }
             game.batch.draw(eye2.getSprite(), eye2.getSprite().getX(), eye2.getSprite().getY());
 
-            if(eye3.isAttack()) {
+            if (eye3.isAttack()) {
                 game.batch.draw(eye3.getBullet().getSprite(), eye3.getBullet().getX(), eye3.getBullet().getY());
             }
             game.batch.draw(eye3.getSprite(), eye3.getSprite().getX(), eye3.getSprite().getY());
@@ -152,43 +157,33 @@ public class InvadersScreen implements Screen {
             game.setScreen(new GameoverScreen(game, ship1.getFinalScore()));
         }
 
-        if(eye1.getSprite().getX() + eye1.getSprite().getWidth()< 0) {
-            eye1 = new Eye("pictures/inGame/enemies/eye.png", ship1);
-        }
-        if(eye1.eyeBulletCollision()) {
-            eye1.eyeBulletCollision();
+        if (eye1.getSprite().getX() + eye1.getSprite().getWidth() < 0 ^ eye1.eyeBulletCollision()) {
+            game.batch.draw(eye1.getTexExplo(), eye1.getSprite().getX(), eye1.getShip().getY());
             eye1 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         }
 
-        if(eye2.getSprite().getX() + eye2.getSprite().getWidth()< 0) {
-            eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
-        }
-        if(eye2.eyeBulletCollision()) {
-            eye2.eyeBulletCollision();
+        if (eye2.getSprite().getX() + eye2.getSprite().getWidth() < 0 ^ eye2.eyeBulletCollision()) {
+            game.batch.draw(eye2.getTexExplo(), eye2.getSprite().getX(), eye2.getShip().getY());
             eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         }
 
-        if(eye3.getSprite().getX() + eye3.getSprite().getWidth()< 0) {
-            eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
-        }
-        if(eye3.eyeBulletCollision()) {
-            eye3.eyeBulletCollision();
+        if (eye3.getSprite().getX() + eye3.getSprite().getWidth() < 0 ^ eye3.eyeBulletCollision()) {
+            game.batch.draw(eye3.getTexExplo(), eye3.getSprite().getX(), eye3.getShip().getY());
             eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         }
 
         Preferences prefs = Gdx.app.getPreferences("SpaceInvaders");
         this.highscore = prefs.getInteger("highscore", 0);
 
-        if(ship1.getScore() > highscore){
+        if (ship1.getScore() > highscore) {
             prefs.putInteger("highscore", ship1.getScore());
             prefs.flush();
             record = true;
         }
 
-        bitmap.draw(game.batch, "Best Score: " + InvadersScreen.getHighscore(), (Gdx.graphics.getWidth() - 400) / 2, Gdx.graphics.getHeight() - 20);
+        bitmap.draw(game.batch, "Best Score: " + InvadersScreen.getHighscore(), (Gdx.graphics.getWidth() - 450) / 2, Gdx.graphics.getHeight() - 20);
 
-
-        if(paused) {
+        if (paused) {
             game.batch.setColor(0.7f, 0.7f, 0.7f, 0.7f);
             bitmap.setColor(0.7f, 0.7f, 0.7f, 0.7f);
             bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: " + ship1.getLife(), 20, Gdx.graphics.getHeight() - 20);
@@ -202,42 +197,27 @@ public class InvadersScreen implements Screen {
 
         // Make the spaceship moves, the bullet moves, the alien moves
         Sound soundShot1 = Gdx.audio.newSound(Gdx.files.internal("audio/bullets/bullet1.mp3"));
-        for(Explosion explosion : blueAlien.getExplosions1()) {
+        for (Explosion explosion : blueAlien.getExplosions1()) {
             explosion.render(game.batch);
         }
-        for(Explosion explosion : blueAlien.getExplosions2()) {
+        for (Explosion explosion : blueAlien.getExplosions2()) {
             explosion.render(game.batch);
         }
-        for(Explosion explosion : meteor.getExplosions1()) {
+        for (Explosion explosion : meteor.getExplosions1()) {
             explosion.render(game.batch);
         }
-        for(Explosion explosion : meteor.getExplosions2()) {
+        for (Explosion explosion : meteor.getExplosions2()) {
             explosion.render(game.batch);
         }
-        for(Explosion explosion : eye1.getExplosions1()) {
-            explosion.render(game.batch);
-        }
-        for(Explosion explosion : eye1.getExplosions2()) {
-            explosion.render(game.batch);
-        }
-        for(Explosion explosion : eye2.getExplosions1()) {
-            explosion.render(game.batch);
-        }
-        for(Explosion explosion : eye2.getExplosions2()) {
-            explosion.render(game.batch);
-        }
-        for(Explosion explosion : eye3.getExplosions1()) {
-            explosion.render(game.batch);
-        }
-        for(Explosion explosion : eye3.getExplosions2()) {
+        for (Explosion explosion : explosions1) {
             explosion.render(game.batch);
         }
 
         game.batch.end();
     }
 
-    public void generalUpdate (float delta){
-        if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
+    public void generalUpdate(float delta) {
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             soundScreen.play();
             paused = true;
         } else {
@@ -245,21 +225,21 @@ public class InvadersScreen implements Screen {
             this.ship1.moveSpaceship();
             this.blueAlien.move();
 
-            if(allTime > 30.0f){
+            if (allTime > 30.0f) {
                 this.meteor.move();
             }
 
-            if(allTime > 60.0f){
+            if (allTime > 6.00f) {
                 this.eye1.move();
                 this.eye1.moveBullet();
             }
 
-            if(allTime > 62.5f){
+            if (allTime > 6.25f) {
                 this.eye2.move();
                 this.eye2.moveBullet();
             }
 
-            if(allTime > 64.5f){
+            if (allTime > 6.45f) {
                 this.eye3.move();
                 this.eye3.moveBullet();
             }
@@ -268,39 +248,39 @@ public class InvadersScreen implements Screen {
         }
     }
 
-    public void optionsMenuPaused (){
-        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + quitButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2 &&
-                Gdx.graphics.getHeight() - Gdx.input.getY() + 200 < (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 + quitButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 200 > (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2) {
-            game.batch.draw(quitButtonActive, (float)(Gdx.graphics.getWidth() - quitButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonActive.getHeight()) / 2 - 200);
-            if(Gdx.input.justTouched()) {
+    public void optionsMenuPaused() {
+        if (Gdx.input.getX() < (Gdx.graphics.getWidth() + quitButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() + 200 < (float) (Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 + quitButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 200 > (float) (Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2) {
+            game.batch.draw(quitButtonActive, (float) (Gdx.graphics.getWidth() - quitButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - quitButtonActive.getHeight()) / 2 - 200);
+            if (Gdx.input.justTouched()) {
                 Gdx.app.exit();
             }
         } else {
-            game.batch.draw(quitButtonInactive, (float)(Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 - 200);
+            game.batch.draw(quitButtonInactive, (float) (Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 - 200);
         }
-        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + resumeButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - resumeButtonInactive.getWidth()) / 2 &&
-                Gdx.graphics.getHeight() - Gdx.input.getY()  < (float)(Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2 + resumeButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY()  > (float)(Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2) {
-            game.batch.draw(resumeButtonActive, (float)(Gdx.graphics.getWidth() - resumeButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - resumeButtonActive.getHeight()) / 2 );
-            if(Gdx.input.justTouched()) {
+        if (Gdx.input.getX() < (Gdx.graphics.getWidth() + resumeButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - resumeButtonInactive.getWidth()) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() < (float) (Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2 + resumeButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() > (float) (Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2) {
+            game.batch.draw(resumeButtonActive, (float) (Gdx.graphics.getWidth() - resumeButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - resumeButtonActive.getHeight()) / 2);
+            if (Gdx.input.justTouched()) {
                 bitmap.setColor(1f, 1f, 1f, 1f);
                 paused = false;
-                game.batch.setColor(1f,1f,1f,1f);
+                game.batch.setColor(1f, 1f, 1f, 1f);
             }
         } else {
-            game.batch.draw(resumeButtonInactive, (float)(Gdx.graphics.getWidth() - resumeButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2);
+            game.batch.draw(resumeButtonInactive, (float) (Gdx.graphics.getWidth() - resumeButtonInactive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - resumeButtonInactive.getHeight()) / 2);
         }
 
-        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + menuButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2 &&
-                Gdx.graphics.getHeight() - Gdx.input.getY() + 100 < (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2 + menuButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 100 > (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2) {
-            game.batch.draw(menuButtonActive, (float)(Gdx.graphics.getWidth() - menuButtonActive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - menuButtonActive.getHeight()) / 2 - 100);
-            if(Gdx.input.justTouched()) {
-                game.batch.setColor(1f,1f,1f,1f);
+        if (Gdx.input.getX() < (Gdx.graphics.getWidth() + menuButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() + 100 < (float) (Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2 + menuButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 100 > (float) (Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2) {
+            game.batch.draw(menuButtonActive, (float) (Gdx.graphics.getWidth() - menuButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - menuButtonActive.getHeight()) / 2 - 100);
+            if (Gdx.input.justTouched()) {
+                game.batch.setColor(1f, 1f, 1f, 1f);
                 bitmap.setColor(1f, 1f, 1f, 1f);
                 backgroundPauseMusic.stop();
                 game.setScreen(new MainMenuScreen(game));
             }
         } else {
-            game.batch.draw(menuButtonInactive, (float)(Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2, (float)(Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2 - 100);
+            game.batch.draw(menuButtonInactive, (float) (Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2 - 100);
         }
     }
 
@@ -328,16 +308,18 @@ public class InvadersScreen implements Screen {
     @Override
     public void resume() {
     }
+
     public static int getHighscore() {
         return highscore;
     }
+
     public static boolean getRecord() {
         return record;
     }
 
 
     @Override
-    public void dispose () {
+    public void dispose() {
         // Cleaning Up (textures, sounds, musics, batch)
         backgroundMusic.dispose();
         ship1.getBullet1().getSound().dispose();
