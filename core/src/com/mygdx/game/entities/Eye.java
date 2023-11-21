@@ -105,7 +105,7 @@ public class Eye {
     public boolean BulletAlienCollision() {
         // Ship x Enemy Bullet
         if (Collision.collide(bullet.getX(), bullet.getY(), bullet.getSprite().getWidth(), bullet.getSprite().getHeight(), ship.getX(), ship.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
-            bullet = new Bullet("pictures/inGame/bullet/bullet3.png", "audio/bullets/bullet8.wav");
+            bullet = new Bullet("pictures/inGame/bullet/bullet3.png", "audio/bullets/bullet8.mp3");
             ship.setLife(ship.getLife() - 1);
             if (ship.getLife() <= 0) {
                 ship.setFinalScore(ship.getScore());

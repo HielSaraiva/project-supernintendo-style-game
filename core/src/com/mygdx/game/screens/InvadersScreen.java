@@ -337,17 +337,17 @@ public class InvadersScreen implements Screen {
                 this.meteor.move();
             }
 
-            if (allTime > 120.00f) {
+            if (allTime > 1.20f) {
                 this.eye1.move();
                 this.eye1.moveBullet();
             }
 
-            if (allTime > 150f) {
+            if (allTime > 1.50f) {
                 this.eye2.move();
                 this.eye2.moveBullet();
             }
 
-            if (allTime > 180f) {
+            if (allTime > 1.80f) {
                 this.eye3.move();
                 this.eye3.moveBullet();
             }
