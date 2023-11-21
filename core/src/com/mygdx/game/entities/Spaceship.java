@@ -16,7 +16,7 @@ public class Spaceship {
     public static final float ROLL_TIMER_SWITCH_TIME = 0.10f;
     public static int numSpaceships = 0;
     private Bullet bullet1;
-    private float x, y;
+    private float x, y, factor;
     private boolean attack;
     private boolean gameover;
     private int score, finalScore;
@@ -27,7 +27,7 @@ public class Spaceship {
     private float stateTime;
     private float rollTimer;
     private float time;
-    private final static float TIME_OUT = 1.00f;
+    private static float TIME_OUT = 1.00f;
 
     public Spaceship(String texturePathSpaceShip, Bullet bullet1) {
         this.bullet1 = bullet1;
@@ -36,6 +36,7 @@ public class Spaceship {
         //Setting the initial coordinates of spaceship
         x = 20;
         y = (float) (Gdx.graphics.getHeight() - SHIP_HEIGTH_PIXEL) / 2;
+        factor = 8.0f;
 
         //Setting the initial animation configs of spaceship
         roll = 2;
@@ -145,7 +146,7 @@ public class Spaceship {
 
         if (isAttack()) {
             if (bullet1.getX() < Gdx.graphics.getWidth()) {
-                bullet1.setX(bullet1.getX() + 8.0f * VELOCITY);
+                bullet1.setX(bullet1.getX() + factor * VELOCITY);
             } else {
                 bullet1.setX(getX() + (float) SHIP_WIDTH / 2);
                 bullet1.setY(getY());
@@ -155,6 +156,30 @@ public class Spaceship {
             bullet1.setX(getX() + (float) SHIP_WIDTH / 2);
             bullet1.setY(getY() + (float) SHIP_HEIGTH / 2 - 5);
         }
+    }
+
+    public static float getTimeOut() {
+        return TIME_OUT;
+    }
+
+    public static void setTimeOut(float timeOut) {
+        TIME_OUT = timeOut;
+    }
+
+    public float getFactor() {
+        return factor;
+    }
+
+    public void setFactor(float factor) {
+        this.factor = factor;
+    }
+
+    public static int getNumSpaceships() {
+        return numSpaceships;
+    }
+
+    public static void setNumSpaceships(int numSpaceships) {
+        Spaceship.numSpaceships = numSpaceships;
     }
 
     public Bullet getBullet1() {

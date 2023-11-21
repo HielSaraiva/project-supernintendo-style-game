@@ -26,6 +26,8 @@ public class InvadersScreen implements Screen {
     private Meteor meteor;
     private Eye eye1, eye2, eye3;
     private Life life;
+    private BulletMode bulletMode;
+    private Texture ship1Burst;
     private Texture wallpaperScreen;
     private OrthographicCamera camera;
     private FreeTypeFontGenerator generator;
@@ -52,6 +54,7 @@ public class InvadersScreen implements Screen {
         eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         life = new Life();
+        bulletMode = new BulletMode();
 
         // Load the font of the game text screen
         generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font4.ttf"));
@@ -84,6 +87,9 @@ public class InvadersScreen implements Screen {
 
         //Ships lifes:
         ship1Life = new Texture(Gdx.files.internal("pictures/inGame/consumables/life.png"));
+
+        //Ships bursts
+        ship1Burst = new Texture(Gdx.files.internal("pictures/inGame/consumables/bullet_mode_small.png"));
 
         // Music when paused :
         backgroundPauseMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/trail/trail3.mp3"));
@@ -161,6 +167,7 @@ public class InvadersScreen implements Screen {
             game.batch.draw(eye3.getSprite(), eye3.getSprite().getX(), eye3.getSprite().getY());
 
             game.batch.draw(life.getSprite(), life.getSprite().getX(), life.getSprite().getY());
+            game.batch.draw(bulletMode.getSprite(), bulletMode.getSprite().getX(), bulletMode.getSprite().getY());
 
             bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: ", 20, Gdx.graphics.getHeight() - 20);
             if(ship1.getLife() == 5) {
@@ -186,6 +193,7 @@ public class InvadersScreen implements Screen {
             }
         } else {
             life.getMusic1().stop();
+            bulletMode.getMusic1().stop();
             backgroundMusic.stop();
             game.setScreen(new GameoverScreen(game, ship1.getFinalScore()));
         }
@@ -202,7 +210,6 @@ public class InvadersScreen implements Screen {
             game.batch.draw(eye1.getTexExplo2(), eye1.getShip().getX(), eye1.getShip().getY());
             game.batch.draw(eye1.getTexExplo3(), eye1.getShip().getX(), eye1.getShip().getY());
         }
-
 
         if (eye2.getSprite().getX() + eye2.getSprite().getWidth() < 0 ^ eye2.ShipBulletCollision()) {
             game.batch.draw(eye2.getTexExplo1(), eye2.getSprite().getX(), eye2.getShip().getY());
@@ -233,9 +240,22 @@ public class InvadersScreen implements Screen {
         if(life.lifeCollision(ship1)) {
             life.getSprite().setX(Gdx.graphics.getWidth());
         }
-
         if(life.getSprite().getX() >= Gdx.graphics.getWidth() && life.getTime() >= 45.0f) {
             life = new Life();
+        }
+
+        if(bulletMode.lifeCollision(ship1)) {
+            bulletMode.getSprite().setX(Gdx.graphics.getWidth());
+        }
+        if(bulletMode.isCollision() && bulletMode.getTime() <= 15.0f) {
+            game.batch.draw(ship1Burst, 20, Gdx.graphics.getHeight() - 200);
+        }
+        if(bulletMode.getSprite().getX() >= Gdx.graphics.getWidth() && bulletMode.getTime() >= 15.0f) {
+            ship1.setFactor(8.0f);
+            Spaceship.setTimeOut(1.0f);
+        }
+        if(bulletMode.getSprite().getX() >= Gdx.graphics.getWidth() && bulletMode.getTime() >= 60.0f) {
+            bulletMode = new BulletMode();
         }
 
         Preferences prefs = Gdx.app.getPreferences("SpaceInvaders");
@@ -276,6 +296,7 @@ public class InvadersScreen implements Screen {
             }
             backgroundMusic.pause();
             life.getMusic1().pause();
+            bulletMode.getMusic1().pause();
             backgroundPauseMusic.play();
             backgroundPauseMusic.setLooping(true);
 
@@ -310,6 +331,7 @@ public class InvadersScreen implements Screen {
             this.ship1.moveSpaceship();
             this.blueAlien.move();
             this.life.move(ship1);
+            this.bulletMode.move(ship1);
 
             if (allTime > 30.0f) {
                 this.meteor.move();
