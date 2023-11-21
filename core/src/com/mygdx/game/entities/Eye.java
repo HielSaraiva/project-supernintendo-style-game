@@ -30,7 +30,7 @@ public class Eye {
         time = 0.0f;
         n = 1.0f;
 
-        bullet = new Bullet("pictures/inGame/bullet/bullet3.png", "audio/bullets/bullet8.wav");
+        bullet = new Bullet("pictures/inGame/bullet/bullet3.png", "audio/bullets/bullet8.mp3");
 
         sprite.setX(Gdx.graphics.getWidth());
         sprite.setY(MathUtils.random(0, Gdx.graphics.getHeight() - sprite.getHeight()));

@@ -247,10 +247,10 @@ public class InvadersScreen implements Screen {
         if(bulletMode.lifeCollision(ship1)) {
             bulletMode.getSprite().setX(Gdx.graphics.getWidth());
         }
-        if(bulletMode.isCollision() && bulletMode.getTime() <= 15.0f) {
+        if(bulletMode.isCollision() && bulletMode.getTime() <= 20.0f) {
             game.batch.draw(ship1Burst, 20, Gdx.graphics.getHeight() - 200);
         }
-        if(bulletMode.getSprite().getX() >= Gdx.graphics.getWidth() && bulletMode.getTime() >= 15.0f) {
+        if(bulletMode.getSprite().getX() >= Gdx.graphics.getWidth() && bulletMode.getTime() >= 20.0f) {
             ship1.setFactor(8.0f);
             Spaceship.setTimeOut(1.0f);
         }
