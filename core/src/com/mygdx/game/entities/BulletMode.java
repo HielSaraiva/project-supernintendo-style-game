@@ -51,7 +51,7 @@ public class BulletMode {
         if (Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getBullet1().getX(), ship.getBullet1().getY(), ship.getBullet1().getSprite().getWidth(), ship.getBullet1().getSprite().getHeight()) && ship.isAttack()) {
             if(sprite.getX() != Gdx.graphics.getWidth()){
                 collision = true;
-                ship.setFactor(16.0f);
+                ship.setFactor(12.0f);
                 Spaceship.setTimeOut(0.35f);
                 music1.stop();
                 sound1.play(2.0f);
@@ -62,7 +62,7 @@ public class BulletMode {
         } else if (Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getX(), ship.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
             if(sprite.getX() != Gdx.graphics.getWidth()){
                 collision = true;
-                ship.setFactor(16.0f);
+                ship.setFactor(12.0f);
                 Spaceship.setTimeOut(0.35f);
                 music1.stop();
                 sound1.play(2.0f);

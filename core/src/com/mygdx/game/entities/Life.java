@@ -19,7 +19,7 @@ public class Life {
         texture = new Texture(Gdx.files.internal("pictures/inGame/consumables/life.png"));
         sprite = new Sprite(texture);
 
-        sprite.setX(0 - sprite.getWidth());
+        sprite.setX(0 - sprite.getWidth() - 20);
         sprite.setY(MathUtils.random(0, Gdx.graphics.getHeight() - sprite.getHeight()));
 
         music1 = Gdx.audio.newMusic(Gdx.files.internal("audio/moments/moments1.mp3"));
