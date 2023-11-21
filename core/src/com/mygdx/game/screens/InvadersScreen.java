@@ -33,7 +33,7 @@ public class InvadersScreen implements Screen {
     private BitmapFont bitmap;
     private Music backgroundMusic;
     private boolean paused = false;
-    private Texture resumeButtonActive, resumeButtonInactive, quitButtonActive, quitButtonInactive, menuButtonActive, menuButtonInactive;
+    private Texture resumeButtonActive, resumeButtonInactive, quitButtonActive, quitButtonInactive, menuButtonActive, menuButtonInactive, player1, player2, space, enter, controls1, controls2;
     private Music backgroundPauseMusic;
     private Sound soundScreen;
     private float allTime;
@@ -75,6 +75,12 @@ public class InvadersScreen implements Screen {
         quitButtonInactive = new Texture(Gdx.files.internal("pictures/outGame/quit_orange.png"));
         menuButtonActive = new Texture(Gdx.files.internal("pictures/outGame/back_blue.png"));
         menuButtonInactive = new Texture(Gdx.files.internal("pictures/outGame/back_orange.png"));
+        player1 = new Texture(Gdx.files.internal("pictures/outGame/player1.png"));
+        player2 = new Texture(Gdx.files.internal("pictures/outGame/player2.png"));
+        enter = new Texture(Gdx.files.internal("pictures/outGame/enter.png"));
+        space = new Texture(Gdx.files.internal("pictures/outGame/space.png"));
+        controls1 = new Texture(Gdx.files.internal("pictures/outGame/wasd.png"));
+        controls2 = new Texture(Gdx.files.internal("pictures/outGame/setas.png"));
 
         //Ships lifes:
         ship1Life = new Texture(Gdx.files.internal("pictures/inGame/consumables/life.png"));
@@ -327,6 +333,7 @@ public class InvadersScreen implements Screen {
     }
 
     public void optionsMenuPaused() {
+        controles();
         if (Gdx.input.getX() < (Gdx.graphics.getWidth() + quitButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - quitButtonInactive.getWidth()) / 2 &&
                 Gdx.graphics.getHeight() - Gdx.input.getY() + 200 < (float) (Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2 + quitButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 200 > (float) (Gdx.graphics.getHeight() - quitButtonInactive.getHeight()) / 2) {
             game.batch.draw(quitButtonActive, (float) (Gdx.graphics.getWidth() - quitButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - quitButtonActive.getHeight()) / 2 - 200);
@@ -373,6 +380,16 @@ public class InvadersScreen implements Screen {
         backgroundMusic.setVolume(0.5f);
         backgroundMusic.play();
         backgroundMusic.setLooping(true);
+    }
+
+    public void controles(){
+        game.batch.draw(player1,(float)((Gdx.graphics.getWidth()/5 - player1.getWidth()/2) -20 ) ,(float)(Gdx.graphics.getWidth() - player1.getWidth()) / 2);
+        game.batch.draw(controls1,(float)((Gdx.graphics.getWidth()/5 - controls1.getWidth()/2) -20) ,(float)((Gdx.graphics.getWidth() - controls1.getWidth()) / 2 - 300));
+        game.batch.draw(space,(float)((Gdx.graphics.getWidth()/5 - space.getWidth()/2) - 20) ,(float)((Gdx.graphics.getWidth() - space.getWidth()) / 2 - 500) );
+
+        game.batch.draw(player2,(float)((Gdx.graphics.getWidth()*4/5 - player2.getWidth()/2) + 20) ,(float)(Gdx.graphics.getWidth() - player2.getWidth()) / 2);
+        game.batch.draw(controls2,(float)((Gdx.graphics.getWidth()*4/5 - controls2.getWidth()/2) +20) ,(float)((Gdx.graphics.getWidth() - controls2.getWidth()) / 2 - 300));
+        game.batch.draw(enter,(float)((Gdx.graphics.getWidth()*4/5 - enter.getWidth()/2) + 35) ,(float)((Gdx.graphics.getWidth() - enter.getWidth()) / 2 - 600) );
     }
 
     @Override
