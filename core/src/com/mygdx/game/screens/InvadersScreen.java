@@ -230,9 +230,11 @@ public class InvadersScreen implements Screen {
             game.batch.draw(eye3.getTexExplo3(), eye3.getShip().getX(), eye3.getShip().getY());
         }
 
+        if(life.lifeCollision(ship1)) {
+            life.getSprite().setX(Gdx.graphics.getWidth());
+        }
 
-
-        if(life.getSprite().getX() > Gdx.graphics.getWidth() && life.getTime() >= 45.0f) {
+        if(life.getSprite().getX() >= Gdx.graphics.getWidth() && life.getTime() >= 45.0f) {
             life = new Life();
         }
 
