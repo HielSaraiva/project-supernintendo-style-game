@@ -21,9 +21,11 @@ import com.mygdx.game.entities.*;
 public class InvadersScreen implements Screen {
     private final SpaceInvaders game;
     private Spaceship ship1;
+    private Texture ship1Life;
     private BlueAlien blueAlien;
     private Meteor meteor;
     private Eye eye1, eye2, eye3;
+    private Life life;
     private Texture wallpaperScreen;
     private OrthographicCamera camera;
     private FreeTypeFontGenerator generator;
@@ -49,6 +51,7 @@ public class InvadersScreen implements Screen {
         eye1 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+        life = new Life();
 
         // Load the font of the game text screen
         generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font4.ttf"));
@@ -72,6 +75,9 @@ public class InvadersScreen implements Screen {
         quitButtonInactive = new Texture(Gdx.files.internal("pictures/outGame/quit_orange.png"));
         menuButtonActive = new Texture(Gdx.files.internal("pictures/outGame/back_blue.png"));
         menuButtonInactive = new Texture(Gdx.files.internal("pictures/outGame/back_orange.png"));
+
+        //Ships lifes:
+        ship1Life = new Texture(Gdx.files.internal("pictures/inGame/consumables/life.png"));
 
         // Music when paused :
         backgroundPauseMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/trail/trail3.mp3"));
@@ -148,8 +154,32 @@ public class InvadersScreen implements Screen {
             }
             game.batch.draw(eye3.getSprite(), eye3.getSprite().getX(), eye3.getSprite().getY());
 
-            bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: " + ship1.getLife(), 20, Gdx.graphics.getHeight() - 20);
+            game.batch.draw(life.getSprite(), life.getSprite().getX(), life.getSprite().getY());
+
+            bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: ", 20, Gdx.graphics.getHeight() - 20);
+            if(ship1.getLife() == 5) {
+                game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 210, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 245, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 280, Gdx.graphics.getHeight() - 167);
+            } else if(ship1.getLife() == 4) {
+                game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 210, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 245, Gdx.graphics.getHeight() - 167);
+            } else if(ship1.getLife() == 3) {
+                game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 210, Gdx.graphics.getHeight() - 167);
+            } else if(ship1.getLife() == 2) {
+                game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
+            } else if(ship1.getLife() == 1){
+                game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
+            }
         } else {
+            life.getMusic1().stop();
             backgroundMusic.stop();
             game.setScreen(new GameoverScreen(game, ship1.getFinalScore()));
         }
@@ -179,7 +209,6 @@ public class InvadersScreen implements Screen {
             game.batch.draw(eye2.getTexExplo1(), eye2.getShip().getX(), eye2.getShip().getY());
             game.batch.draw(eye2.getTexExplo2(), eye2.getShip().getX(), eye2.getShip().getY());
             game.batch.draw(eye2.getTexExplo3(), eye2.getShip().getX(), eye2.getShip().getY());
-
         }
 
         if (eye3.getSprite().getX() + eye3.getSprite().getWidth() < 0 ^ eye3.ShipBulletCollision()) {
@@ -193,6 +222,12 @@ public class InvadersScreen implements Screen {
             game.batch.draw(eye3.getTexExplo1(), eye3.getShip().getX(), eye3.getShip().getY());
             game.batch.draw(eye3.getTexExplo2(), eye3.getShip().getX(), eye3.getShip().getY());
             game.batch.draw(eye3.getTexExplo3(), eye3.getShip().getX(), eye3.getShip().getY());
+        }
+
+
+
+        if(life.getSprite().getX() > Gdx.graphics.getWidth() && life.getTime() >= 45.0f) {
+            life = new Life();
         }
 
         Preferences prefs = Gdx.app.getPreferences("SpaceInvaders");
@@ -209,8 +244,30 @@ public class InvadersScreen implements Screen {
         if (paused) {
             game.batch.setColor(0.7f, 0.7f, 0.7f, 0.7f);
             bitmap.setColor(0.7f, 0.7f, 0.7f, 0.7f);
-            bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: " + ship1.getLife(), 20, Gdx.graphics.getHeight() - 20);
+            bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: " , 20, Gdx.graphics.getHeight() - 20);
+            if(ship1.getLife() == 5) {
+                game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 210, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 245, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 280, Gdx.graphics.getHeight() - 167);
+            } else if(ship1.getLife() == 4) {
+                game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 210, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 245, Gdx.graphics.getHeight() - 167);
+            } else if(ship1.getLife() == 3) {
+                game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 210, Gdx.graphics.getHeight() - 167);
+            } else if(ship1.getLife() == 2) {
+                game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
+                game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
+            } else if(ship1.getLife() == 1){
+                game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
+            }
             backgroundMusic.pause();
+            life.getMusic1().pause();
             backgroundPauseMusic.play();
             backgroundPauseMusic.setLooping(true);
 
@@ -244,6 +301,7 @@ public class InvadersScreen implements Screen {
             this.ship1.moveBullet();
             this.ship1.moveSpaceship();
             this.blueAlien.move();
+            this.life.move(ship1);
 
             if (allTime > 30.0f) {
                 this.meteor.move();
@@ -336,7 +394,6 @@ public class InvadersScreen implements Screen {
     public static boolean getRecord() {
         return record;
     }
-
 
     @Override
     public void dispose() {

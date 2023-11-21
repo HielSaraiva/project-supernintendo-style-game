@@ -55,7 +55,7 @@ public class Spaceship {
         //Setting the initial conditions of spaceship
         attack = false;
         score = 0;
-        life = 1000;
+        life = 5;
         gameover = false;
         time = 1.25f;
 
