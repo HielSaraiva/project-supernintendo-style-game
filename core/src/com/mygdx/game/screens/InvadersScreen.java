@@ -41,7 +41,7 @@ public class InvadersScreen implements Screen {
     private float allTime;
     public static int highscore;
     public static boolean record;
-
+    private Boss boss;
     public InvadersScreen(SpaceInvaders game) {
         this.game = game;
         record = false;
@@ -55,7 +55,7 @@ public class InvadersScreen implements Screen {
         eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         life = new Life();
         bulletMode = new BulletMode();
-
+        boss = new Boss("pictures/inGame/enemies/belligol.png",ship1);
         // Load the font of the game text screen
         generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font4.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -168,6 +168,7 @@ public class InvadersScreen implements Screen {
 
             game.batch.draw(life.getSprite(), life.getSprite().getX(), life.getSprite().getY());
             game.batch.draw(bulletMode.getSprite(), bulletMode.getSprite().getX(), bulletMode.getSprite().getY());
+            game.batch.draw(boss.getSprite(),boss.getSprite().getX(), boss.getSprite().getY());
 
             bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: ", 20, Gdx.graphics.getHeight() - 20);
             if(ship1.getLife() == 5) {
@@ -327,6 +328,7 @@ public class InvadersScreen implements Screen {
             soundScreen.play(2.0f);
             paused = true;
         } else {
+            this.boss.move();
             this.ship1.moveBullet();
             this.ship1.moveSpaceship();
             this.blueAlien.move();
