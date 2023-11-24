@@ -217,6 +217,7 @@ public class InvadersScreen implements Screen {
                 boss.stopMusic();
                 ship1.setFinalScore(ship1.getScore());
                 ship1.setGameover(true);
+                game.setScreen(new WinnerScreen(game, ship1.getFinalScore()));
             }
         }
 
