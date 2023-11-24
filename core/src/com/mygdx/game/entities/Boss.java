@@ -16,7 +16,7 @@ public class Boss {
     private Spaceship ship;
     private float velocity = 240 * Gdx.graphics.getDeltaTime();
     private float time;
-    private Sound explosionBomb, scream;
+    private Sound explosionBomb, scream, soundBullet;
     private Music entrence;
     private int life = 30;
 
@@ -43,6 +43,7 @@ public class Boss {
         bombSprite3.setY(-100);
 
         explosionBomb = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion3.mp3"));
+        soundBullet = Gdx.audio.newSound(Gdx.files.internal("audio/explosions/explosion1.wav"));
         scream = Gdx.audio.newSound(Gdx.files.internal("audio/scream/scream1.wav"));
         entrence = Gdx.audio.newMusic(Gdx.files.internal("audio/belligol.mp3"));
 
@@ -51,7 +52,6 @@ public class Boss {
     }
 
     public void move() {
-        entrence.play();
         if (sprite.getX() + sprite.getWidth() + 10 < Gdx.graphics.getWidth()) {
             sprite.setX(sprite.getX() + 500 * Gdx.graphics.getDeltaTime());
         } else {
@@ -110,10 +110,19 @@ public class Boss {
                 ship.setScore(ship.getScore() + 550);
                 ship.setAttack(false);
                 scream.play(0.5f);
+                soundBullet.play();
             }
             return true;
         }
         return false;
+    }
+
+    public Music getEntrence() {
+        return entrence;
+    }
+
+    public void setEntrence(Music entrence) {
+        this.entrence = entrence;
     }
 
     public void stopMusic(){
