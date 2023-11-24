@@ -123,7 +123,6 @@ public class InvadersScreen implements Screen {
             if (!backgroundMusic.isPlaying()) {
                 backgroundMusic.play();
                 soundScreen.play();
-                boss.playMusic();
             }
         }
         // Clearing the screen with a dark blue color (RGB alpha)
