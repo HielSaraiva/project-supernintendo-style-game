@@ -7,11 +7,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class BlueAlien {
+
     private Spaceship ship;
     private Texture texture;
     private Array<Rectangle> rectangles;

@@ -42,6 +42,8 @@ public class InvadersScreen implements Screen {
     public static int highscore;
     public static boolean record;
     private Boss boss;
+
+
     public InvadersScreen(SpaceInvaders game) {
         this.game = game;
         record = false;
@@ -55,7 +57,7 @@ public class InvadersScreen implements Screen {
         eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
         life = new Life();
         bulletMode = new BulletMode();
-        boss = new Boss("pictures/inGame/enemies/belligol.png",ship1);
+        boss = new Boss("pictures/inGame/enemies/belligol.png", "pictures/inGame/bullet/bullet4.png", ship1);
         // Load the font of the game text screen
         generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font4.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -108,6 +110,7 @@ public class InvadersScreen implements Screen {
     public void render(float delta) {
         allTime += Gdx.graphics.getDeltaTime();
         if (paused) {
+            boss.pauseMusic();
             backgroundMusic.pause();
             if (Gdx.input.isKeyJustPressed((Input.Keys.ESCAPE))) {
                 paused = false;
@@ -120,6 +123,7 @@ public class InvadersScreen implements Screen {
             if (!backgroundMusic.isPlaying()) {
                 backgroundMusic.play();
                 soundScreen.play();
+                boss.playMusic();
             }
         }
         // Clearing the screen with a dark blue color (RGB alpha)
@@ -136,6 +140,11 @@ public class InvadersScreen implements Screen {
         game.batch.begin();
         game.batch.draw(wallpaperScreen, 0, 0);
         // Draw the bullet system, the spaceship and the text on game screen
+
+        game.batch.draw(this.boss.getBombSprite(), this.boss.getBombSprite().getX(), this.boss.getBombSprite().getY());
+        game.batch.draw(this.boss.getBombSprite1(), this.boss.getBombSprite1().getX(), this.boss.getBombSprite1().getY());
+        game.batch.draw(this.boss.getBombSprite2(), this.boss.getBombSprite2().getX(), this.boss.getBombSprite2().getY());
+        game.batch.draw(this.boss.getBombSprite3(), this.boss.getBombSprite3().getX(), this.boss.getBombSprite3().getY());
 
         if (!ship1.isGameover()) {
             if (ship1.isAttack()) {
@@ -168,35 +177,54 @@ public class InvadersScreen implements Screen {
 
             game.batch.draw(life.getSprite(), life.getSprite().getX(), life.getSprite().getY());
             game.batch.draw(bulletMode.getSprite(), bulletMode.getSprite().getX(), bulletMode.getSprite().getY());
-            game.batch.draw(boss.getSprite(),boss.getSprite().getX(), boss.getSprite().getY());
+            game.batch.draw(boss.getSprite(), boss.getSprite().getX(), boss.getSprite().getY());
 
             bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: ", 20, Gdx.graphics.getHeight() - 20);
-            if(ship1.getLife() == 5) {
+            if (ship1.getLife() == 5) {
                 game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 210, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 245, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 280, Gdx.graphics.getHeight() - 167);
-            } else if(ship1.getLife() == 4) {
+            } else if (ship1.getLife() == 4) {
                 game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 210, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 245, Gdx.graphics.getHeight() - 167);
-            } else if(ship1.getLife() == 3) {
+            } else if (ship1.getLife() == 3) {
                 game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 210, Gdx.graphics.getHeight() - 167);
-            } else if(ship1.getLife() == 2) {
+            } else if (ship1.getLife() == 2) {
                 game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
-            } else if(ship1.getLife() == 1){
+            } else if (ship1.getLife() == 1) {
                 game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
             }
         } else {
             life.getMusic1().stop();
             bulletMode.getMusic1().stop();
             backgroundMusic.stop();
+            boss.stopMusic();
             game.setScreen(new GameoverScreen(game, ship1.getFinalScore()));
+        }
+
+        // Collision between Bomb and Ship:
+        if (boss.shipBombCollision()) {
+            ship1.setLife(ship1.getLife() - 1);
+            if (ship1.getLife() <= 0) {
+                ship1.setFinalScore(ship1.getScore());
+                ship1.setGameover(true);
+            }
+        }
+        // Collision between Bullet and Boss:
+        if (boss.bulletBossCollision()) {
+            boss.setLife(boss.getLife() - 1);
+            if (boss.getLife() == 0) {
+                boss.stopMusic();
+                ship1.setFinalScore(ship1.getScore());
+                ship1.setGameover(true);
+            }
         }
 
         if (eye1.getSprite().getX() + eye1.getSprite().getWidth() < 0 ^ eye1.ShipBulletCollision()) {
@@ -204,7 +232,12 @@ public class InvadersScreen implements Screen {
             game.batch.draw(eye1.getTexExplo2(), eye1.getSprite().getX(), eye1.getSprite().getY());
             game.batch.draw(eye1.getTexExplo3(), eye1.getSprite().getX(), eye1.getSprite().getY());
 
-            eye1 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+            if(allTime < 130.0f){
+                eye1 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+            }else{
+                eye1.getSprite().setX(-100);
+                eye1.getSprite().setY(-100);
+            }
         }
         if (eye1.BulletAlienCollision()) {
             game.batch.draw(eye1.getTexExplo1(), eye1.getShip().getX(), eye1.getShip().getY());
@@ -217,7 +250,12 @@ public class InvadersScreen implements Screen {
             game.batch.draw(eye2.getTexExplo2(), eye2.getSprite().getX(), eye2.getShip().getY());
             game.batch.draw(eye2.getTexExplo3(), eye2.getSprite().getX(), eye2.getShip().getY());
 
-            eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+            if(allTime < 130.0f){
+                eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+            }else{
+                eye2.getSprite().setX(-100);
+                eye2.getSprite().setY(-100);
+            }
         }
         if (eye2.BulletAlienCollision()) {
             game.batch.draw(eye2.getTexExplo1(), eye2.getShip().getX(), eye2.getShip().getY());
@@ -229,8 +267,12 @@ public class InvadersScreen implements Screen {
             game.batch.draw(eye3.getTexExplo1(), eye3.getSprite().getX(), eye3.getShip().getY());
             game.batch.draw(eye3.getTexExplo2(), eye3.getSprite().getX(), eye3.getShip().getY());
             game.batch.draw(eye3.getTexExplo3(), eye3.getSprite().getX(), eye3.getShip().getY());
-
-            eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+            if(allTime < 130.0f){
+                eye3 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+            }else{
+                eye3.getSprite().setX(-100);
+                eye3.getSprite().setY(-100);
+            }
         }
         if (eye3.BulletAlienCollision()) {
             game.batch.draw(eye3.getTexExplo1(), eye3.getShip().getX(), eye3.getShip().getY());
@@ -238,24 +280,24 @@ public class InvadersScreen implements Screen {
             game.batch.draw(eye3.getTexExplo3(), eye3.getShip().getX(), eye3.getShip().getY());
         }
 
-        if(life.lifeCollision(ship1)) {
+        if (life.lifeCollision(ship1)) {
             life.getSprite().setX(Gdx.graphics.getWidth());
         }
-        if(life.getSprite().getX() >= Gdx.graphics.getWidth() && life.getTime() >= 45.0f) {
+        if (life.getSprite().getX() >= Gdx.graphics.getWidth() && life.getTime() >= 20.0f) {
             life = new Life();
         }
 
-        if(bulletMode.lifeCollision(ship1)) {
+        if (bulletMode.lifeCollision(ship1)) {
             bulletMode.getSprite().setX(Gdx.graphics.getWidth());
         }
-        if(bulletMode.isCollision() && bulletMode.getTime() <= 20.0f) {
+        if (bulletMode.isCollision() && bulletMode.getTime() <= 20.0f) {
             game.batch.draw(ship1Burst, 20, Gdx.graphics.getHeight() - 200);
         }
-        if(bulletMode.getSprite().getX() >= Gdx.graphics.getWidth() && bulletMode.getTime() >= 20.0f) {
+        if (bulletMode.getSprite().getX() >= Gdx.graphics.getWidth() && bulletMode.getTime() >= 20.0f) {
             ship1.setFactor(8.0f);
             Spaceship.setTimeOut(1.0f);
         }
-        if(bulletMode.getSprite().getX() >= Gdx.graphics.getWidth() && bulletMode.getTime() >= 60.0f) {
+        if (bulletMode.getSprite().getX() >= Gdx.graphics.getWidth() && bulletMode.getTime() >= 30.0f) {
             bulletMode = new BulletMode();
         }
 
@@ -267,32 +309,34 @@ public class InvadersScreen implements Screen {
             prefs.flush();
             record = true;
         }
-
+        if (allTime > 130.0f) {
+            bitmap.draw(game.batch, "Boss : " + boss.getLife(), Gdx.graphics.getWidth() / 2 - 100, 40);
+        }
         bitmap.draw(game.batch, "Best Score: " + InvadersScreen.getHighscore(), (Gdx.graphics.getWidth() - 450) / 2, Gdx.graphics.getHeight() - 20);
 
         if (paused) {
             game.batch.setColor(0.7f, 0.7f, 0.7f, 0.7f);
             bitmap.setColor(0.7f, 0.7f, 0.7f, 0.7f);
-            bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: " , 20, Gdx.graphics.getHeight() - 20);
-            if(ship1.getLife() == 5) {
+            bitmap.draw(game.batch, "Player 1\nScore: " + ship1.getScore() + "\nLife: ", 20, Gdx.graphics.getHeight() - 20);
+            if (ship1.getLife() == 5) {
                 game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 210, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 245, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 280, Gdx.graphics.getHeight() - 167);
-            } else if(ship1.getLife() == 4) {
+            } else if (ship1.getLife() == 4) {
                 game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 210, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 245, Gdx.graphics.getHeight() - 167);
-            } else if(ship1.getLife() == 3) {
+            } else if (ship1.getLife() == 3) {
                 game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 210, Gdx.graphics.getHeight() - 167);
-            } else if(ship1.getLife() == 2) {
+            } else if (ship1.getLife() == 2) {
                 game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
                 game.batch.draw(ship1Life, 175, Gdx.graphics.getHeight() - 167);
-            } else if(ship1.getLife() == 1){
+            } else if (ship1.getLife() == 1) {
                 game.batch.draw(ship1Life, 140, Gdx.graphics.getHeight() - 167);
             }
             backgroundMusic.pause();
@@ -328,7 +372,6 @@ public class InvadersScreen implements Screen {
             soundScreen.play(2.0f);
             paused = true;
         } else {
-            this.boss.move();
             this.ship1.moveBullet();
             this.ship1.moveSpaceship();
             this.blueAlien.move();
@@ -339,19 +382,25 @@ public class InvadersScreen implements Screen {
                 this.meteor.move();
             }
 
-            if (allTime > 120.0f) {
+            if (allTime > 60.0f) {
                 this.eye1.move();
                 this.eye1.moveBullet();
             }
 
-            if (allTime > 150.0f) {
+            if (allTime > 80.0f) {
                 this.eye2.move();
                 this.eye2.moveBullet();
             }
 
-            if (allTime > 180.0f) {
+            if (allTime > 100.0f) {
                 this.eye3.move();
                 this.eye3.moveBullet();
+            }
+            if (allTime > 130.0f) {
+                // Boss Movement:
+                this.boss.move();
+                // Boss Firts Attack (Bombs):
+                boss.moveBomb();
             }
 
             this.ship1.setStateTime(ship1.getStateTime() + delta);
@@ -408,14 +457,14 @@ public class InvadersScreen implements Screen {
         backgroundMusic.setLooping(true);
     }
 
-    public void controles(){
-        game.batch.draw(player1,(float)((Gdx.graphics.getWidth()/5 - player1.getWidth()/2) -20 ) ,(float)(Gdx.graphics.getWidth() - player1.getWidth()) / 2);
-        game.batch.draw(controls1,(float)((Gdx.graphics.getWidth()/5 - controls1.getWidth()/2) -20) ,(float)((Gdx.graphics.getWidth() - controls1.getWidth()) / 2 - 300));
-        game.batch.draw(space,(float)((Gdx.graphics.getWidth()/5 - space.getWidth()/2) - 20) ,(float)((Gdx.graphics.getWidth() - space.getWidth()) / 2 - 500) );
+    public void controles() {
+        game.batch.draw(player1, (float) ((Gdx.graphics.getWidth() / 5 - player1.getWidth() / 2) - 20), (float) (Gdx.graphics.getWidth() - player1.getWidth()) / 2);
+        game.batch.draw(controls1, (float) ((Gdx.graphics.getWidth() / 5 - controls1.getWidth() / 2) - 20), (float) ((Gdx.graphics.getWidth() - controls1.getWidth()) / 2 - 300));
+        game.batch.draw(space, (float) ((Gdx.graphics.getWidth() / 5 - space.getWidth() / 2) - 20), (float) ((Gdx.graphics.getWidth() - space.getWidth()) / 2 - 500));
 
-        game.batch.draw(player2,(float)((Gdx.graphics.getWidth()*4/5 - player2.getWidth()/2) + 20) ,(float)(Gdx.graphics.getWidth() - player2.getWidth()) / 2);
-        game.batch.draw(controls2,(float)((Gdx.graphics.getWidth()*4/5 - controls2.getWidth()/2) +20) ,(float)((Gdx.graphics.getWidth() - controls2.getWidth()) / 2 - 300));
-        game.batch.draw(enter,(float)((Gdx.graphics.getWidth()*4/5 - enter.getWidth()/2) + 35) ,(float)((Gdx.graphics.getWidth() - enter.getWidth()) / 2 - 600) );
+        game.batch.draw(player2, (float) ((Gdx.graphics.getWidth() * 4 / 5 - player2.getWidth() / 2) + 20), (float) (Gdx.graphics.getWidth() - player2.getWidth()) / 2);
+        game.batch.draw(controls2, (float) ((Gdx.graphics.getWidth() * 4 / 5 - controls2.getWidth() / 2) + 20), (float) ((Gdx.graphics.getWidth() - controls2.getWidth()) / 2 - 300));
+        game.batch.draw(enter, (float) ((Gdx.graphics.getWidth() * 4 / 5 - enter.getWidth() / 2) + 35), (float) ((Gdx.graphics.getWidth() - enter.getWidth()) / 2 - 600));
     }
 
     @Override
