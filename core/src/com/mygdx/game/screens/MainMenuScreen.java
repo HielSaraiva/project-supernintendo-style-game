@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.SpaceInvaders;
+import com.mygdx.game.entities.Spaceship;
 
 public class MainMenuScreen implements Screen {
     private final SpaceInvaders game;
@@ -28,6 +29,7 @@ public class MainMenuScreen implements Screen {
 
 
     public MainMenuScreen(final SpaceInvaders game) {
+        Spaceship.numSpaceships = 0;
         this.game = game;
         //Menu camera
         camera = new OrthographicCamera();
