@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.SpaceInvaders;
 import com.mygdx.game.entities.*;
 
-public class InvadersScreen implements Screen {
+public class SingleInvadersScreen implements Screen {
     private final SpaceInvaders game;
     private Spaceship ship1;
     private Texture ship1Life;
@@ -44,19 +44,19 @@ public class InvadersScreen implements Screen {
     private Boss boss;
 
 
-    public InvadersScreen(SpaceInvaders game) {
+    public SingleInvadersScreen(SpaceInvaders game) {
         this.game = game;
         record = false;
 
         // Creating Spaceship and BlueAlien and Explosions
         ship1 = new Spaceship("pictures/inGame/player1/ship.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));
-        blueAlien = new BlueAlien("pictures/inGame/enemies/alien1.png", ship1);
-        meteor = new Meteor("pictures/inGame/enemies/meteor.png", ship1);
-        eye1 = new Eye("pictures/inGame/enemies/eye.png", ship1);
-        eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+        blueAlien = new BlueAlien("pictures/inGame/enemies/alien1.png");
+        meteor = new Meteor("pictures/inGame/enemies/meteor.png");
+        eye1 = new Eye("pictures/inGame/enemies/eye.png");
+        eye2 = new Eye("pictures/inGame/enemies/eye.png");
         life = new Life();
         bulletMode = new BulletMode();
-        boss = new Boss("pictures/inGame/enemies/belligol.png", "pictures/inGame/bullet/bullet4.png", ship1);
+        boss = new Boss("pictures/inGame/enemies/belligol.png", "pictures/inGame/bullet/bullet4.png");
         // Load the font of the game text screen
         generator = new FreeTypeFontGenerator(Gdx.files.internal("font/font4.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -199,11 +199,11 @@ public class InvadersScreen implements Screen {
             bulletMode.getMusic1().stop();
             backgroundMusic.stop();
             boss.stopMusic();
-            game.setScreen(new GameoverScreen(game, ship1.getFinalScore()));
+            game.setScreen(new SingleGameoverScreen(game, ship1.getFinalScore()));
         }
 
         // Collision between Bomb and Ship:
-        if (boss.shipBombCollision()) {
+        if (boss.shipBombCollision(ship1)) {
             ship1.setLife(ship1.getLife() - 1);
             if (ship1.getLife() <= 0) {
                 ship1.setFinalScore(ship1.getScore());
@@ -211,7 +211,7 @@ public class InvadersScreen implements Screen {
             }
         }
         // Collision between Bullet and Boss:
-        if (boss.bulletBossCollision()) {
+        if (boss.bulletBossCollision(ship1)) {
             boss.setLife(boss.getLife() - 1);
             if (boss.getLife() == 0) {
                 boss.stopMusic();
@@ -222,40 +222,40 @@ public class InvadersScreen implements Screen {
             }
         }
 
-        if (eye1.getSprite().getX() + eye1.getSprite().getWidth() < 0 ^ eye1.ShipBulletCollision()) {
+        if (eye1.getSprite().getX() + eye1.getSprite().getWidth() < 0 ^ eye1.ShipBulletCollision(ship1)) {
             game.batch.draw(eye1.getTexExplo1(), eye1.getSprite().getX(), eye1.getSprite().getY());
             game.batch.draw(eye1.getTexExplo2(), eye1.getSprite().getX(), eye1.getSprite().getY());
             game.batch.draw(eye1.getTexExplo3(), eye1.getSprite().getX(), eye1.getSprite().getY());
 
             if (allTime < 100.0f) {
-                eye1 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+                eye1 = new Eye("pictures/inGame/enemies/eye.png");
             } else {
                 eye1.getSprite().setX(-100);
                 eye1.getSprite().setY(-100);
             }
         }
-        if (eye1.BulletAlienCollision()) {
-            game.batch.draw(eye1.getTexExplo1(), eye1.getShip().getX(), eye1.getShip().getY());
-            game.batch.draw(eye1.getTexExplo2(), eye1.getShip().getX(), eye1.getShip().getY());
-            game.batch.draw(eye1.getTexExplo3(), eye1.getShip().getX(), eye1.getShip().getY());
+        if (eye1.BulletAlienCollision(ship1)) {
+            game.batch.draw(eye1.getTexExplo1(), eye1.getSprite().getX(), eye1.getSprite().getY());
+            game.batch.draw(eye1.getTexExplo2(), eye1.getSprite().getX(), eye1.getSprite().getY());
+            game.batch.draw(eye1.getTexExplo3(), eye1.getSprite().getX(), eye1.getSprite().getY());
         }
 
-        if (eye2.getSprite().getX() + eye2.getSprite().getWidth() < 0 ^ eye2.ShipBulletCollision()) {
-            game.batch.draw(eye2.getTexExplo1(), eye2.getSprite().getX(), eye2.getShip().getY());
-            game.batch.draw(eye2.getTexExplo2(), eye2.getSprite().getX(), eye2.getShip().getY());
-            game.batch.draw(eye2.getTexExplo3(), eye2.getSprite().getX(), eye2.getShip().getY());
+        if (eye2.getSprite().getX() + eye2.getSprite().getWidth() < 0 ^ eye2.ShipBulletCollision(ship1)) {
+            game.batch.draw(eye2.getTexExplo1(), eye2.getSprite().getX(), eye2.getSprite().getY());
+            game.batch.draw(eye2.getTexExplo2(), eye2.getSprite().getX(), eye2.getSprite().getY());
+            game.batch.draw(eye2.getTexExplo3(), eye2.getSprite().getX(), eye2.getSprite().getY());
 
             if (allTime < 100.0f) {
-                eye2 = new Eye("pictures/inGame/enemies/eye.png", ship1);
+                eye2 = new Eye("pictures/inGame/enemies/eye.png");
             } else {
                 eye2.getSprite().setX(-100);
                 eye2.getSprite().setY(-100);
             }
         }
-        if (eye2.BulletAlienCollision()) {
-            game.batch.draw(eye2.getTexExplo1(), eye2.getShip().getX(), eye2.getShip().getY());
-            game.batch.draw(eye2.getTexExplo2(), eye2.getShip().getX(), eye2.getShip().getY());
-            game.batch.draw(eye2.getTexExplo3(), eye2.getShip().getX(), eye2.getShip().getY());
+        if (eye2.BulletAlienCollision(ship1)) {
+            game.batch.draw(eye2.getTexExplo1(), eye2.getSprite().getX(), eye2.getSprite().getY());
+            game.batch.draw(eye2.getTexExplo2(), eye2.getSprite().getX(), eye2.getSprite().getY());
+            game.batch.draw(eye2.getTexExplo3(), eye2.getSprite().getX(), eye2.getSprite().getY());
         }
 
         if (life.lifeCollision(ship1)) {
@@ -279,7 +279,7 @@ public class InvadersScreen implements Screen {
             bulletMode = new BulletMode();
         }
 
-        Preferences prefs = Gdx.app.getPreferences("SpaceInvaders");
+        Preferences prefs = Gdx.app.getPreferences("SingleSpaceInvaders");
         this.highscore = prefs.getInteger("highscore", 0);
 
         if (ship1.getScore() > highscore) {
@@ -290,7 +290,7 @@ public class InvadersScreen implements Screen {
         if (allTime > 100.0f) {
             bitmap.draw(game.batch, "Boss : " + boss.getLife(), Gdx.graphics.getWidth() / 2 - 100, 40);
         }
-        bitmap.draw(game.batch, "Best Score: " + InvadersScreen.getHighscore(), (Gdx.graphics.getWidth() - 450) / 2, Gdx.graphics.getHeight() - 20);
+        bitmap.draw(game.batch, "Best Score: " + SingleInvadersScreen.getHighscore(), (Gdx.graphics.getWidth() - 450) / 2, Gdx.graphics.getHeight() - 20);
 
         if (paused) {
             game.batch.setColor(0.7f, 0.7f, 0.7f, 0.7f);
@@ -350,29 +350,29 @@ public class InvadersScreen implements Screen {
             soundScreen.play(2.0f);
             paused = true;
         } else {
-            this.ship1.moveBullet();
-            this.ship1.moveSpaceship();
-            this.blueAlien.move();
+            this.ship1.moveBullet1();
+            this.ship1.moveSpaceship1();
+            this.blueAlien.move(ship1);
             this.life.move(ship1);
             this.bulletMode.move(ship1);
 
             if (allTime > 30.0f) {
-                this.meteor.move();
+                this.meteor.move(ship1);
             }
 
             if (allTime > 60.0f) {
                 this.eye1.move();
-                this.eye1.moveBullet();
+                this.eye1.moveBullet(ship1);
             }
 
             if (allTime > 80.0f) {
                 this.eye2.move();
-                this.eye2.moveBullet();
+                this.eye2.moveBullet(ship1);
             }
 
             if (allTime > 100.0f) {
                 if (allTime < 101.0f) {
-                    if(ship1.getLife() <= 3) {
+                    if (ship1.getLife() <= 3) {
                         ship1.setLife(5);
                     }
                     boss.getEntrence().play();

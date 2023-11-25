@@ -12,8 +12,7 @@ public class Boss {
     private final static float TIME_OUT = 1.75f;
     private Texture texture, bomb;
     private Sprite sprite;
-    private Sprite bombSprite,bombSprite1,bombSprite2,bombSprite3;
-    private Spaceship ship;
+    private Sprite bombSprite, bombSprite1, bombSprite2, bombSprite3;
     private float velocity = 240 * Gdx.graphics.getDeltaTime();
     private float time;
     private Sound explosionBomb, scream, soundBullet;
@@ -21,8 +20,7 @@ public class Boss {
     private int life = 30;
 
 
-    public Boss(String texturePathEye, String TexturePathBomb, Spaceship ship){
-        this.ship = ship;
+    public Boss(String texturePathEye, String TexturePathBomb) {
         texture = new Texture(Gdx.files.internal(texturePathEye));
         sprite = new Sprite(texture);
 
@@ -61,52 +59,53 @@ public class Boss {
             }
         }
     }
-    public void moveBomb(){
+
+    public void moveBomb() {
         time += Gdx.graphics.getDeltaTime();
-        if (time > TIME_OUT ) {
-            bombSprite.setX( MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite.getWidth()- sprite.getWidth()));
-            bombSprite.setY( MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite.getHeight()));
-            bombSprite1.setX( MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f , Gdx.graphics.getWidth() - bombSprite1.getWidth()- sprite.getWidth()));
-            bombSprite1.setY( MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite1.getHeight()));
-            bombSprite2.setX( MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite2.getWidth()- sprite.getWidth()));
-            bombSprite2.setY( MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite2.getHeight()));
-            bombSprite3.setX( MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite3.getWidth()- sprite.getWidth()));
-            bombSprite3.setY( MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite3.getHeight()));
+        if (time > TIME_OUT) {
+            bombSprite.setX(MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite.getWidth() - sprite.getWidth()));
+            bombSprite.setY(MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite.getHeight()));
+            bombSprite1.setX(MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite1.getWidth() - sprite.getWidth()));
+            bombSprite1.setY(MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite1.getHeight()));
+            bombSprite2.setX(MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite2.getWidth() - sprite.getWidth()));
+            bombSprite2.setY(MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite2.getHeight()));
+            bombSprite3.setX(MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite3.getWidth() - sprite.getWidth()));
+            bombSprite3.setY(MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite3.getHeight()));
             time = 0;
         }
     }
 
-    public boolean shipBombCollision(){
+    public boolean shipBombCollision(Spaceship ship) {
         if (Collision.collide(bombSprite.getX(), bombSprite.getY(), bombSprite.getWidth(), bombSprite.getHeight(), ship.getX(), ship.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH)) {
             explosionBomb.play(2.0f);
-            bombSprite.setX( MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite.getWidth()- sprite.getWidth()));
-            bombSprite.setY( MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite.getHeight()));
+            bombSprite.setX(MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite.getWidth() - sprite.getWidth()));
+            bombSprite.setY(MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite.getHeight()));
             return true;
         }
         if (Collision.collide(bombSprite1.getX(), bombSprite1.getY(), bombSprite1.getWidth(), bombSprite1.getHeight(), ship.getX(), ship.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH)) {
             explosionBomb.play(2.0f);
-            bombSprite1.setX( MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f , Gdx.graphics.getWidth() - bombSprite1.getWidth()- sprite.getWidth()));
-            bombSprite1.setY( MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite1.getHeight()));
+            bombSprite1.setX(MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite1.getWidth() - sprite.getWidth()));
+            bombSprite1.setY(MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite1.getHeight()));
             return true;
         }
         if (Collision.collide(bombSprite2.getX(), bombSprite2.getY(), bombSprite2.getWidth(), bombSprite2.getHeight(), ship.getX(), ship.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH)) {
             explosionBomb.play(2.0f);
-            bombSprite2.setX( MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite2.getWidth()- sprite.getWidth()));
-            bombSprite2.setY( MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite2.getHeight()));
+            bombSprite2.setX(MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite2.getWidth() - sprite.getWidth()));
+            bombSprite2.setY(MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite2.getHeight()));
             return true;
         }
         if (Collision.collide(bombSprite3.getX(), bombSprite3.getY(), bombSprite3.getWidth(), bombSprite3.getHeight(), ship.getX(), ship.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH)) {
             explosionBomb.play(2.0f);
-            bombSprite3.setX( MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite3.getWidth()- sprite.getWidth()));
-            bombSprite3.setY( MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite3.getHeight()));
+            bombSprite3.setX(MathUtils.random(0.0f + bombSprite.getWidth() - 15.0f, Gdx.graphics.getWidth() - bombSprite3.getWidth() - sprite.getWidth()));
+            bombSprite3.setY(MathUtils.random(0.0f + bombSprite.getHeight() - 30.0f, Gdx.graphics.getHeight() - bombSprite3.getHeight()));
             return true;
         }
         return false;
     }
 
-    public boolean bulletBossCollision(){
+    public boolean bulletBossCollision(Spaceship ship) {
         if (Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getBullet1().getX(), ship.getBullet1().getY(), ship.getBullet1().getSprite().getWidth(), ship.getBullet1().getSprite().getHeight()) && ship.isAttack()) {
-            if(sprite.getX() != Gdx.graphics.getWidth()){
+            if (sprite.getX() != Gdx.graphics.getWidth()) {
                 ship.setScore(ship.getScore() + 550);
                 ship.setAttack(false);
                 scream.play(0.5f);
@@ -125,14 +124,15 @@ public class Boss {
         this.entrence = entrence;
     }
 
-    public void stopMusic(){
+    public void stopMusic() {
         entrence.stop();
     }
 
-    public void pauseMusic(){
+    public void pauseMusic() {
         entrence.pause();
     }
-    public void playMusic(){
+
+    public void playMusic() {
         entrence.play();
     }
 
@@ -145,14 +145,6 @@ public class Boss {
         this.sprite = sprite;
     }
 
-    public Spaceship getShip() {
-        return ship;
-    }
-
-    public void setShip(Spaceship ship) {
-        this.ship = ship;
-    }
-
     public Texture getTexture() {
         return texture;
     }
@@ -160,6 +152,7 @@ public class Boss {
     public void setTexture(Texture texture) {
         this.texture = texture;
     }
+
     public Sprite getBombSprite() {
         return bombSprite;
     }

@@ -43,23 +43,44 @@ public class Life {
         }
     }
 
+    public void move(Spaceship ship, Spaceship ship2) {
+        if (ship.getLife() < 5 || ship2.getLife() < 5) {
+            music1.play();
+            music1.setLooping(true);
+            sprite.setX(sprite.getX() + 250 * Gdx.graphics.getDeltaTime());
+            sprite.setY(sprite.getY() - 250 * Gdx.graphics.getDeltaTime());
+            if (sprite.getY() + sprite.getHeight() < 0) {
+                sprite.setY(Gdx.graphics.getHeight());
+            }
+            if (sprite.getX() >= Gdx.graphics.getWidth()) {
+                time += Gdx.graphics.getDeltaTime();
+                music1.stop();
+                sprite.setX(Gdx.graphics.getWidth());
+            }
+        }
+    }
+
     public boolean lifeCollision(Spaceship ship) {
         // Ship Bullet x Life
         if (Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getBullet1().getX(), ship.getBullet1().getY(), ship.getBullet1().getSprite().getWidth(), ship.getBullet1().getSprite().getHeight()) && ship.isAttack()) {
-            if(sprite.getX() != Gdx.graphics.getWidth()){
-                ship.setLife(ship.getLife() + 1);
-                music1.stop();
-                sound1.play(2.0f);
-                ship.setAttack(false);
+            if (sprite.getX() != Gdx.graphics.getWidth()) {
+                if (ship.getLife() < 5) {
+                    ship.setLife(ship.getLife() + 1);
+                    music1.stop();
+                    sound1.play(2.0f);
+                    ship.setAttack(false);
+                }
             }
             return true;
             // Ship x Life
         } else if (Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getX(), ship.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
-            if(sprite.getX() != Gdx.graphics.getWidth()){
-                ship.setLife(ship.getLife() + 1);
-                music1.stop();
-                sound1.play(2.0f);
-                ship.setAttack(false);
+            if (sprite.getX() != Gdx.graphics.getWidth()) {
+                if (ship.getLife() < 5) {
+                    ship.setLife(ship.getLife() + 1);
+                    music1.stop();
+                    sound1.play(2.0f);
+                    ship.setAttack(false);
+                }
             }
             return true;
         }

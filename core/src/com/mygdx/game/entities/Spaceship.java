@@ -30,42 +30,79 @@ public class Spaceship {
     private static float TIME_OUT = 1.00f;
 
     public Spaceship(String texturePathSpaceShip, Bullet bullet1) {
-        this.bullet1 = bullet1;
-        numSpaceships += 1;
+        if (numSpaceships == 0) {
+            this.bullet1 = bullet1;
+            numSpaceships += 1;
 
-        //Setting the initial coordinates of spaceship
-        x = 20;
-        y = (float) (Gdx.graphics.getHeight() - SHIP_HEIGTH_PIXEL) / 2;
-        factor = 8.0f;
+            //Setting the initial coordinates of spaceship
+            x = 20;
+            y = (float) (Gdx.graphics.getHeight() - SHIP_HEIGTH_PIXEL) / 2;
+            factor = 8.0f;
 
-        //Setting the initial animation configs of spaceship
-        roll = 2;
-        rollTimer = 0.0f;
-        rolls = new Animation[5];
+            //Setting the initial animation configs of spaceship
+            roll = 2;
+            rollTimer = 0.0f;
+            rolls = new Animation[5];
 
-        //Catching all the textures of spaceship png
-        rollSpriteSheet = TextureRegion.split(new Texture(Gdx.files.internal(texturePathSpaceShip)), SHIP_WIDTH_PIXEL, SHIP_HEIGTH_PIXEL);
+            //Catching all the textures of spaceship png
+            rollSpriteSheet = TextureRegion.split(new Texture(Gdx.files.internal(texturePathSpaceShip)), SHIP_WIDTH_PIXEL, SHIP_HEIGTH_PIXEL);
 
-        //Setting all the possibilities animations configs
-        rolls[0] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[2]); // All up
-        rolls[1] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[1]);
-        rolls[2] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[0]); // No tilt
-        rolls[3] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[3]);
-        rolls[4] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[4]); // All down
+            //Setting all the possibilities animations configs
+            rolls[0] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[2]); // All up
+            rolls[1] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[1]);
+            rolls[2] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[0]); // No tilt
+            rolls[3] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[3]);
+            rolls[4] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[4]); // All down
 
-        //Setting the initial conditions of spaceship
-        attack = false;
-        score = 0;
-        life = 5;
-        gameover = false;
-        time = 1.25f;
+            //Setting the initial conditions of spaceship
+            attack = false;
+            score = 0;
+            life = 5;
+            gameover = false;
+            time = 1.25f;
 
-        //Setting the position of bullet
-        this.bullet1.setX(x);
-        this.bullet1.setY(y);
+            //Setting the position of bullet
+            this.bullet1.setX(x);
+            this.bullet1.setY(y);
+        } else if (numSpaceships == 1) {
+
+            this.bullet1 = bullet1;
+            numSpaceships += 1;
+
+            //Setting the initial coordinates of spaceship
+            x = 20;
+            y = (float) 2 * (Gdx.graphics.getHeight() - SHIP_HEIGTH_PIXEL) / 3;
+            factor = 8.0f;
+
+            //Setting the initial animation configs of spaceship
+            roll = 2;
+            rollTimer = 0.0f;
+            rolls = new Animation[5];
+
+            //Catching all the textures of spaceship png
+            rollSpriteSheet = TextureRegion.split(new Texture(Gdx.files.internal(texturePathSpaceShip)), SHIP_WIDTH_PIXEL, SHIP_HEIGTH_PIXEL);
+
+            //Setting all the possibilities animations configs
+            rolls[0] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[2]); // All up
+            rolls[1] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[1]);
+            rolls[2] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[0]); // No tilt
+            rolls[3] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[3]);
+            rolls[4] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[4]); // All down
+
+            //Setting the initial conditions of spaceship
+            attack = false;
+            score = 0;
+            life = 5;
+            gameover = false;
+            time = 1.25f;
+
+            //Setting the position of bullet
+            this.bullet1.setX(x);
+            this.bullet1.setY(y);
+        }
     }
 
-    public void moveSpaceship() {
+    public void moveSpaceship1() {
         time += Gdx.graphics.getDeltaTime();
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             if (x > 0) {
@@ -136,12 +173,109 @@ public class Spaceship {
         }
     }
 
-    public void moveBullet() {
+    public void moveBullet1() {
         if (time > TIME_OUT && Gdx.input.isKeyPressed(Input.Keys.SPACE) && !isAttack()) {
             time = 0;
             setAttack(true);
             bullet1.setY((getY() + (float) SHIP_HEIGTH / 2 - 5));
-            bullet1.getSound().play(2.0f);
+            if (life != 0) {
+                bullet1.getSound().play(2.0f);
+            }
+        }
+
+        if (isAttack()) {
+            if (bullet1.getX() < Gdx.graphics.getWidth()) {
+                bullet1.setX(bullet1.getX() + factor * VELOCITY);
+            } else {
+                bullet1.setX(getX() + (float) SHIP_WIDTH / 2);
+                bullet1.setY(getY());
+                setAttack(false);
+            }
+        } else {
+            bullet1.setX(getX() + (float) SHIP_WIDTH / 2);
+            bullet1.setY(getY() + (float) SHIP_HEIGTH / 2 - 5);
+        }
+    }
+
+    public void moveSpaceship2() {
+        time += Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if (x > 0) {
+                x -= VELOCITY;
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if (x < Gdx.graphics.getWidth() - (float) SHIP_WIDTH) {
+                x += VELOCITY;
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            if (y > 0) {
+                y -= VELOCITY;
+
+                // Update roll if button is just clicked
+                if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) && !Gdx.input.isKeyPressed(Input.Keys.UP) && roll < 4) {
+                    rollTimer = 0.0f;
+                    roll++;
+                }
+
+                //Update roll
+                rollTimer += Gdx.graphics.getDeltaTime();
+                if (Math.abs(rollTimer) > ROLL_TIMER_SWITCH_TIME && roll < 4) {
+                    rollTimer = 0.0f;
+                    roll++;
+                }
+            }
+        } else {
+            if (roll > 2) {
+                //Update roll to go back to center
+                rollTimer -= Gdx.graphics.getDeltaTime();
+                if (Math.abs(rollTimer) > ROLL_TIMER_SWITCH_TIME && roll > 0) {
+                    rollTimer = 0.0f;
+                    roll--;
+                }
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if (y < Gdx.graphics.getHeight() - (float) SHIP_HEIGTH) {
+                y += VELOCITY;
+
+                //Update roll if button just clicked
+                if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && !Gdx.input.isKeyPressed(Input.Keys.DOWN) && roll > 0) {
+                    rollTimer = 0.0f;
+                    roll--;
+                }
+
+                //Update roll
+                rollTimer -= Gdx.graphics.getDeltaTime();
+                if (Math.abs(rollTimer) > ROLL_TIMER_SWITCH_TIME && roll > 0) {
+                    rollTimer = 0.0f;
+                    roll--;
+                }
+            }
+        } else {
+            if (roll < 2) {
+                //Update roll to go back to center
+                rollTimer += Gdx.graphics.getDeltaTime();
+                if (Math.abs(rollTimer) > ROLL_TIMER_SWITCH_TIME && roll < 4) {
+                    rollTimer = 0.0f;
+                    roll++;
+                }
+            }
+        }
+    }
+
+    public void moveBullet2() {
+        if (time > TIME_OUT && Gdx.input.isKeyPressed(Input.Keys.NUMPAD_ENTER) && !isAttack()) {
+            time = 0;
+            setAttack(true);
+            bullet1.setY((getY() + (float) SHIP_HEIGTH / 2 - 5));
+            if (life != 0) {
+                bullet1.getSound().play(2.0f);
+            }
         }
 
         if (isAttack()) {

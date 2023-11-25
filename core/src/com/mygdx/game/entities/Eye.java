@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class Eye {
     private final static float TIME_OUT = 2.5f;
-    private Spaceship ship;
     private Texture texture, texExplo1, texExplo2, texExplo3;
     private Sprite sprite;
     private Bullet bullet;
@@ -17,9 +16,7 @@ public class Eye {
     private Sound sound1, sound2;
     private float n;
 
-    public Eye(String texturePathEye, Spaceship ship) {
-        this.ship = ship;
-
+    public Eye(String texturePathEye) {
         texture = new Texture(Gdx.files.internal(texturePathEye));
         texExplo1 = new Texture(Gdx.files.internal("pictures/inGame/explosion/explod1.png"));
         texExplo2 = new Texture(Gdx.files.internal("pictures/inGame/explosion/explod2.png"));
@@ -46,7 +43,7 @@ public class Eye {
         sprite.setX(sprite.getX() - 100 * Gdx.graphics.getDeltaTime());
     }
 
-    public void moveBullet() {
+    public void moveBullet(Spaceship ship) {
         time += Gdx.graphics.getDeltaTime();
         if (time > TIME_OUT && !isAttack()) {
             setAttack(true);
@@ -61,7 +58,7 @@ public class Eye {
                 deltaX = ship.getX() - sprite.getX();
                 deltaY = ship.getY() - sprite.getY();
 
-                if(ship.getScore() % 600 == 0) {
+                if (ship.getScore() % 600 == 0) {
                     n += 0.0005f;
                 }
 
@@ -78,10 +75,10 @@ public class Eye {
         }
     }
 
-    public boolean ShipBulletCollision() {
+    public boolean ShipBulletCollision(Spaceship ship) {
         // Ship Bullet x Enemy
         if (Collision.collide(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), ship.getBullet1().getX(), ship.getBullet1().getY(), ship.getBullet1().getSprite().getWidth(), ship.getBullet1().getSprite().getHeight()) && ship.isAttack()) {
-            if(sprite.getX() != Gdx.graphics.getWidth()){
+            if (sprite.getX() != Gdx.graphics.getWidth()) {
                 ship.setScore(ship.getScore() + 300);
                 sound1.play(2.0f);
                 ship.setAttack(false);
@@ -102,7 +99,7 @@ public class Eye {
         return false;
     }
 
-    public boolean BulletAlienCollision() {
+    public boolean BulletAlienCollision(Spaceship ship) {
         // Ship x Enemy Bullet
         if (Collision.collide(bullet.getX(), bullet.getY(), bullet.getSprite().getWidth(), bullet.getSprite().getHeight(), ship.getX(), ship.getY(), (float) Spaceship.SHIP_WIDTH, (float) Spaceship.SHIP_HEIGTH) && !ship.isGameover()) {
             bullet = new Bullet("pictures/inGame/bullet/bullet3.png", "audio/bullets/bullet8.mp3");
@@ -156,14 +153,6 @@ public class Eye {
 
     public void setSound2(Sound sound2) {
         this.sound2 = sound2;
-    }
-
-    public Spaceship getShip() {
-        return ship;
-    }
-
-    public void setShip(Spaceship ship) {
-        this.ship = ship;
     }
 
     public Texture getTexture() {

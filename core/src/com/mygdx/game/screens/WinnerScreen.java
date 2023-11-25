@@ -21,7 +21,7 @@ public class WinnerScreen implements Screen {
     private Music backgroundMusic;
     private Sound soundScreen;
 
-    public WinnerScreen(SpaceInvaders game, int score){
+    public WinnerScreen(SpaceInvaders game, int score) {
         this.game = game;
         this.score = score;
 
@@ -58,6 +58,7 @@ public class WinnerScreen implements Screen {
         backgroundMusic.setLooping(true);
 
     }
+
     @Override
     public void show() {
         backgroundMusic.setVolume(0.5f);
@@ -70,20 +71,20 @@ public class WinnerScreen implements Screen {
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
         game.batch.begin();
-        game.batch.draw(background, 0 ,0);
-        bitmap.draw(game.batch, "YOU" , ((float)Gdx.graphics.getWidth() / 2 - 170), (float)Gdx.graphics.getHeight() / 2 + 400);
-        bitmap.draw(game.batch, "WIN" , ((float)Gdx.graphics.getWidth() / 2 - 130), (float)Gdx.graphics.getHeight() / 2 + 200);
-        bitmap2.draw(game.batch, "Total score: " + this.score, ((float)Gdx.graphics.getWidth() - 800) / 2, (float)Gdx.graphics.getHeight() / 2 - 200);
+        game.batch.draw(background, 0, 0);
+        bitmap.draw(game.batch, "YOU", ((float) Gdx.graphics.getWidth() / 2 - 170), (float) Gdx.graphics.getHeight() / 2 + 400);
+        bitmap.draw(game.batch, "WIN", ((float) Gdx.graphics.getWidth() / 2 - 130), (float) Gdx.graphics.getHeight() / 2 + 200);
+        bitmap2.draw(game.batch, "Total score: " + this.score, ((float) Gdx.graphics.getWidth() - 800) / 2, (float) Gdx.graphics.getHeight() / 2 - 200);
 
-        if(InvadersScreen.getRecord()){
-            greenFont.draw(game.batch, "!!!NEW RECORD!!!", ((float)Gdx.graphics.getWidth() - 700) / 2, (float)Gdx.graphics.getHeight() / 2 - 50);
+        if (SingleInvadersScreen.getRecord()) {
+            greenFont.draw(game.batch, "!!!NEW RECORD!!!", ((float) Gdx.graphics.getWidth() - 700) / 2, (float) Gdx.graphics.getHeight() / 2 - 50);
         }
 
 
-        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + menuButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2 &&
+        if (Gdx.input.getX() < (Gdx.graphics.getWidth() + menuButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2 &&
                 Gdx.graphics.getHeight() - Gdx.input.getY() + 400 < (float) (Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2 + menuButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 400 > (float) (Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2) {
             game.batch.draw(menuButtonActive, (float) (Gdx.graphics.getWidth() - menuButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - menuButtonActive.getHeight()) / 2 - 400);
-            if(Gdx.input.justTouched()) {
+            if (Gdx.input.justTouched()) {
                 game.setScreen(new MainMenuScreen(game));
                 soundScreen.play(2.0f);
                 this.dispose();

@@ -5,15 +5,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.SpaceInvaders;
 
-public class GameoverScreen implements Screen {
+public class MultiGameoverScreen implements Screen {
     private final SpaceInvaders game;
     private int score;
     private Texture background;
@@ -25,7 +23,7 @@ public class GameoverScreen implements Screen {
     private BitmapFont bitmap, greenFont;
     private Sound soundScreen;
 
-    public GameoverScreen(SpaceInvaders game, int score) {
+    public MultiGameoverScreen(SpaceInvaders game, int score) {
         this.game = game;
         this.score = score;
 
@@ -58,18 +56,18 @@ public class GameoverScreen implements Screen {
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
         game.batch.begin();
-        game.batch.draw(background, 0 ,0);
-        bitmap.draw(game.batch, "Total score: " + this.score, ((float)Gdx.graphics.getWidth() - 800) / 2, (float)Gdx.graphics.getHeight() / 2 + 300);
-        bitmap.draw(game.batch, "Best Score: " + InvadersScreen.getHighscore(), ((float)Gdx.graphics.getWidth() - 800) / 2, (float)Gdx.graphics.getHeight() / 2 + 100);
-        if(InvadersScreen.getRecord()){
-            greenFont.draw(game.batch, "!!!NEW RECORD!!!", ((float)Gdx.graphics.getWidth() - 700) / 2, (float)Gdx.graphics.getHeight() / 2 - 100);
+        game.batch.draw(background, 0, 0);
+        bitmap.draw(game.batch, "Total score: " + this.score, ((float) Gdx.graphics.getWidth() - 800) / 2, (float) Gdx.graphics.getHeight() / 2 + 300);
+        bitmap.draw(game.batch, "Best Score: " + MultiInvadersScreen.getHighscore(), ((float) Gdx.graphics.getWidth() - 800) / 2, (float) Gdx.graphics.getHeight() / 2 + 100);
+        if (MultiInvadersScreen.getRecord()) {
+            greenFont.draw(game.batch, "!!!NEW RECORD!!!", ((float) Gdx.graphics.getWidth() - 700) / 2, (float) Gdx.graphics.getHeight() / 2 - 100);
         }
 
-        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + tryButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - tryButtonInactive.getWidth()) / 2 &&
+        if (Gdx.input.getX() < (Gdx.graphics.getWidth() + tryButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - tryButtonInactive.getWidth()) / 2 &&
                 Gdx.graphics.getHeight() - Gdx.input.getY() + 450 < (float) (Gdx.graphics.getHeight() - tryButtonInactive.getHeight()) / 2 + tryButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 450 > (float) (Gdx.graphics.getHeight() - tryButtonInactive.getHeight()) / 2) {
             game.batch.draw(tryButtonActive, (float) (Gdx.graphics.getWidth() - tryButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - tryButtonActive.getHeight()) / 2 - 450);
-            if(Gdx.input.justTouched()) {
-                game.setScreen(new InvadersScreen(game));
+            if (Gdx.input.justTouched()) {
+                game.setScreen(new MultiInvadersScreen(game));
                 soundScreen.play(2.0f);
                 this.dispose();
             }
@@ -77,10 +75,10 @@ public class GameoverScreen implements Screen {
             game.batch.draw(tryButtonInactive, (float) (Gdx.graphics.getWidth() - tryButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - tryButtonActive.getHeight()) / 2 - 450);
         }
 
-        if(Gdx.input.getX() < (Gdx.graphics.getWidth() + menuButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2 &&
+        if (Gdx.input.getX() < (Gdx.graphics.getWidth() + menuButtonInactive.getWidth()) / 2 && Gdx.input.getX() > (Gdx.graphics.getWidth() - menuButtonInactive.getWidth()) / 2 &&
                 Gdx.graphics.getHeight() - Gdx.input.getY() + 350 < (float) (Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2 + menuButtonInactive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() + 350 > (float) (Gdx.graphics.getHeight() - menuButtonInactive.getHeight()) / 2) {
             game.batch.draw(menuButtonActive, (float) (Gdx.graphics.getWidth() - menuButtonActive.getWidth()) / 2, (float) (Gdx.graphics.getHeight() - menuButtonActive.getHeight()) / 2 - 350);
-            if(Gdx.input.justTouched()) {
+            if (Gdx.input.justTouched()) {
                 game.setScreen(new MainMenuScreen(game));
                 soundScreen.play(2.0f);
                 this.dispose();
