@@ -50,7 +50,10 @@ public class MultiInvadersScreen implements Screen {
 
         // Creating Spaceship and BlueAlien and Explosions
         ship1 = new Spaceship("pictures/inGame/player1/ship.png", new Bullet("pictures/inGame/bullet/bullet1.png", "audio/bullets/bullet1.mp3"));
+        ship1.setY(Gdx.graphics.getHeight() / 3);
         ship2 = new Spaceship("pictures/inGame/player2/ship.png", new Bullet("pictures/inGame/bullet/bullet2.png", "audio/bullets/bullet1.mp3"));
+        ship2.setY(2 * Gdx.graphics.getHeight() / 3);
+
         blueAlien = new BlueAlien("pictures/inGame/enemies/alien1.png");
         meteor = new Meteor("pictures/inGame/enemies/meteor.png");
         eye1 = new Eye("pictures/inGame/enemies/eye.png");

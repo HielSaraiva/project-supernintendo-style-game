@@ -29,7 +29,6 @@ public class MainMenuScreen implements Screen {
 
 
     public MainMenuScreen(final SpaceInvaders game) {
-        Spaceship.numSpaceships = 0;
         this.game = game;
         //Menu camera
         camera = new OrthographicCamera();

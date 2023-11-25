@@ -30,76 +30,41 @@ public class Spaceship {
     private static float TIME_OUT = 1.00f;
 
     public Spaceship(String texturePathSpaceShip, Bullet bullet1) {
-        if (numSpaceships == 0) {
-            this.bullet1 = bullet1;
-            numSpaceships += 1;
 
-            //Setting the initial coordinates of spaceship
-            x = 20;
-            y = (float) (Gdx.graphics.getHeight() - SHIP_HEIGTH_PIXEL) / 2;
-            factor = 8.0f;
+        this.bullet1 = bullet1;
+        numSpaceships += 1;
 
-            //Setting the initial animation configs of spaceship
-            roll = 2;
-            rollTimer = 0.0f;
-            rolls = new Animation[5];
+        //Setting the initial coordinates of spaceship
+        x = 20;
+        y = (float) (Gdx.graphics.getHeight() - SHIP_HEIGTH_PIXEL) / 2;
+        factor = 8.0f;
 
-            //Catching all the textures of spaceship png
-            rollSpriteSheet = TextureRegion.split(new Texture(Gdx.files.internal(texturePathSpaceShip)), SHIP_WIDTH_PIXEL, SHIP_HEIGTH_PIXEL);
+        //Setting the initial animation configs of spaceship
+        roll = 2;
+        rollTimer = 0.0f;
+        rolls = new Animation[5];
 
-            //Setting all the possibilities animations configs
-            rolls[0] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[2]); // All up
-            rolls[1] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[1]);
-            rolls[2] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[0]); // No tilt
-            rolls[3] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[3]);
-            rolls[4] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[4]); // All down
+        //Catching all the textures of spaceship png
+        rollSpriteSheet = TextureRegion.split(new Texture(Gdx.files.internal(texturePathSpaceShip)), SHIP_WIDTH_PIXEL, SHIP_HEIGTH_PIXEL);
 
-            //Setting the initial conditions of spaceship
-            attack = false;
-            score = 0;
-            life = 5;
-            gameover = false;
-            time = 1.25f;
+        //Setting all the possibilities animations configs
+        rolls[0] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[2]); // All up
+        rolls[1] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[1]);
+        rolls[2] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[0]); // No tilt
+        rolls[3] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[3]);
+        rolls[4] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[4]); // All down
 
-            //Setting the position of bullet
-            this.bullet1.setX(x);
-            this.bullet1.setY(y);
-        } else if (numSpaceships == 1) {
+        //Setting the initial conditions of spaceship
+        attack = false;
+        score = 0;
+        life = 5;
+        gameover = false;
+        time = 1.25f;
 
-            this.bullet1 = bullet1;
-            numSpaceships += 1;
+        //Setting the position of bullet
+        this.bullet1.setX(x);
+        this.bullet1.setY(y);
 
-            //Setting the initial coordinates of spaceship
-            x = 20;
-            y = (float) 2 * (Gdx.graphics.getHeight() - SHIP_HEIGTH_PIXEL) / 3;
-            factor = 8.0f;
-
-            //Setting the initial animation configs of spaceship
-            roll = 2;
-            rollTimer = 0.0f;
-            rolls = new Animation[5];
-
-            //Catching all the textures of spaceship png
-            rollSpriteSheet = TextureRegion.split(new Texture(Gdx.files.internal(texturePathSpaceShip)), SHIP_WIDTH_PIXEL, SHIP_HEIGTH_PIXEL);
-
-            //Setting all the possibilities animations configs
-            rolls[0] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[2]); // All up
-            rolls[1] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[1]);
-            rolls[2] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[0]); // No tilt
-            rolls[3] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[3]);
-            rolls[4] = new Animation(SHIP_ANIMATION_SPEED, rollSpriteSheet[4]); // All down
-
-            //Setting the initial conditions of spaceship
-            attack = false;
-            score = 0;
-            life = 5;
-            gameover = false;
-            time = 1.25f;
-
-            //Setting the position of bullet
-            this.bullet1.setX(x);
-            this.bullet1.setY(y);
-        }
     }
 
     public void moveSpaceship1() {
