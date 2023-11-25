@@ -477,9 +477,11 @@ public class MultiInvadersScreen implements Screen {
 
             if (allTime > 100.0f) {
                 if (allTime < 101.0f) {
-                    if (ship1.getLife() <= 3 || ship2.getLife() <= 3) {
+                    if (ship1.getLife() <= 5 || ship2.getLife() <= 5) {
                         ship1.setLife(5);
+                        ship1.setGameover(false);
                         ship2.setLife(5);
+                        ship2.setGameover(false);
                     }
                     boss.getEntrence().play();
                 }
