@@ -168,7 +168,6 @@ public class MultiInvadersScreen implements Screen {
             for (Rectangle enemy : blueAlien.getRectangles()) {
                 game.batch.draw(blueAlien.getTexture(), enemy.x, enemy.y);
             }
-
             for (Rectangle enemy : meteor.getRectangles()) {
                 game.batch.draw(meteor.getTexture(), enemy.x, enemy.y);
             }
@@ -481,10 +480,18 @@ public class MultiInvadersScreen implements Screen {
             if (allTime > 100.0f) {
                 if (allTime < 101.0f) {
                     if (ship1.getLife() <= 5 || ship2.getLife() <= 5) {
+                        if(ship1.isGameover()) {
+                            ship1.setX(20);
+                            ship1.setY((float)Gdx.graphics.getHeight() / 2);
+                            ship1.setGameover(false);
+                        }
+                        if(ship2.isGameover()) {
+                            ship2.setX(20);
+                            ship2.setY((float)Gdx.graphics.getHeight() / 2);
+                            ship2.setGameover(false);
+                        }
                         ship1.setLife(5);
-                        ship1.setGameover(false);
                         ship2.setLife(5);
-                        ship2.setGameover(false);
                     }
                     boss.getEntrence().play();
                 }
