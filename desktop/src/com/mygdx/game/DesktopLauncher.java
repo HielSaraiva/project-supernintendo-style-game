@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
-		config.setResizable(false);
+		config.setResizable(true);
 		config.setTitle("Space Invaders - by AHP");
 		config.setWindowIcon("pictures/outGame/gameIcon.jpg");
 		new Lwjgl3Application(new SpaceInvaders(), config);
