@@ -59,7 +59,7 @@
 
 ### Gameplay Video
 
-[gameplay.mp4](assets%2Fgithub%2Fgameplay.mp4)
+https://github.com/HielSaraiva/project_supernintendo_style_game/assets/129339642/6c95d552-7e91-43b1-af55-22c3a9c4c795
 
 ## Team
 
